@@ -1,0 +1,19 @@
+doctype html
+html
+    head
+        meta(charset="UTF-8")
+        meta(name="description" content="The only game you'll ever need.")
+        meta(name="viewport" content="width=device-width, initial-scale=0.8")
+        base(href="/")
+        title Reversi
+        link(href="/node_modules/roboto-fontface/css/roboto/roboto-fontface.css" rel="stylesheet")
+        link(href=`/node_modules/bootstrap/dist/css/bootstrap.min.css?${timestamp}` rel="stylesheet")
+        link(href=`/node_modules/font-awesome/css/font-awesome.min.css?${timestamp}` rel="stylesheet")
+        link(href=`/css/client.css?${timestamp}` rel="stylesheet")
+    body
+        block content
+
+        script(src=`/node_modules/babel-polyfill/dist/polyfill.min.js?${timestamp}`)
+        script(src=`/node_modules/zone.js/dist/zone.min.js?${timestamp}`)
+
+        block scripts

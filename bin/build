@@ -1,0 +1,46 @@
+#!/bin/bash
+
+set -e
+
+pushd `dirname $0` > /dev/null
+
+cd ..
+
+echo "Installing npm deps"
+npm i
+
+cd client
+
+npm i
+
+node bin/build
+
+cd ..
+
+ARCHIVE=target/reversi.tar.gz
+
+mkdir -p target
+
+echo "Building frontend tarball at ${ARCHIVE}..."
+tar -cz \
+    --exclude .DS_Store \
+    --exclude target/reversi.tar.gz \
+    --exclude tmp \
+    --exclude doc \
+    --exclude .git \
+    --exclude client/node_modules \
+    --exclude client/app \
+    --exclude client/bin \
+    --exclude client/less \
+    --exclude client/public \
+    --exclude client/views \
+    --exclude client/package.json \
+    --exclude client/package-lock.json \
+    --exclude client/systemjs.config.js \
+    --exclude client/systemjs-angular-loader.js \
+    --exclude client/tsconfig.json \
+    --exclude client/tsconfig-aot.json \
+    -f ${ARCHIVE} \
+    ./*
+
+echo "Dashboard build completed."

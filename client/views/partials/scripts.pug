@@ -1,0 +1,5 @@
+script(src="/node_modules/systemjs/dist/system.js")
+script(src="/systemjs.config.js")
+script.
+    System.import('app')
+        .catch(function(err){ console.error(err); });
