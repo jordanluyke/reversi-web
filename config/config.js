@@ -4,6 +4,6 @@
 module.exports = {
 //     prod: prod,
 //     staging: staging,
-    serverUrl: "http://localhost:8080",
+    coreUrl: "http://localhost:8080",
     xsrfSalt: "violetflame"
 };

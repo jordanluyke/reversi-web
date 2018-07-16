@@ -8,7 +8,7 @@ module.exports = (app) => {
     const proxyBasePath = "/core"
 
     app.all(proxyBasePath + "*", (req, res, next) => {
-        let serverPath = path.normalize(req.path.slice(proxyBasePath.length)).slice(1)
+        let corePath = path.normalize(req.path.slice(proxyBasePath.length)).slice(1)
 
         if(req.cookies.sessionId)
             req.query.sessionId = req.cookies.sessionId
@@ -18,13 +18,13 @@ module.exports = (app) => {
             "sessions",
         ]
 
-        if(req.cookies.sessionId && (req.method == "POST" || req.method == "PUT" || req.method == "DELETE") && !xsrfBypassPaths.includes(serverPath)) {
+        if(req.cookies.sessionId && (req.method == "POST" || req.method == "PUT" || req.method == "DELETE") && !xsrfBypassPaths.includes(corePath)) {
             let token = crypto.createHmac('sha256', config.xsrfSalt)
                 .update(req.cookies.sessionId)
                 .digest('base64')
 
             if(token != req.headers["x-xsrf-token"]) {
-                console.log(`Failed XSRF check. accountId: ${req.cookies.accountId}, ${req.method} ${serverPath}`)
+                console.log(`Failed XSRF check. accountId: ${req.cookies.accountId}, ${req.method} ${corePath}`)
                 return res.status(401).json({
                     type: "AccessDeniedException",
                     transient: false,
@@ -34,14 +34,18 @@ module.exports = (app) => {
         }
 
         req.pipe(request({
-            url: config.serverUrl + "/" + serverPath,
+            url: config.coreUrl + "/" + corePath,
             method: req.method,
-            headers: req.headers,
+            headers: {
+                'X-Forwarded-Proto': req.headers['X-Forwarded-Proto'] || req.protocol,
+                'X-Forwarded-For': req.headers['X-Forwarded-For'] || req.connection.remoteAddress,
+                'Content-Type': req.headers['Content-Type']
+            },
             qs: req.query,
             useQuerystring: true
         }))
             .on("error", err => {
-                console.log("Failed to connect to core for proxied API call", req.method + " " + serverPath)
+                console.log("Failed to connect to core for proxied API call", req.method + " " + corePath)
                 res.status(500).json({
                     type: "ConnectionException",
                     transient: true,
@@ -55,19 +59,18 @@ module.exports = (app) => {
                         data = Buffer.concat([data, chunk])
                     })
                     .on("end", () => {
-                        if((serverPath == "sessions" || serverPath == "accounts") && response.statusCode == 200) {
+                        if((["accounts", "sessions"].includes(corePath)) && response.statusCode == 200) {
                             try {
-                                console.log(response.headers['content-encoding'], data)
                                 let buf = response.headers['content-encoding'] == "gzip" ? zlib.gunzipSync(data) : data
                                 let body = JSON.parse(buf)
                                 let token = crypto.createHmac('sha256', config.xsrfSalt)
-                                    .update(body.sessionId)
+                                    .update(body.id)
                                     .digest('base64')
 
                                 res.cookie("XSRF-TOKEN", token, {
                                     expires: new Date(new Date().getTime() + 24*60*60*1000),
                                     path: "/",
-                                    secure: config.prod || config.staging
+                                    // secure: config.prod || config.staging
                                 })
                             } catch(e) {
                                 console.log("Xsrf cookie assign fail:", e)
