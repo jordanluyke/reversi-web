@@ -5,9 +5,7 @@ import {TimeUnit} from '../util/index'
  * @author Jordan Luyke
  */
 
-@Injectable({
-    providedIn: "root"
-})
+@Injectable()
 export class CookieService {
 
     public get(name: string): string | null {

@@ -1,1 +1,18 @@
-p home
+.container
+    //- form.sign-in-ctnr((ngSubmit)="signIn()" ngNativeValidate)
+        //- .row.justify-content-center
+        //-     .col-3
+                //- input([(ngModel)]="email" maxlength="40" name="email" required autofocus)
+    .sign-in-ctnr
+        .initial-ctnr(*ngIf="!signInVisible && !signedIn")
+            .row.justify-content-center
+                .col-3
+                    button.btn.btn-primary((click)="clickSignIn()") Sign In
+                    button.btn.btn-success.btn-guest Play as guest
+        form.sign-in-form(*ngIf="signInVisible", (ngSubmit)="submitSignIn()", ngNativeValidate)
+            .row.justify-content-center
+                .col-3
+                    input([(ngModel)]="email", maxlength="40", name="email", required, autofocus)
+                    button.btn.btn-primary(type="submit", [disabled]="reqInProgress") Sign In
+        .logged-in-ctnr(*ngIf="signedIn")
+            p Hi, your account id is

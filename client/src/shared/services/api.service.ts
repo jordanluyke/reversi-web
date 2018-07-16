@@ -8,9 +8,7 @@ import {ServerRequestOptions} from './model/index'
  * @author Jordan Luyke
  */
 
-@Injectable({
-    providedIn: "root"
-})
+@Injectable()
 export class ApiService {
 
     /**

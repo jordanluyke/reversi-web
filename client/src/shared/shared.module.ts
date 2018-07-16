@@ -4,6 +4,11 @@ import {HttpClientModule} from '@angular/common/http'
 import {CommonModule} from '@angular/common'
 import {FormsModule} from '@angular/forms'
 import {RouterModule} from '@angular/router'
+import {
+    ApiService,
+    CookieService,
+    SessionService,
+} from './services/index'
 // import {
 //     BsDropdownModule,
 //     ModalModule,
@@ -23,6 +28,9 @@ import {RouterModule} from '@angular/router'
     declarations: [
     ],
     providers: [
+        ApiService,
+        CookieService,
+        SessionService,
     ],
     exports: [
         BrowserModule,

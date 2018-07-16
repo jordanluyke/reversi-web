@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core'
 import {Router, ActivatedRoute} from '@angular/router'
-import {ErrorHandlingSubscriber} from '../../util/index'
+import {ErrorHandlingSubscriber} from '../../shared/index'
 import {tap} from 'rxjs/operators'
 
 /**

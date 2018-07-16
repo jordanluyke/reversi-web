@@ -5,5 +5,5 @@ module.exports = {
 //     prod: prod,
 //     staging: staging,
     serverUrl: "http://localhost:8080",
-//     xsrfSalt: ""
+    xsrfSalt: "violetflame"
 };

@@ -2,22 +2,20 @@ const request = require('request')
 const config = require('../config/config.js')
 const crypto = require('crypto')
 const zlib = require('zlib')
+const path = require('path')
 
 module.exports = (app) => {
     const proxyBasePath = "/core"
 
     app.all(proxyBasePath + "*", (req, res, next) => {
-        let serverPath = serverPath.normalize(req.path.slice(proxyBasePath.length)).slice(1)
+        let serverPath = path.normalize(req.path.slice(proxyBasePath.length)).slice(1)
 
         if(req.cookies.sessionId)
             req.query.sessionId = req.cookies.sessionId
 
         let xsrfBypassPaths = [
-            "/accounts",
-            "/sessions/auth",
-            "/processIdentityToken",
-            "/sendResetPassword",
-            "/mfa/upgradeSession"
+            "accounts",
+            "sessions",
         ]
 
         if(req.cookies.sessionId && (req.method == "POST" || req.method == "PUT" || req.method == "DELETE") && !xsrfBypassPaths.includes(serverPath)) {
@@ -38,12 +36,7 @@ module.exports = (app) => {
         req.pipe(request({
             url: config.serverUrl + "/" + serverPath,
             method: req.method,
-            headers: {
-                'X-Api-Version': apiVersion,
-                'X-Forwarded-Proto': req.protocol,
-                'X-Forwarded-For': req.headers['X-Forwarded-For'],
-                'Content-Type': req.headers['Content-Type']
-            },
+            headers: req.headers,
             qs: req.query,
             useQuerystring: true
         }))
@@ -62,8 +55,9 @@ module.exports = (app) => {
                         data = Buffer.concat([data, chunk])
                     })
                     .on("end", () => {
-                        if((serverPath == "sessions/auth" || serverPath == "accounts") && response.statusCode == 200) {
+                        if((serverPath == "sessions" || serverPath == "accounts") && response.statusCode == 200) {
                             try {
+                                console.log(response.headers['content-encoding'], data)
                                 let buf = response.headers['content-encoding'] == "gzip" ? zlib.gunzipSync(data) : data
                                 let body = JSON.parse(buf)
                                 let token = crypto.createHmac('sha256', config.xsrfSalt)

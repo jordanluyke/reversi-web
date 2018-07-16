@@ -6,9 +6,7 @@ import {CookieService} from './cookie.service'
 /**
  * @author Jordan Luyke
  */
-@Injectable({
-    providedIn: "root"
-})
+@Injectable()
 export class SessionService {
     public session: Session = new Session()
     public redirectUrl?: string
