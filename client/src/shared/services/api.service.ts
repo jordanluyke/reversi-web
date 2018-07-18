@@ -11,17 +11,6 @@ import {ServerRequestOptions} from './model/index'
 @Injectable()
 export class ApiService {
 
-    /**
-     * List of known exception types, if the exception is of this type, do not
-     * include the exception id in the message
-     */
-    private exceptionTypeWhiteList = [
-        "FieldRequiredException",
-        "AccessDeniedException",
-        "AlreadyRegisteredException",
-        "TransferLimitExceededException"
-    ]
-
     constructor(private httpClient: HttpClient) {
     }
 
@@ -69,19 +58,6 @@ export class ApiService {
                     if(response instanceof HttpErrorResponse) {
                         try {
                             let body = response.error
-                            // if(body.type == "MFARequiredException") {
-                            //     this.mfaService.onMfaException.next(body)
-                            //     return this.mfaService.onAuthenticated
-                            //         .take(1)
-                            //         .flatMap(success => {
-                            //             if(success == false)
-                            //                 return throwError(body)
-                            //             options.body.mfaToken = this.mfaService.token
-                            //             return this.request(method, corePath, options)
-                            //         })
-                            // }
-                            if(body.exceptionId != null && (body.type == null || ! this.exceptionTypeWhiteList.includes(body.type)))
-                                body.message += ". Exception ID: " + body.exceptionId
                             return throwError(body)
                         } catch(err) {
                             throw new Error("Unable to parse server response")

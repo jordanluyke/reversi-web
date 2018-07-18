@@ -14,7 +14,6 @@ module.exports = (app) => {
             req.query.sessionId = req.cookies.sessionId
 
         let xsrfBypassPaths = [
-            "accounts",
             "sessions",
         ]
 
@@ -59,12 +58,12 @@ module.exports = (app) => {
                         data = Buffer.concat([data, chunk])
                     })
                     .on("end", () => {
-                        if((["accounts", "sessions"].includes(corePath)) && response.statusCode == 200) {
+                        if((["sessions"].includes(corePath)) && response.statusCode == 200) {
                             try {
                                 let buf = response.headers['content-encoding'] == "gzip" ? zlib.gunzipSync(data) : data
                                 let body = JSON.parse(buf)
                                 let token = crypto.createHmac('sha256', config.xsrfSalt)
-                                    .update(body.id)
+                                    .update(body.sessionId)
                                     .digest('base64')
 
                                 res.cookie("XSRF-TOKEN", token, {
