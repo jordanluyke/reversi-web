@@ -10,7 +10,7 @@ import {CookieService} from './cookie.service'
 export class SessionService {
     public session: Session = new Session()
     public redirectUrl?: string
-    public onSet: ReplaySubject<boolean> = new ReplaySubject<boolean>(1)
+    public onSet: ReplaySubject<void> = new ReplaySubject(1)
     public onClear: Subject<void> = new Subject()
 
     constructor(private cookieService: CookieService) {

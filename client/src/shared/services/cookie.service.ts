@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core'
-import {TimeUnit} from '../util/index'
+import {TimeUnit, Instant} from '../util/index'
 
 /**
  * @author Jordan Luyke
@@ -13,21 +13,19 @@ export class CookieService {
     }
 
     public remove(name: string): void {
-        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+        document.cookie = name + "=;expires=" + new Date(0).toUTCString()
     }
 
     public put(key: string, value: string, options?: CookieOptions): void {
         options = options || {}
-
-        let o = {
-            path: options.path || "/",
-            secure: location.protocol == "https:",
-            expires: options.expires ? options.expires.toUTCString() : new Date(TimeUnit.DAYS.toMillis(7) + new Date().getTime()).toUTCString()
-        }
+        let path = options.path || "/"
+        let expires = options.expires || Instant.now().plus(1, TimeUnit.YEARS)
 
         let cookie = key + "=" + value
-        for(let property in o)
-            cookie += ";" + property + o[property]
+        cookie += ";path=" + path
+        cookie += ";expires=" + expires.toDate().toUTCString()
+        if(location.protocol == "https:")
+            cookie += ";secure"
         document.cookie = cookie
     }
 }
@@ -35,6 +33,6 @@ export class CookieService {
 interface CookieOptions {
     path?: string
     secure?: boolean
-    expires?: Date
+    expires?: Instant
 }
 

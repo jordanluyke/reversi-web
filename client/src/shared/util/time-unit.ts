@@ -9,6 +9,7 @@ const seconds = milliseconds * 1000
 const minutes = seconds * 60
 const hours = minutes * 60
 const days = hours * 24
+const years = days * 365
 
 export class TimeUnit {
     public static NANOSECONDS = new TimeUnit(nanoseconds)
@@ -18,6 +19,7 @@ export class TimeUnit {
     public static MINUTES = new TimeUnit(minutes)
     public static HOURS = new TimeUnit(hours)
     public static DAYS = new TimeUnit(days)
+    public static YEARS = new TimeUnit(days)
 
     constructor(private scale: number) {
     }

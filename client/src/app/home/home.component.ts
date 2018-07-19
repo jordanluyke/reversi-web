@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core'
-import {ApiService, Session, AccountService, SessionService} from '../../shared/index'
+import {ApiService, Session, AccountService, SessionService, Instant} from '../../shared/index'
+import {tap, flatMap} from 'rxjs/operators'
 
 @Component({
     selector: 'home-component',
@@ -32,16 +33,21 @@ export class HomeComponent implements OnInit {
                 email: this.email
             }
         })
-            .subscribe(body => {
-                let session = new Session()
-                session.accountId = body.accountId
-                session.sessionId = body.sessionId
-                session.expiresAt = new Date(body.expiresAt)
-                this.sessionService.setSession(session)
-
-                this.reqInProgress = false
-                this.signInVisible = false
-            }, err => {
+            .pipe(
+                tap(body => {
+                    let session = new Session()
+                    session.accountId = body.accountId
+                    session.sessionId = body.sessionId
+                    session.expiresAt = Instant.fromMillis(body.expiresAt)
+                    this.sessionService.setSession(session)
+                }),
+                flatMap(body => this.accountService.onLoad),
+                tap(Void => {
+                    this.signInVisible = false
+                    this.reqInProgress = false
+                })
+            )
+            .subscribe(Void => {}, err => {
                 this.reqInProgress = false
                 console.error(err)
             })
