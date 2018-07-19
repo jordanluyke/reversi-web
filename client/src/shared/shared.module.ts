@@ -8,6 +8,8 @@ import {
     ApiService,
     CookieService,
     SessionService,
+    SessionGuard,
+    AccountService,
 } from './services/index'
 // import {
 //     BsDropdownModule,
@@ -31,6 +33,8 @@ import {
         ApiService,
         CookieService,
         SessionService,
+        SessionGuard,
+        AccountService,
     ],
     exports: [
         BrowserModule,

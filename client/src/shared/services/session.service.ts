@@ -10,7 +10,7 @@ import {CookieService} from './cookie.service'
 export class SessionService {
     public session: Session = new Session()
     public redirectUrl?: string
-    public onSet: ReplaySubject<void> = new ReplaySubject(1)
+    public onSet: ReplaySubject<boolean> = new ReplaySubject<boolean>(1)
     public onClear: Subject<void> = new Subject()
 
     constructor(private cookieService: CookieService) {
@@ -44,7 +44,11 @@ export class SessionService {
     }
 
     private save(): void {
-        this.cookieService.put("sessionId", this.session.sessionId)
-        this.cookieService.put("accountId", this.session.accountId)
+        this.cookieService.put("sessionId", this.session.sessionId, {
+            expires: this.session.expiresAt
+        })
+        this.cookieService.put("accountId", this.session.accountId, {
+            expires: this.session.expiresAt
+        })
     }
 }

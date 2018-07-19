@@ -16,13 +16,25 @@ export class CookieService {
         document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;'
     }
 
-    public put(key: string, value: string, options: any = {}): void {
-        options.path = options.path || "/"
-        options.secure = location.protocol == "https:"
-        options.expires = options.expires || "" + (TimeUnit.DAYS.toMillis(7) + new Date().getTime())
+    public put(key: string, value: string, options?: CookieOptions): void {
+        options = options || {}
+
+        let o = {
+            path: options.path || "/",
+            secure: location.protocol == "https:",
+            expires: options.expires ? options.expires.toUTCString() : new Date(TimeUnit.DAYS.toMillis(7) + new Date().getTime()).toUTCString()
+        }
+
         let cookie = key + "=" + value
-        for(let property in options)
-            cookie += ";" + property + options[property]
+        for(let property in o)
+            cookie += ";" + property + o[property]
         document.cookie = cookie
     }
 }
+
+interface CookieOptions {
+    path?: string
+    secure?: boolean
+    expires?: Date
+}
+

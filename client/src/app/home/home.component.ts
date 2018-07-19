@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core'
-import {ApiService, ErrorHandlingSubscriber} from '../../shared/index'
-import {tap} from '../../../node_modules/rxjs/operators'
+import {ApiService, Session, AccountService, SessionService} from '../../shared/index'
 
 @Component({
     selector: 'home-component',
@@ -12,10 +11,11 @@ export class HomeComponent implements OnInit {
     public signInVisible = false
     public email?: string
     public reqInProgress = false
-    public signedIn = false
 
     constructor(
         private apiService: ApiService,
+        public accountService: AccountService,
+        private sessionService: SessionService,
     ) {}
 
     public ngOnInit(): void {
@@ -26,23 +26,21 @@ export class HomeComponent implements OnInit {
     }
 
     public submitSignIn(): void {
-        console.log(this.email)
         this.reqInProgress = true
-        this.apiService.post("/accounts", {
+        this.apiService.post("/sessions", {
             body: {
                 email: this.email
             }
         })
-            .pipe(
-                tap((body: any) => {
-                    console.log(body)
-                    this.reqInProgress = false
-                    this.signInVisible = false
-                    this.signedIn = true
-                })
-            )
-            .subscribe(Void => {
+            .subscribe(body => {
+                let session = new Session()
+                session.accountId = body.accountId
+                session.sessionId = body.sessionId
+                session.expiresAt = new Date(body.expiresAt)
+                this.sessionService.setSession(session)
 
+                this.reqInProgress = false
+                this.signInVisible = false
             }, err => {
                 this.reqInProgress = false
                 console.error(err)

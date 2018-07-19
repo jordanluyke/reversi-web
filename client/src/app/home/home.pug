@@ -4,7 +4,7 @@
         //-     .col-3
                 //- input([(ngModel)]="email" maxlength="40" name="email" required autofocus)
     .sign-in-ctnr
-        .initial-ctnr(*ngIf="!signInVisible && !signedIn")
+        .initial-ctnr(*ngIf="!signInVisible && !accountService.loaded")
             .row.justify-content-center
                 .col-3
                     button.btn.btn-primary((click)="clickSignIn()") Sign In
@@ -13,6 +13,6 @@
             .row.justify-content-center
                 .col-3
                     input([(ngModel)]="email", maxlength="40", name="email", required, autofocus)
-                    button.btn.btn-primary(type="submit", [disabled]="reqInProgress") Sign In
-        .logged-in-ctnr(*ngIf="signedIn")
-            p Hi, your account id is
+                    button.btn.btn-primary(type="submit", [disabled]="reqInProgress") Submit
+        .logged-in-ctnr(*ngIf="accountService.loaded")
+            p Hi, your accountId is {{accountService.account.id}}

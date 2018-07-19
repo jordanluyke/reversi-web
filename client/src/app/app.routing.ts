@@ -5,6 +5,7 @@ import {
     HomeComponent,
     NotFoundComponent,
 } from './index'
+import {AccountService} from '../shared/index'
 
 const routes: Routes = [
     {
@@ -13,6 +14,9 @@ const routes: Routes = [
     }, {
         path: 'home',
         component: HomeComponent,
+        resolve: [
+            AccountService,
+        ]
     }, {
         path: '404',
         component: NotFoundComponent

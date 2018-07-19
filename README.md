@@ -1,2 +1,2 @@
-# Reversi Client
+# Reversi
 
