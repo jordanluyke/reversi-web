@@ -20,13 +20,9 @@ export class CookieService {
         options = options || {}
         let path = options.path || "/"
         let expires = options.expires || Instant.now().plus(1, TimeUnit.YEARS)
+        let secure = location.protocol == "https:" ? "secure" : ""
 
-        let cookie = key + "=" + value
-        cookie += ";path=" + path
-        cookie += ";expires=" + expires.toDate().toUTCString()
-        if(location.protocol == "https:")
-            cookie += ";secure"
-        document.cookie = cookie
+        document.cookie = `${key}=${value};path=${path};expires=${expires.toDate().toUTCString()};${secure}`
     }
 }
 
