@@ -29,7 +29,7 @@ let packages = {
         defaultExtension: "js"
     },
     "@ng-bootstrap/ng-bootstrap": {
-        main: "bundles/ng-bootstrap.js",
+        main: "bundles/ng-bootstrap.umd.min.js",
         defaultExtension: "js"
     },
 };
