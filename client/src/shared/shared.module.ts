@@ -11,10 +11,7 @@ import {
     SessionGuard,
     AccountService,
 } from './services/index'
-// import {
-//     BsDropdownModule,
-//     ModalModule,
-// } from 'ngx-bootstrap'
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
 
 
 @NgModule({
@@ -24,8 +21,7 @@ import {
         FormsModule,
         HttpClientModule,
         RouterModule,
-        // BsDropdownModule.forRoot(),
-        // ModalModule.forRoot(),
+        NgbModule,
     ],
     declarations: [
     ],
@@ -41,8 +37,8 @@ import {
         CommonModule,
         FormsModule,
         HttpClientModule,
-        // BsDropdownModule,
-        // ModalModule,
+        RouterModule,
+        NgbModule,
     ]
 })
 export class SharedModule {}

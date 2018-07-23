@@ -3,8 +3,7 @@ let map = {
     "@angular": "node_modules/@angular",
     "rxjs": "node_modules/rxjs",
     "bignumber.js": "node_modules/bignumber.js",
-    // "ngx-bootstrap": "node_modules/ngx-bootstrap",
-    // "tslib": "node_modules/tslib",
+    "@ng-bootstrap": "node_modules/@ng-bootstrap",
 };
 
 let packages = {
@@ -29,14 +28,10 @@ let packages = {
         main: "bignumber.min.js",
         defaultExtension: "js"
     },
-    // "ngx-bootstrap": {
-    //     main: "bundles/ngx-bootstrap.umd.min.js",
-    //     defaultExtension: "js"
-    // },
-    // "tslib": {
-    //     main: "tslib.js",
-    //     defaultExtension: "js"
-    // },
+    "@ng-bootstrap/ng-bootstrap": {
+        main: "bundles/ng-bootstrap.js",
+        defaultExtension: "js"
+    },
 };
 
 [

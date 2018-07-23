@@ -263,7 +263,7 @@ let copyFiles = () => {
                     "@angular",
                     "rxjs",
                     "bignumber.js",
-                    "ngx-bootstrap",
+                    "@ng-bootstrap",
                     "systemjs",
                 ])
 
@@ -327,7 +327,7 @@ let bundle = () => {
             commonjs({
                 include: [
                     'rxjs/**',
-                    'ngx-bootstrap/**',
+                    // '@ng-bootstrap/**',
                     'bignumber.js/bignumber.js',
                 ]
                     .map(p => path.join(client, "node_modules", p)),
