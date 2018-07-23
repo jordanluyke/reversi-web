@@ -19,7 +19,7 @@ export class TimeUnit {
     public static MINUTES = new TimeUnit(minutes)
     public static HOURS = new TimeUnit(hours)
     public static DAYS = new TimeUnit(days)
-    public static YEARS = new TimeUnit(days)
+    public static YEARS = new TimeUnit(years)
 
     constructor(private scale: number) {
     }

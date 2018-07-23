@@ -19,10 +19,10 @@ export class CookieService {
     public put(key: string, value: string, options?: CookieOptions): void {
         options = options || {}
         let path = options.path || "/"
-        let expires = options.expires || Instant.now().plus(1, TimeUnit.YEARS)
+        let expires = (options.expires || Instant.now().plus(1, TimeUnit.DAYS)).toDate().toUTCString()
         let secure = location.protocol == "https:" ? "secure" : ""
 
-        document.cookie = `${key}=${value};path=${path};expires=${expires.toDate().toUTCString()};${secure}`
+        document.cookie = `${key}=${value};path=${path};expires=${expires};${secure}`
     }
 }
 
@@ -31,4 +31,3 @@ interface CookieOptions {
     secure?: boolean
     expires?: Instant
 }
-
