@@ -1,18 +1,12 @@
 .container
-    //- form.sign-in-ctnr((ngSubmit)="signIn()" ngNativeValidate)
-        //- .row.justify-content-center
-        //-     .col-3
-                //- input([(ngModel)]="email" maxlength="40" name="email" required autofocus)
-    .sign-in-ctnr
-        .initial-ctnr(*ngIf="!signInVisible && !accountService.loaded")
-            .row.justify-content-center
-                .col-3
+    .row
+        .col-4.offset-4
+            .sign-in-ctnr
+                .initial-ctnr(*ngIf="!signInVisible && !accountService.loaded")
                     button.btn.btn-primary((click)="clickSignIn()") Sign In
                     button.btn.btn-success.btn-guest Play as guest
-        form.sign-in-form(*ngIf="signInVisible", (ngSubmit)="submitSignIn()", ngNativeValidate)
-            .row.justify-content-center
-                .col-3
+                form.sign-in-form(*ngIf="signInVisible", (ngSubmit)="submitSignIn()", ngNativeValidate)
                     input([(ngModel)]="email", maxlength="40", name="email", required, autofocus)
                     button.btn.btn-primary(type="submit", [disabled]="reqInProgress") Submit
-        .logged-in-ctnr(*ngIf="accountService.loaded")
-            p Hi, your accountId is {{accountService.account.id}}
+                .logged-in-ctnr(*ngIf="accountService.loaded")
+                    p Hi, your accountId is {{accountService.account.id}}

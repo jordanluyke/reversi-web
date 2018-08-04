@@ -15,7 +15,7 @@ export class SessionGuard implements CanActivate {
         if(this.sessionService.session.validate())
             return true
         this.sessionService.redirectUrl = state.url
-        this.router.navigate(['sign-in'])
+        this.router.navigate([''])
         return false
     }
 }
