@@ -6,15 +6,15 @@
                     p loading...
                 div(*ngIf="!accountLoading")
                     .initial-ctnr(*ngIf="!signInVisible && !accountService.loaded")
-                        form.guest-form((ngSubmit)="clickPlayAsGuest()")
+                        form.guest-form((ngSubmit)="submitGuestSignIn()", ngNativeValidate)
                             .row
                                 .col-7
-                                    input([(ngModel)]="guestName", name="guestName", placeholder="Name")
+                                    input([(ngModel)]="guestName", name="guestName", maxlength="40", placeholder="Name", required)
                                 .col-5
-                                    button.btn.btn-success.btn-guest Play as Guest
+                                    button.btn.btn-success.btn-guest(type="submit", [disabled]="reqInProgress") Play as Guest
                         button.btn.btn-primary.sign-in-btn((click)="clickSignIn()") Sign In
                     form.sign-in-form(*ngIf="signInVisible", (ngSubmit)="submitSignIn()", ngNativeValidate)
-                        input([(ngModel)]="email", maxlength="40", name="email", required, autofocus)
+                        input([(ngModel)]="email", maxlength="40", name="email", required)
                         button.btn.btn-primary(type="submit", [disabled]="reqInProgress") Submit
                     .logged-in-ctnr(*ngIf="accountService.loaded")
                         button.btn.btn-primary Find Game

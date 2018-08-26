@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
     public email?: string
     public reqInProgress = false
     public accountLoading = false
+    public guestName?: string
 
     constructor(
         private core: CoreService,
@@ -45,7 +46,7 @@ export class HomeComponent implements OnInit {
         this.signInVisible = true
     }
 
-    public submitSignIn(): void {
+    public submitAccountSignIn(): void {
         if(this.reqInProgress) return
         this.reqInProgress = true
         this.core.post("/sessions", {
@@ -82,5 +83,33 @@ export class HomeComponent implements OnInit {
                 })
             )
             .subscribe(new ErrorHandlingSubscriber())
+    }
+
+    public submitGuestSignIn(): void {
+        if(this.reqInProgress) return
+        this.reqInProgress = true
+        this.core.post("/sessions", {
+            body: {
+                name: this.guestName
+            }
+        })
+            .pipe(
+                tap(body => {
+                    let session = new Session()
+                    session.accountId = body.accountId
+                    session.sessionId = body.sessionId
+                    session.expiresAt = Instant.fromMillis(body.expiresAt)
+                    this.sessionService.setSession(session)
+                }),
+                flatMap(body => this.accountService.load()),
+                tap(Void => {
+                    this.signInVisible = false
+                    this.reqInProgress = false
+                })
+            )
+            .subscribe(Void => {}, err => {
+                this.reqInProgress = false
+                console.error(err)
+            })
     }
 }
