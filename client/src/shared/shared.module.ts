@@ -5,13 +5,17 @@ import {CommonModule} from '@angular/common'
 import {FormsModule} from '@angular/forms'
 import {RouterModule} from '@angular/router'
 import {
-    ApiService,
+    CoreService,
     CookieService,
     SessionService,
     SessionGuard,
     AccountService,
+    MatchService,
 } from './services/index'
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
+import {
+    HeaderDefaultComponent,
+} from './components/index'
 
 
 @NgModule({
@@ -21,16 +25,18 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
         FormsModule,
         HttpClientModule,
         RouterModule,
-        NgbModule,
+        NgbModule.forRoot(),
     ],
     declarations: [
+        HeaderDefaultComponent
     ],
     providers: [
-        ApiService,
+        CoreService,
         CookieService,
         SessionService,
         SessionGuard,
         AccountService,
+        MatchService,
     ],
     exports: [
         BrowserModule,
@@ -39,6 +45,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
         HttpClientModule,
         RouterModule,
         NgbModule,
+        HeaderDefaultComponent,
     ]
 })
 export class SharedModule {}

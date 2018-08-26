@@ -1,28 +1,24 @@
 import {Injectable} from '@angular/core'
-import {ApiService} from './api.service'
+import {CoreService} from './core.service'
 import {SessionService} from './session.service'
-import {ReplaySubject, Observable, of} from 'rxjs'
-import {tap, catchError, flatMap} from 'rxjs/operators'
-import {Resolve, ActivatedRouteSnapshot} from '@angular/router'
+import {ReplaySubject, Observable, of, throwError, from} from 'rxjs'
+import {tap, catchError, first, map} from 'rxjs/operators'
+import {Resolve, Router} from '@angular/router'
 import {Account} from './model/index'
-import {ErrorHandlingSubscriber} from '../util/index'
-
-/**
- * @author Jordan Luyke
- */
 
 @Injectable()
-export class AccountService implements Resolve<any> {
+export class AccountService implements Resolve<Observable<Account>> {
 
     public account?: Account
-    public onLoad: ReplaySubject<void> = new ReplaySubject(1)
-    public onUpdate: ReplaySubject<void> = new ReplaySubject(1)
+    public onLoad: ReplaySubject<Account> = new ReplaySubject(1)
+    public onUpdate: ReplaySubject<Account> = new ReplaySubject(1)
     private started: boolean = false
     public loaded: boolean = false
 
     constructor(
-        private apiService: ApiService,
+        private coreService: CoreService,
         private sessionService: SessionService,
+        private router: Router,
     ) {}
 
     public clear(): void {
@@ -33,43 +29,34 @@ export class AccountService implements Resolve<any> {
         this.account = null
     }
 
+    public load(): Observable<Account> {
+        return this.getAccount()
+    }
+
     private getAccount(): Observable<Account> {
-        return this.apiService.get("/accounts/" + this.sessionService.session.accountId)
+        return this.coreService.get("/accounts/" + this.sessionService.session.accountId)
             .pipe(
                 tap(account => {
                     this.account = account
                     if(!this.loaded)
-                        this.onLoad.next(null)
+                        this.onLoad.next(account)
                     this.loaded = true
-                    this.onUpdate.next(null)
-                }),
-                catchError(err => {
-                    this.sessionService.clear()
-                    this.clear()
-                    console.error(err)
-                    return of(null)
+                    this.onUpdate.next(account)
                 })
             )
     }
 
-    private getAccountOnSessionSet(): void {
-        this.sessionService.onSet
-            .pipe(
-                flatMap(Void => this.getAccount())
-            )
-            .subscribe(new ErrorHandlingSubscriber())
-    }
-
-    public resolve(route: ActivatedRouteSnapshot): Observable<any> {
+    public resolve(): Observable<Account> {
         if(this.started)
-            return of(null)
+            return this.onLoad.pipe(first())
         this.started = true
-
-        if(this.sessionService.session.validate())
-            return this.getAccount()
-
-        this.getAccountOnSessionSet()
-
-        return of(null)
+        return this.getAccount()
+            .pipe(
+                catchError(err => {
+                    console.error(err)
+                    this.router.navigate(["logout"])
+                    return throwError(err)
+                })
+            )
     }
 }

@@ -1,11 +1,11 @@
 import {ModuleWithProviders} from '@angular/core'
 import {Routes, RouterModule} from '@angular/router'
-import {
-    NavigatorComponent,
-    HomeComponent,
-    NotFoundComponent,
-} from './index'
-import {AccountService} from '../shared/index'
+import {AccountService, SessionGuard, MatchService} from '../shared/index'
+import {HomeComponent} from './home/home.component'
+import {NavigatorComponent} from './navigator/navigator.component'
+import {NotFoundComponent} from './not-found/not-found.component'
+import {LogoutComponent} from './logout/logout.component'
+import {MatchComponent} from './match/match.component'
 
 const routes: Routes = [
     {
@@ -13,10 +13,18 @@ const routes: Routes = [
         component: NavigatorComponent
     }, {
         path: 'home',
-        component: HomeComponent,
+        component: HomeComponent
+    }, {
+        path: 'matches/:id',
+        canActivate: [SessionGuard],
         resolve: [
             AccountService,
-        ]
+            MatchService,
+        ],
+        component: MatchComponent
+    }, {
+        path: 'logout',
+        component: LogoutComponent
     }, {
         path: '404',
         component: NotFoundComponent

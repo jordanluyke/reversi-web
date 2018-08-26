@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core'
-import {ApiService, Session, AccountService, SessionService, Instant} from '../../shared/index'
-import {tap, flatMap} from 'rxjs/operators'
+import {Component, OnInit, ViewChild, TemplateRef} from '@angular/core'
+import {CoreService, Session, AccountService, SessionService, Instant, ErrorHandlingSubscriber, MatchService} from '../../shared/index'
+import {throwError} from 'rxjs'
+import {tap, flatMap, catchError} from 'rxjs/operators'
+import {Router} from '@angular/router'
 
 @Component({
     selector: 'home-component',
@@ -12,14 +14,31 @@ export class HomeComponent implements OnInit {
     public signInVisible = false
     public email?: string
     public reqInProgress = false
+    public accountLoading = false
 
     constructor(
-        private apiService: ApiService,
+        private core: CoreService,
         public accountService: AccountService,
         private sessionService: SessionService,
+        private router: Router,
+        private matchService: MatchService,
     ) {}
 
     public ngOnInit(): void {
+        if(this.sessionService.session.validate()) {
+            this.accountLoading = true
+            this.accountService.load()
+                .pipe(
+                    tap(Void => {
+                        this.accountLoading = false
+                    }),
+                    catchError(err => {
+                        this.accountLoading = false
+                        return throwError(err)
+                    })
+                )
+                .subscribe(new ErrorHandlingSubscriber())
+        }
     }
 
     public clickSignIn(): void {
@@ -27,8 +46,9 @@ export class HomeComponent implements OnInit {
     }
 
     public submitSignIn(): void {
+        if(this.reqInProgress) return
         this.reqInProgress = true
-        this.apiService.post("/sessions", {
+        this.core.post("/sessions", {
             body: {
                 email: this.email
             }
@@ -41,7 +61,7 @@ export class HomeComponent implements OnInit {
                     session.expiresAt = Instant.fromMillis(body.expiresAt)
                     this.sessionService.setSession(session)
                 }),
-                flatMap(body => this.accountService.onLoad),
+                flatMap(body => this.accountService.load()),
                 tap(Void => {
                     this.signInVisible = false
                     this.reqInProgress = false
@@ -51,5 +71,16 @@ export class HomeComponent implements OnInit {
                 this.reqInProgress = false
                 console.error(err)
             })
+    }
+
+    public clickCreateGame(): void {
+        this.reqInProgress = true
+        this.matchService.createMatch()
+            .pipe(
+                tap(match => {
+                    this.router.navigate(["matches", match.id])
+                })
+            )
+            .subscribe(new ErrorHandlingSubscriber())
     }
 }

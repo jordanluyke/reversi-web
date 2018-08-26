@@ -9,7 +9,7 @@ import {ServerRequestOptions} from './model/index'
  */
 
 @Injectable()
-export class ApiService {
+export class CoreService {
 
     constructor(private httpClient: HttpClient) {
     }

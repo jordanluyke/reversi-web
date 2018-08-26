@@ -2,11 +2,29 @@
     .row
         .col-4.offset-4
             .sign-in-ctnr
-                .initial-ctnr(*ngIf="!signInVisible && !accountService.loaded")
-                    button.btn.btn-primary((click)="clickSignIn()") Sign In
-                    button.btn.btn-success.btn-guest Play as guest
-                form.sign-in-form(*ngIf="signInVisible", (ngSubmit)="submitSignIn()", ngNativeValidate)
-                    input([(ngModel)]="email", maxlength="40", name="email", required, autofocus)
-                    button.btn.btn-primary(type="submit", [disabled]="reqInProgress") Submit
-                .logged-in-ctnr(*ngIf="accountService.loaded")
-                    p Hi, your accountId is {{accountService.account.id}}
+                div(*ngIf="accountLoading")
+                    p loading...
+                div(*ngIf="!accountLoading")
+                    .initial-ctnr(*ngIf="!signInVisible && !accountService.loaded")
+                        form.guest-form((ngSubmit)="clickPlayAsGuest()")
+                            .row
+                                .col-7
+                                    input([(ngModel)]="guestName", name="guestName", placeholder="Name")
+                                .col-5
+                                    button.btn.btn-success.btn-guest Play as Guest
+                        button.btn.btn-primary.sign-in-btn((click)="clickSignIn()") Sign In
+                    form.sign-in-form(*ngIf="signInVisible", (ngSubmit)="submitSignIn()", ngNativeValidate)
+                        input([(ngModel)]="email", maxlength="40", name="email", required, autofocus)
+                        button.btn.btn-primary(type="submit", [disabled]="reqInProgress") Submit
+                    .logged-in-ctnr(*ngIf="accountService.loaded")
+                        button.btn.btn-primary Find Game
+                        button.btn.btn-success((click)="clickCreateGame()") Create Game
+                        p Account ID: {{accountService.account.id}}
+            //- button.btn.btn-primary((click)="openModal()") Open Modal
+
+
+//- .primary-modal
+    ng-template(#testModal, let-c="close", let-d="dismiss")
+        .modal-body
+            p.hi hi
+            button(type="button", (click)="c()") wat
