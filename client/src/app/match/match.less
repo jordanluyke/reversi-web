@@ -1,0 +1,51 @@
+.board {
+    margin-top: 120px;
+    cursor: pointer;
+    .square-ctnr {
+        display: inline-block;
+        width: 12.5%;
+        height: auto;
+        position: relative;
+        padding: 2px;
+        &:hover {
+            &.hoverLight, &.hoverDark {
+                .piece {
+                    opacity: 1;
+                }
+            }
+        }
+        &.light, &.dark {
+            cursor: default;
+            .piece {
+                opacity: 1;
+            }
+        }
+        &.light, &.hoverLight:not(.dark) {
+            .piece {
+                background-image: url("/img/piece-light.svg");
+            }
+        }
+        &.dark, &.hoverDark:not(.light) {
+            .piece {
+                background-image: url("/img/piece-dark.svg");
+            }
+        }
+        .square {
+            width: 100%;
+            height: auto;
+            border-radius: 3px;
+        }
+        .piece {
+            width: 86%;
+            height: 86%;
+            position: absolute;
+            z-index: 1;
+            left: 7%;
+            top: 7%;
+            opacity: 0;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-image: none;
+        }
+    }
+}

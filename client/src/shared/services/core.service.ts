@@ -11,8 +11,7 @@ import {ServerRequestOptions} from './model/index'
 @Injectable()
 export class CoreService {
 
-    constructor(private httpClient: HttpClient) {
-    }
+    constructor(private httpClient: HttpClient) {}
 
     public get(corePath: string, options?: ServerRequestOptions): Observable<any> {
         return this.request("GET", corePath, options)
@@ -72,9 +71,8 @@ export class CoreService {
                             retryAttempt++
                             if(retryAttempt == maxRetry)
                                 return throwError(err)
-                            return of(err).pipe(
-                                delay(1000)
-                            )
+                            return of(err)
+                                .pipe(delay(1000))
                         } else
                             return throwError(err)
                     })

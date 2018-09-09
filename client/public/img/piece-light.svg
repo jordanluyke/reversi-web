@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="504px" height="504px" viewBox="0 0 504 504" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <title>piece-light</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <radialGradient cx="0%" cy="0%" fx="0%" fy="0%" r="141.421356%" gradientTransform="translate(0.000000,0.000000),rotate(45.000000),scale(1.000000,0.782988),translate(-0.000000,-0.000000)" id="radialGradient-1">
+            <stop stop-color="#FFFFFF" stop-opacity="0.5" offset="0%"></stop>
+            <stop stop-color="#F6F6F6" stop-opacity="0.5" offset="70.2024655%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.5" offset="100%"></stop>
+        </radialGradient>
+        <circle id="path-2" cx="252" cy="252" r="250"></circle>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="piece-light">
+            <use fill="#FFFCFC" xlink:href="#path-2"></use>
+            <use stroke="#BABABA" stroke-width="4" fill="url(#radialGradient-1)" xlink:href="#path-2"></use>
+        </g>
+    </g>
+</svg>

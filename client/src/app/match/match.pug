@@ -1,4 +1,16 @@
 header-default-component
 
 .container
+    .row.justify-content-center
+        .col-3
+            .center
+                button.btn.btn-primary((click)="clickJoin()", *ngIf="isJoinable()", [disabled]="joining") Join
+    .row.justify-content-center
+        .col-12.col-md-8
+            .board
+                .square-ctnr(*ngFor="let square of match.board.squares; let i = index", (click)="placePiece(i)", [ngClass]="{light: square == Square.LIGHT, dark: square == Square.DARK, hoverLight: accountService.account.id == match.playerLightId && match.turn == Square.LIGHT, hoverDark: accountService.account.id == match.playerDarkId && match.turn == Square.DARK}")
+                    img.square(src="/img/board-square.svg")
+                    .piece
+                    //- img.dark(src="/img/piece-dark.svg", *ngIf="square == Square.DARK")
+                    //- img.light(src="/img/piece-light.svg", *ngIf="square == Square.LIGHT")
     p {{match | json}}

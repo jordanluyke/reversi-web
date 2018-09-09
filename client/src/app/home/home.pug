@@ -12,8 +12,9 @@
                                     input([(ngModel)]="guestName", name="guestName", maxlength="40", placeholder="Name", required)
                                 .col-5
                                     button.btn.btn-success.btn-guest(type="submit", [disabled]="reqInProgress") Play as Guest
+                        p.center or
                         button.btn.btn-primary.sign-in-btn((click)="clickSignIn()") Sign In
-                    form.sign-in-form(*ngIf="signInVisible", (ngSubmit)="submitSignIn()", ngNativeValidate)
+                    form.sign-in-form(*ngIf="signInVisible", (ngSubmit)="submitAccountSignIn()", ngNativeValidate)
                         input([(ngModel)]="email", maxlength="40", name="email", required)
                         button.btn.btn-primary(type="submit", [disabled]="reqInProgress") Submit
                     .logged-in-ctnr(*ngIf="accountService.loaded")
