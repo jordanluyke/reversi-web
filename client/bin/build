@@ -255,7 +255,7 @@ let copyFiles = () => {
                 "roboto-fontface",
                 "font-awesome",
                 "zone.js",
-                "babel-polyfill",
+                "@babel/polyfill",
             ]
 
             if(argv.dev)
@@ -265,6 +265,7 @@ let copyFiles = () => {
                     "bignumber.js",
                     "@ng-bootstrap",
                     "systemjs",
+                    "reflect-metadata",
                 ])
 
             return Promise.all(packages.map(package => fs.copy(path.join(client, "node_modules", package), path.join(client, "target/node_modules", package))))
