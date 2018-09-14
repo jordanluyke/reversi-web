@@ -327,9 +327,9 @@ let bundle = () => {
             }),
             commonjs({
                 include: [
-                    'rxjs/**',
+                    // 'rxjs/**',
                     // '@ng-bootstrap/**',
-                    'bignumber.js/bignumber.js',
+                    // 'bignumber.js/bignumber.js',
                 ]
                     .map(p => path.join(client, "node_modules", p)),
                 namedExports: Object.entries({
@@ -345,8 +345,10 @@ let bundle = () => {
                     }, {})
             }),
             babel({
-                presets: [["env", {"modules": false}]],
-                plugins: ["external-helpers"],
+                presets: ["@babel/preset-env"],
+                plugins: ["@babel/plugin-external-helpers"],
+                include: path.join(client, "node_modules"),
+                babelrc: false,
                 compact: true,
                 minified: true,
                 comments: false
