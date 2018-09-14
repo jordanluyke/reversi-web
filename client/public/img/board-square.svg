@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="500px" height="500px" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
     <title>board-square</title>
     <desc>Created with Sketch.</desc>
     <defs>
         <linearGradient x1="100%" y1="100%" x2="0%" y2="0%" id="linearGradient-1">
-            <stop stop-color="#D2D2D2" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#ADADAD" stop-opacity="0" offset="0%"></stop>
             <stop stop-color="#FFFFFF" stop-opacity="0.13561481" offset="51.4496026%"></stop>
             <stop stop-color="#FFFFFF" stop-opacity="0.20091712" offset="100%"></stop>
         </linearGradient>
         <rect id="path-2" x="0" y="0" width="500" height="500"></rect>
+        <filter x="-9.0%" y="-9.0%" width="118.0%" height="118.0%" filterUnits="objectBoundingBox" id="filter-3">
+            <feGaussianBlur stdDeviation="45" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="0" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.155627264 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
     </defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="board-square" style="mix-blend-mode: difference;">
-            <use fill="#D5ACED" xlink:href="#path-2"></use>
-            <use fill="url(#linearGradient-1)" xlink:href="#path-2"></use>
+            <use fill="#FFB672" fill-rule="evenodd" xlink:href="#path-2"></use>
+            <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-2"></use>
+            <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
         </g>
     </g>
 </svg>

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="500px" height="500px" viewBox="0 0 500 500" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 51.2 (57519) - http://www.bohemiancoding.com/sketch -->
+<svg width="504px" height="504px" viewBox="0 0 504 504" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
     <title>piece-dark</title>
     <desc>Created with Sketch.</desc>
     <defs>
-        <radialGradient cx="-25.2155039%" cy="-22.3235819%" fx="-25.2155039%" fy="-22.3235819%" r="175.048511%" gradientTransform="translate(-0.252155,-0.223236),rotate(44.330662),scale(1.000000,0.782988),translate(0.252155,0.223236)" id="radialGradient-1">
-            <stop stop-color="#A3A3A3" offset="0%"></stop>
-            <stop stop-color="#616161" stop-opacity="0.508774909" offset="71.0260116%"></stop>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="70.7106781%" id="radialGradient-1">
+            <stop stop-color="#B0AFAF" stop-opacity="0.338456748" offset="0%"></stop>
+            <stop stop-color="#8A8A8A" stop-opacity="0.388756793" offset="45.0167088%"></stop>
             <stop stop-color="#000000" stop-opacity="0.5" offset="100%"></stop>
         </radialGradient>
-        <circle id="path-2" cx="250" cy="250" r="250"></circle>
+        <circle id="path-2" cx="252" cy="252" r="250"></circle>
     </defs>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="piece-dark">
             <use fill="#000000" xlink:href="#path-2"></use>
-            <use fill="url(#radialGradient-1)" xlink:href="#path-2"></use>
+            <use stroke="#BABABA" stroke-width="4" fill="url(#radialGradient-1)" xlink:href="#path-2"></use>
         </g>
     </g>
 </svg>
