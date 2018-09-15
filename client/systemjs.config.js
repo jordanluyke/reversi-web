@@ -24,6 +24,10 @@ let packages = {
         main: "index.js",
         defaultExtension: "js"
     },
+    "rxjs/webSocket": {
+        main: "index.js",
+        defaultExtension: "js"
+    },
     "bignumber.js": {
         main: "bignumber.min.js",
         defaultExtension: "js"

@@ -11,6 +11,7 @@ import {
     SessionGuard,
     AccountService,
     MatchService,
+    SocketService,
 } from './services/index'
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
 import {
@@ -37,6 +38,7 @@ import {
         SessionGuard,
         AccountService,
         MatchService,
+        SocketService,
     ],
     exports: [
         BrowserModule,

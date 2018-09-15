@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core'
 import {Router, ActivatedRoute} from '@angular/router'
-import {ErrorHandlingSubscriber} from '../../shared/index'
-import {tap} from 'rxjs/operators'
+import {Observable, from} from 'rxjs'
+import {flatMap, toArray} from 'rxjs/operators'
+import {SocketService, ErrorHandlingSubscriber} from '../../shared/index'
 
 /**
  * Used for redirect handling & prevent HomeComponent loading
@@ -16,29 +17,33 @@ export class NavigatorComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private socketService: SocketService,
     ) {}
 
     public ngOnInit(): void {
-        this.navigate()
+        from([
+            this.socketService,
+        ])
+            .pipe(
+                flatMap(s => s.resolve()),
+                toArray(),
+                flatMap(Void => this.navigate())
+            )
+            .subscribe(new ErrorHandlingSubscriber())
     }
 
-    private navigate(): void {
+    private navigate(): Observable<boolean> {
         if(this.router.url == "/") {
-            this.router.navigate(["home"], {
+            return from(this.router.navigate(["home"], {
                 replaceUrl: true,
                 skipLocationChange: true
-            })
+            }))
         } else {
-            this.route.fragment
-                .pipe(
-                    tap(fragment => {
-                        this.router.navigateByUrl(fragment, {
-                            replaceUrl: true
-                        })
-                    })
-                )
-                .subscribe(new ErrorHandlingSubscriber())
+            return from(this.route.fragment
+                .pipe(flatMap(fragment => this.router.navigateByUrl(fragment, {
+                    replaceUrl: true
+                }))))
         }
     }
 }

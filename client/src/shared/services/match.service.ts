@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core'
 import {CoreService} from './core.service'
-import {ReplaySubject, Observable, throwError} from 'rxjs'
-import {tap, catchError, first} from 'rxjs/operators'
+import {ReplaySubject, Observable, throwError, Subscription} from 'rxjs'
+import {tap, catchError, first, flatMap} from 'rxjs/operators'
 import {Resolve, ActivatedRouteSnapshot, Router} from '@angular/router'
-import {Match} from './model/index'
+import {Match, SocketEvent} from './model/index'
+import {SocketService} from './socket.service'
+import {ErrorHandlingSubscriber} from '../util/index'
 
 @Injectable()
 export class MatchService implements Resolve<Observable<Match>> {
@@ -13,10 +15,12 @@ export class MatchService implements Resolve<Observable<Match>> {
     public onUpdate: ReplaySubject<Match> = new ReplaySubject(1)
     private started: boolean = false
     private loaded: boolean = false
+    private updateSubscription?: Subscription
 
     constructor(
         private core: CoreService,
         private router: Router,
+        private socketService: SocketService,
     ) {}
 
     public clear(): void {
@@ -25,6 +29,7 @@ export class MatchService implements Resolve<Observable<Match>> {
         this.started = false
         this.loaded = false
         this.match = null
+        this.updateSubscription = null
     }
 
     public createMatch(): Observable<Match> {
@@ -36,6 +41,7 @@ export class MatchService implements Resolve<Observable<Match>> {
                     this.loaded = true
                     this.onLoad.next(match)
                     this.onUpdate.next(match)
+                    this.updateSubscribe()
                 })
             )
     }
@@ -53,6 +59,12 @@ export class MatchService implements Resolve<Observable<Match>> {
             )
     }
 
+    private updateSubscribe(): void {
+        this.updateSubscription = this.socketService.subscribe(SocketEvent.Match, this.match.id)
+            .pipe(flatMap(Void => this.getMatch(this.match.id)))
+            .subscribe(new ErrorHandlingSubscriber())
+    }
+
     public resolve(route: ActivatedRouteSnapshot): Observable<Match> {
         if(this.started)
             return this.onLoad.pipe(first())
@@ -63,6 +75,7 @@ export class MatchService implements Resolve<Observable<Match>> {
         }
         return this.getMatch(id)
             .pipe(
+                tap(Void => this.updateSubscribe()),
                 catchError(err => {
                     console.error(err)
                     this.router.navigate(["404"])

@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit {
     public ngOnInit(): void {
         if(this.sessionService.session.validate()) {
             this.accountLoading = true
-            this.accountService.load()
+            this.accountService.resolve()
                 .pipe(
                     tap(Void => {
                         this.accountLoading = false
@@ -62,7 +62,7 @@ export class HomeComponent implements OnInit {
                     session.expiresAt = Instant.fromMillis(body.expiresAt)
                     this.sessionService.setSession(session)
                 }),
-                flatMap(body => this.accountService.load()),
+                flatMap(body => this.accountService.resolve()),
                 tap(Void => {
                     this.signInVisible = false
                     this.reqInProgress = false
@@ -101,7 +101,7 @@ export class HomeComponent implements OnInit {
                     session.expiresAt = Instant.fromMillis(body.expiresAt)
                     this.sessionService.setSession(session)
                 }),
-                flatMap(body => this.accountService.load()),
+                flatMap(body => this.accountService.resolve()),
                 tap(Void => {
                     this.signInVisible = false
                     this.reqInProgress = false
