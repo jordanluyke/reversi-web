@@ -7,7 +7,7 @@ import {
 } from '../../shared/index'
 import {Router} from '@angular/router'
 import {empty} from 'rxjs'
-import {catchError, tap} from 'rxjs/operators'
+import {catchError, tap, defaultIfEmpty} from 'rxjs/operators'
 
 @Component({
     selector: 'logout-component',
@@ -36,9 +36,10 @@ export class LogoutComponent implements OnInit {
         this.core.delete("/session/" + this.sessionService.session.sessionId)
             .pipe(
                 catchError(err => empty()),
+                defaultIfEmpty(null),
                 tap(Void => {
                     this.clear()
-                    this.router.navigate([""])
+                    this.router.navigate(["/"])
                 })
             )
             .subscribe(new ErrorHandlingSubscriber())
