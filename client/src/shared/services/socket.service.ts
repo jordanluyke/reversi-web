@@ -45,11 +45,7 @@ export class SocketService implements Resolve<Observable<void>> {
         }
 
         let subject = new Subject()
-        let ss = new SocketSubscription()
-        ss.event = event
-        ss.channel = channel
-        ss.subject = subject
-        this.subscriptions.push(ss)
+        this.subscriptions.push(new SocketSubscription(event, channel, subject))
         return subject
     }
 
