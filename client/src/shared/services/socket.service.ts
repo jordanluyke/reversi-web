@@ -25,7 +25,7 @@ export class SocketService implements Resolve<Observable<void>> {
 
         this.createAndSubscribeSocket()
 
-        this.subscribe(SocketEvent.KeepAlive, null, false)
+        this.subscribe(SocketEvent.KeepAlive)
             .pipe(tap(Void => {
                 this.ws.next({
                     event: SocketEvent.KeepAlive
@@ -36,8 +36,8 @@ export class SocketService implements Resolve<Observable<void>> {
         return of(null)
     }
 
-    public subscribe(event: SocketEvent, channel?: string, send = true): Subject<any> {
-        if(send && this.subscriptions.find(s => s.event == event) == null) {
+    public subscribe(event: SocketEvent, channel?: string): Subject<any> {
+        if(channel != null && this.subscriptions.find(s => s.event == event) == null) {
             this.ws.next({
                 event: event,
                 channel: channel,
