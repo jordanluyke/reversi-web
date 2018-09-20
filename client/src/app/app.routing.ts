@@ -6,6 +6,7 @@ import {NavigatorComponent} from './navigator/navigator.component'
 import {NotFoundComponent} from './not-found/not-found.component'
 import {LogoutComponent} from './logout/logout.component'
 import {MatchComponent} from './match/match.component'
+import {NotSupportedComponent} from './not-supported/not-supported.component'
 
 const routes: Routes = [
     {
@@ -28,6 +29,9 @@ const routes: Routes = [
     }, {
         path: '404',
         component: NotFoundComponent
+    }, {
+        path: 'not-supported',
+        component: NotSupportedComponent,
     }, {
         path: '**',
         redirectTo: '/404',
