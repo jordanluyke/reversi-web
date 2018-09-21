@@ -28,7 +28,7 @@ export class LogoutComponent implements OnInit {
             this.logout()
         else {
             this.clear()
-            this.router.navigate([""])
+            this.router.navigate(["/"])
         }
     }
 
