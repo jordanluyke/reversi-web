@@ -1,3 +1,5 @@
+header-component
+
 .container
     .row
         .col-4.offset-4
@@ -5,24 +7,21 @@
                 div(*ngIf="accountLoading")
                     p loading...
                 div(*ngIf="!accountLoading")
-                    .initial-ctnr(*ngIf="!signInVisible && !accountService.loaded")
+                    .initial-ctnr(*ngIf="!accountService.loaded")
                         form.guest-form((ngSubmit)="submitGuestSignIn()", ngNativeValidate)
-                            .row
-                                .col-7
-                                    input([(ngModel)]="guestName", name="guestName", maxlength="40", placeholder="Name", required)
-                                .col-5
-                                    button.btn.btn-success.btn-guest(type="submit", [disabled]="reqInProgress") Play as Guest
-                        p.center or
-                        button.btn.btn-primary.sign-in-btn((click)="clickSignIn()") Sign In
-                    form.sign-in-form(*ngIf="signInVisible", (ngSubmit)="submitAccountSignIn()", ngNativeValidate)
-                        input([(ngModel)]="email", maxlength="40", name="email", required)
-                        button.btn.btn-primary(type="submit", [disabled]="reqInProgress") Submit
+                            input([(ngModel)]="guestName", name="guestName", maxlength="40", placeholder="Guest", required)
+                            button.btn.btn-success.btn-guest(type="submit", [disabled]="reqInProgress") Play as Guest
+                        //- p.divider center --- or ---
+                        .divider: span.text or
+                        form.sign-in-form((ngSubmit)="submitAccountSignIn()", ngNativeValidate)
+                            input([(ngModel)]="email", maxlength="40", name="email", placeholder="Email", required)
+                            button.btn.btn-primary(type="submit", [disabled]="reqInProgress") Sign In
+                        //- button.btn.btn-primary.sign-in-btn((click)="clickSignIn()") Sign In
                     .logged-in-ctnr(*ngIf="accountService.loaded")
                         button.btn.btn-primary Find Game
                         button.btn.btn-success((click)="clickCreateGame()") Create Game
                         p Account ID: {{accountService.account.id}}
             //- button.btn.btn-primary((click)="openModal()") Open Modal
-
 
 //- .primary-modal
     ng-template(#testModal, let-c="close", let-d="dismiss")

@@ -1,3 +1,5 @@
+@import "less/variables.less";
+
 .sign-in-ctnr {
     margin-top: 60px;
     .btn {
@@ -6,28 +8,21 @@
         height: 40px;
     }
     .initial-ctnr {
-        .guest-form {
-            .col-7 {
-                padding-right: 5px;
-                input {
-                    float: left;
-                    margin-right: 10px;
-                }
-            }
-            .col-5 {
-                padding-left: 5px;
-                .btn-guest {
-                    font-size: 14px;
-                }
-            }
-        }
-        .sign-in-btn {
-            margin-top: 12px;
-        }
-    }
-    .sign-in-form {
         .btn {
-            margin-top: 12px;
+            margin-top: 10px;
+        }
+        .divider {
+            border-bottom: 1px solid rgba(155, 178, 204, 0.7);
+            height: 11px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            width: 100%;
+            text-align: center;
+            .text {
+                background-color: @background-color;
+                padding: 0 10px;
+                font-size: 14px;
+            }
         }
     }
     .logged-in-ctnr {
@@ -37,8 +32,8 @@
     }
 }
 
-.primary-modal {
-    .hi {
-        font-size: 24px;
-    }
-}
+// .primary-modal {
+//     .hi {
+//         font-size: 24px;
+//     }
+// }

@@ -17,9 +17,9 @@ const routes: Routes = [
         component: HomeComponent
     }, {
         path: 'matches/:id',
-        canActivate: [SessionGuard],
+        // canActivate: [SessionGuard],
         resolve: [
-            AccountService,
+            // AccountService,
             MatchService,
         ],
         component: MatchComponent

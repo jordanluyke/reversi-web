@@ -8,6 +8,7 @@ import {NotFoundComponent} from './not-found/not-found.component'
 import {LogoutComponent} from './logout/logout.component'
 import {MatchComponent} from './match/match.component'
 import {NotSupportedComponent} from './not-supported/not-supported.component'
+import {HeaderComponent} from './partials/index'
 
 @NgModule({
     imports: [
@@ -22,6 +23,7 @@ import {NotSupportedComponent} from './not-supported/not-supported.component'
         LogoutComponent,
         MatchComponent,
         NotSupportedComponent,
+        HeaderComponent,
     ],
     bootstrap: [AppComponent]
 })

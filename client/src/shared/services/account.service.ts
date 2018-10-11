@@ -52,17 +52,10 @@ export class AccountService implements Resolve<Observable<Account>> {
     }
 
     public resolve(): Observable<Account> {
-        if(this.started)
+        if(!this.sessionService.session.validate() || this.started)
             return of(null)
         this.started = true
         return this.getAccount()
-            .pipe(
-                tap(Void => this.subscribeUpdates()),
-                catchError(err => {
-                    console.error(err)
-                    this.router.navigate(["logout"])
-                    return throwError(err)
-                })
-            )
+            .pipe(tap(Void => this.subscribeUpdates()))
     }
 }

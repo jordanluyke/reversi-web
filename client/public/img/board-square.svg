@@ -22,6 +22,7 @@
             <use fill="#FFB672" fill-rule="evenodd" xlink:href="#path-2"></use>
             <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-2"></use>
             <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
+            <rect stroke="#979797" stroke-width="1" stroke-linejoin="square" x="0.5" y="0.5" width="499" height="499"></rect>
         </g>
     </g>
 </svg>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1054px" height="1054px" viewBox="0 0 1054 1054" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 51.3 (57544) - http://www.bohemiancoding.com/sketch -->
+    <title>favicon</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <radialGradient cx="51.6562048%" cy="51.6562048%" fx="51.6562048%" fy="51.6562048%" r="68.3684508%" id="radialGradient-1">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#F8F8F8" offset="57.8757225%"></stop>
+            <stop stop-color="#DBDBDB" offset="100%"></stop>
+        </radialGradient>
+        <circle id="path-2" cx="250" cy="250" r="250"></circle>
+        <circle id="path-3" cx="800" cy="800" r="250"></circle>
+        <radialGradient cx="50%" cy="50%" fx="50%" fy="50%" r="70.7106781%" id="radialGradient-4">
+            <stop stop-color="#B0AFAF" stop-opacity="0.338456748" offset="0%"></stop>
+            <stop stop-color="#8A8A8A" stop-opacity="0.388756793" offset="45.0167088%"></stop>
+            <stop stop-color="#000000" stop-opacity="0.5" offset="100%"></stop>
+        </radialGradient>
+        <circle id="path-5" cx="800" cy="250" r="250"></circle>
+        <circle id="path-6" cx="250" cy="800" r="250"></circle>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="favicon" transform="translate(2.000000, 2.000000)">
+            <g id="piece-light-copy">
+                <use fill="#FFFFFF" xlink:href="#path-2"></use>
+                <use stroke="#BABABA" stroke-width="4" fill="url(#radialGradient-1)" xlink:href="#path-2"></use>
+            </g>
+            <g id="piece-light-copy-2">
+                <use fill="#FFFFFF" xlink:href="#path-3"></use>
+                <use stroke="#BABABA" stroke-width="4" fill="url(#radialGradient-1)" xlink:href="#path-3"></use>
+            </g>
+            <g id="piece-dark-copy">
+                <use fill="#000000" xlink:href="#path-5"></use>
+                <use stroke="#BABABA" stroke-width="4" fill="url(#radialGradient-4)" xlink:href="#path-5"></use>
+            </g>
+            <g id="piece-dark-copy-2">
+                <use fill="#000000" xlink:href="#path-6"></use>
+                <use stroke="#BABABA" stroke-width="4" fill="url(#radialGradient-4)" xlink:href="#path-6"></use>
+            </g>
+        </g>
+    </g>
+</svg>
