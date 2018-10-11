@@ -11,12 +11,10 @@ header-component
                         form.guest-form((ngSubmit)="submitGuestSignIn()", ngNativeValidate)
                             input([(ngModel)]="guestName", name="guestName", maxlength="40", placeholder="Guest", required)
                             button.btn.btn-success.btn-guest(type="submit", [disabled]="reqInProgress") Play as Guest
-                        //- p.divider center --- or ---
                         .divider: span.text or
                         form.sign-in-form((ngSubmit)="submitAccountSignIn()", ngNativeValidate)
                             input([(ngModel)]="email", maxlength="40", name="email", placeholder="Email", required)
                             button.btn.btn-primary(type="submit", [disabled]="reqInProgress") Sign In
-                        //- button.btn.btn-primary.sign-in-btn((click)="clickSignIn()") Sign In
                     .logged-in-ctnr(*ngIf="accountService.loaded")
                         button.btn.btn-primary Find Game
                         button.btn.btn-success((click)="clickCreateGame()") Create Game

@@ -253,7 +253,7 @@ let copyFiles = () => {
             let packages = [
                 "bootstrap",
                 "roboto-fontface",
-                "font-awesome",
+                "@fortawesome",
                 "zone.js",
                 "@babel/polyfill",
             ]

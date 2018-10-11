@@ -26,6 +26,7 @@ export class HomeComponent implements OnInit {
     ) {}
 
     public ngOnInit(): void {
+        // console.log(this.router.)
         if(this.sessionService.session.validate()) {
             this.accountLoading = true
             this.accountService.resolve()

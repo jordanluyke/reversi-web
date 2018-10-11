@@ -1,8 +1,35 @@
+@import "less/variables.less";
+
 .header {
     // border-bottom: 1px solid #0F0F0F;
     box-shadow: 0 0 1px -1px #0F0F0F;
     padding: 15px 0;
-    background-color: #333333;
+    // background-color: #333333;
+    background-color: lighten(#333333, 5%);
+    .nav-btn {
+        // background-color: darken(#333333, 5%);
+        width: 55px;
+        height: 55px;
+        background-color: @background-color;
+        border-radius: 50%;
+        display: inline-block;
+        padding: 15px;
+        cursor: pointer;
+        outline: 0;
+        &.active {
+            cursor: default;
+        }
+        .fas {
+            color: white;
+            font-size: 25px;
+        }
+        .fa-cog {
+            padding-left: 1px;
+        }
+        .fa-user {
+            padding-left: 2.12px;
+        }
+    }
     .logo-ctnr {
         cursor: pointer;
         outline: 0;

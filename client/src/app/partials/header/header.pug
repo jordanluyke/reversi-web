@@ -1,10 +1,15 @@
 .header
     .container
         .row
-            .col-sm-6
-                //- .logo-ctnr(routerLink="/")
-                    img(src="/img/logo.svg")
-                    p Reversi
-            .col-sm-6
-                .settings-ctnr
-                    //- button.btn.btn-primary Settings
+            .col-sm-3
+                .nav-btn(routerLink="/", [ngClass]="{active: isPathActive('home')}")
+                    .fas.fa-home
+            .col-sm-3
+            .col-sm-3
+                .center
+                    .nav-btn
+                        .fas.fa-user
+            .col-sm-3
+                .right
+                    .nav-btn
+                        .fas.fa-cog
