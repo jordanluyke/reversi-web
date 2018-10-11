@@ -1,15 +1,18 @@
 .header
     .container
         .row
-            .col-sm-3
+            .col-3
                 .nav-btn(routerLink="/", [ngClass]="{active: isPathActive('home')}")
                     .fas.fa-home
-            .col-sm-3
-            .col-sm-3
-                .center
+            .col-3
+                .center.center-left
                     .nav-btn
-                        .fas.fa-user
-            .col-sm-3
-                .right
+                        .fas.fa-question
+            .col-3
+                .center.center-right
                     .nav-btn
                         .fas.fa-cog
+            .col-3
+                .right
+                    .nav-btn
+                        .fas.fa-user
