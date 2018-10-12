@@ -2,17 +2,25 @@
     .container
         .row
             .col-3
-                .nav-btn(routerLink="/", [ngClass]="{active: isPathActive('home')}")
-                    .fas.fa-home
-            .col-3
-                .center.center-left
+                .nav-btn-ctnr(routerLink="/", [ngClass]="{active: isPathActive('home')}")
                     .nav-btn
-                        .fas.fa-question
+                        .fas.fa-home
+                    p.title Home
             .col-3
-                .center.center-right
-                    .nav-btn
-                        .fas.fa-cog
+                .center-left
+                    .nav-btn-ctnr
+                        .nav-btn
+                            .fas.fa-question
+                        p.title About
+            .col-3
+                .center-right
+                    .nav-btn-ctnr
+                        .nav-btn
+                            .fas.fa-cog
+                        p.title Settings
             .col-3
                 .right
-                    .nav-btn
-                        .fas.fa-user
+                    .nav-btn-ctnr
+                        .nav-btn
+                            .fas.fa-user
+                        p.title Account

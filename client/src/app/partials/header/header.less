@@ -3,37 +3,55 @@
 .header {
     padding: 15px 0;
     background-color: lighten(#333333, 5%);
-    .nav-btn {
-        width: 55px;
-        height: 55px;
-        background-color: @background-color;
-        border-radius: 50%;
-        display: inline-block;
-        padding: 15px;
-        cursor: pointer;
-        outline: 0;
-        &.active {
-            cursor: default;
-        }
-        .fas {
-            color: white;
-            font-size: 25px;
-        }
-        .fa-cog {
-            padding-left: 1px;
-        }
-        .fa-user {
-            padding-left: 2.12px;
-        }
-        .fa-question {
-            padding-left: 1.25px;
-        }
-    }
     .center-left {
         margin-right: 20%;
+        text-align: center;
     }
     .center-right {
         margin-left: 20%;
+        text-align: center;
+    }
+    .nav-btn-ctnr {
+        display: inline-block;
+        cursor: pointer;
+        &:hover:not(.active) {
+            .title {
+                text-decoration: underline;
+            }
+        }
+        &.active {
+            cursor: default;
+        }
+        .nav-btn {
+            width: 55px;
+            height: 55px;
+            background-color: @background-color;
+            border-radius: 50%;
+            padding: 15px;
+            outline: 0;
+            .fas {
+                color: white;
+                font-size: 25px;
+            }
+            .fa-home {
+                margin-left: -1px;
+            }
+            .fa-cog {
+                padding-left: 0.5px;
+            }
+            .fa-user {
+                padding-right: 1.12px;
+            }
+            .fa-question {
+                padding-left: 3px;
+            }
+        }
+        .title {
+            font-size: 14px;
+            // font-weight: @font-weight-semibold;
+            text-align: center;
+            margin-top: 8px;
+        }
     }
     .logo-ctnr {
         cursor: pointer;
