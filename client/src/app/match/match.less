@@ -1,9 +1,16 @@
 @import "less/variables.less";
 
+.join-btn {
+    margin-top: 45px;
+    font-size: 24px;
+    width: 140px;
+}
 .board {
     max-width: 640px;
     margin: 45px auto 0;
-    cursor: pointer;
+    &.activeplayer {
+        cursor: pointer;
+    }
     .square-ctnr {
         display: inline-block;
         width: 12.5%;
@@ -50,5 +57,63 @@
             background-size: cover;
             background-image: none;
         }
+    }
+}
+.status-ctnr {
+    margin: 30px 0;
+    .status {
+        font-size: 30px;
+        text-align: center;
+    }
+}
+.player-ctnr {
+    background-color: lighten(#333333, 5%);
+    height: 90px;
+    width: 240px;
+    display: inline-block;
+    padding: 10px;
+    border-radius: 5px;
+    &.active {
+        background-color: lighten(#333333, 15%);
+    }
+    .top-ctnr {
+        .piece-icon {
+            height: 70px;
+            width: auto;
+        }
+        .count {
+            font-size: 68px;
+            line-height: 75px;
+            padding: 0 13px;
+        }
+    }
+    .bottom-ctnr {
+        .avatar-ctnr {
+            .avatar {
+                height: 30px;
+                width: 30px;
+            }
+            .name {
+                font-size: 14px;
+            }
+        }
+    }
+}
+.player-ctnr-left {
+    .player-ctnr;
+    .count {
+        float: right;
+    }
+    .icon {
+        float: left;
+    }
+}
+.player-ctnr-right {
+    .player-ctnr;
+    .icon {
+        float: right;
+    }
+    .count {
+        float: left;
     }
 }

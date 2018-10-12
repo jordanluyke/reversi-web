@@ -14,6 +14,7 @@
     .nav-btn-ctnr {
         display: inline-block;
         cursor: pointer;
+        outline: 0;
         &:hover:not(.active) {
             .title {
                 text-decoration: underline;
@@ -28,13 +29,15 @@
             background-color: @background-color;
             border-radius: 50%;
             padding: 15px;
-            outline: 0;
             .fas {
                 color: white;
                 font-size: 25px;
             }
             .fa-home {
-                margin-left: -1px;
+                margin-left: -0.5px;
+            }
+            .fa-question {
+                padding-left: 2px;
             }
             .fa-cog {
                 padding-left: 0.5px;
@@ -42,13 +45,9 @@
             .fa-user {
                 padding-right: 1.12px;
             }
-            .fa-question {
-                padding-left: 3px;
-            }
         }
         .title {
             font-size: 14px;
-            // font-weight: @font-weight-semibold;
             text-align: center;
             margin-top: 8px;
         }
