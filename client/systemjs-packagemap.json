@@ -1,0 +1,21 @@
+{
+    "packages": {
+        "@angular/common": {
+            "main": "/node_modules/bundles/common.umd.min.js",
+            "map": {
+                "./http": "./bundles/common-http.umd.min.js"
+            }
+        },
+        "@angular/compiler": "/node_modules/@angular/compiler/bundles/compiler.umd.min.js",
+        "@angular/core": "/node_modules/@angular/core/bundles/core.umd.min.js",
+        "@angular/forms": "/node_modules/@angular/forms/bundles/forms.umd.min.js",
+        "@angular/platform-browser": "/node_modules/@angular/platform-browser/bundles/platform-browser.umd.min.js",
+        "@angular/platform-browser-dynamic": "/node_modules/@angular/platform-browser-dynamic/bundles/platform-browser-dynamic.umd.min.js",
+        "@angular/router": "/node_modules/@angular/router/bundles/router.umd.min.js",
+        "rxjs": "/node_modules/rxjs/index.js",
+        "rxjs/operators": "/node_modules/rxjs/index.js",
+        "rxjs/webSocket": "/node_modules/rxjs/index.js",
+        "bignumber.js": "/node_modules/bignumber.js/bignumber.min.js",
+        "@ng-bootstrap/ng-bootstrap": "/node_modules/@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.umd.min.js"
+    }
+}
