@@ -3,6 +3,7 @@ import {HttpResponse, HttpHeaders, HttpParams, HttpClient, HttpEventType, HttpEr
 import {Observable, of, empty, throwError} from 'rxjs'
 import {flatMap, catchError, retryWhen, delay} from 'rxjs/operators'
 import {ServerRequestOptions} from './model/index'
+import {Router} from '@angular/router'
 
 /**
  * @author Jordan Luyke
@@ -11,7 +12,10 @@ import {ServerRequestOptions} from './model/index'
 @Injectable()
 export class CoreService {
 
-    constructor(private httpClient: HttpClient) {}
+    constructor(
+        private httpClient: HttpClient,
+        private router: Router,
+    ) {}
 
     public get(corePath: string, options?: ServerRequestOptions): Observable<any> {
         return this.request("GET", corePath, options)
@@ -57,6 +61,8 @@ export class CoreService {
                     if(response instanceof HttpErrorResponse) {
                         try {
                             let body = response.error
+                            if(body.exceptionType == "UnauthorizedException")
+                                this.router.navigate(["/logout"])
                             return throwError(body)
                         } catch(err) {
                             throw new Error("Unable to parse server response")

@@ -115,7 +115,10 @@ export class MatchComponent implements OnInit, OnDestroy {
     }
 
     public isActivePlayer(): boolean {
-        return this.accountService.loaded && (this.accountService.account.id == this.match.playerDarkId || this.accountService.account.id == this.match.playerLightId)
+        return this.accountService.loaded &&
+        this.match.playerDarkId != null &&
+        this.match.playerLightId != null &&
+        (this.accountService.account.id == this.match.playerDarkId || this.accountService.account.id == this.match.playerLightId)
     }
 
     private count(match: Match, side: Side): number {

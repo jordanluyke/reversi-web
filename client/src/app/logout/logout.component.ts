@@ -33,7 +33,7 @@ export class LogoutComponent implements OnInit {
     }
 
     private logout(): void {
-        this.core.delete("/session/" + this.sessionService.session.sessionId)
+        this.core.delete("/sessions/" + this.sessionService.session.sessionId)
             .pipe(
                 catchError(err => empty()),
                 defaultIfEmpty(null),

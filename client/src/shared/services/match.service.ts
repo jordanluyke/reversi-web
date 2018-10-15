@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core'
 import {CoreService} from './core.service'
-import {ReplaySubject, Observable, throwError, Subscription} from 'rxjs'
+import {ReplaySubject, Observable, throwError, Subscription, of} from 'rxjs'
 import {tap, catchError, first, flatMap} from 'rxjs/operators'
 import {Resolve, ActivatedRouteSnapshot, Router} from '@angular/router'
 import {Match, SocketEvent} from './model/index'
@@ -67,7 +67,7 @@ export class MatchService implements Resolve<Observable<Match>> {
 
     public resolve(route: ActivatedRouteSnapshot): Observable<Match> {
         if(this.started)
-            return this.onLoad.pipe(first())
+            return of(null)
         let id = route.paramMap.get("id")
         if(id == null) {
             this.router.navigate(["404"])
@@ -78,6 +78,7 @@ export class MatchService implements Resolve<Observable<Match>> {
                 tap(Void => this.updateSubscribe()),
                 catchError(err => {
                     console.error(err)
+                    // go to internal server error page
                     this.router.navigate(["404"])
                     return throwError(err)
                 })

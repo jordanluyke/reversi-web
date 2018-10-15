@@ -8,7 +8,7 @@
                     p.title Home
             .col-3
                 .center-left
-                    .nav-btn-ctnr
+                    .nav-btn-ctnr((click)="openAboutModal()")
                         .nav-btn
                             .fas.fa-question
                         p.title About
@@ -24,3 +24,11 @@
                         .nav-btn
                             .fas.fa-user
                         p.title Profile
+
+ng-template(#aboutModal, let-c="close")
+    .modal-body.about-modal
+        .fas.fa-times((click)="c()")
+        p.title About
+        a.btn.btn-primary.how-to-play(href="https://en.wikipedia.org/wiki/Reversi#Rules" target="_blank" referrer="noreferrer") How to play
+        p.created Created by Jordan Luyke
+        a.btn.btn-primary.keybase(href="https://keybase.io/jordanluyke" target="_blank" referrer="noreferrer") Keybase

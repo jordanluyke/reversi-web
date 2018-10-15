@@ -2,7 +2,7 @@ html, body {
     font-family: 'Roboto', sans-serif;
     font-weight: @font-weight-regular;
     font-size: 12px;
-    color: @font-color;
+    color: @font-color-light;
     height: 100%;
     width: 100%;
     background-color: @background-color;
@@ -21,6 +21,7 @@ p {
 a {
     color: @primary-color;
     transition: color 50ms;
+    outline: 0;
     &:hover{
         color: darken(@primary-color, 5%);
     }
@@ -66,6 +67,11 @@ input {
     font-size: 14px;
     border-radius: 3px;
     border: 0;
+    padding: 7px 12px;
+    &:focus {
+        outline: none !important;
+        box-shadow: none !important;
+    }
 }
 
 .btn-primary {
@@ -78,6 +84,25 @@ input {
 
 .loading-spinner {
     position: absolute;
-    top: 30%; left: 50%;
+    top: 30%;
+    left: 50%;
     transform: translateX(-50%) translateY(-50%);
+    font-size: 68px;
+}
+
+.modal-body {
+    color: @font-color-dark;
+    .fa-times {
+        font-size: 18px;
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        cursor: pointer;
+    }
+    .title {
+        text-align: center;
+        font-size: 24px;
+        margin-bottom: 30px;
+        font-weight: @font-weight-semibold;
+    }
 }
