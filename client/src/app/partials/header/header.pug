@@ -29,9 +29,8 @@ ng-template(#aboutModal, let-c="close")
     .modal-body.about-modal
         .fas.fa-times((click)="c()")
         p.title About
-        a.btn.btn-primary.how-to-play(href="https://en.wikipedia.org/wiki/Reversi#Rules" target="_blank" referrer="noreferrer") How to play
+        a.btn.btn-primary(href="https://en.wikipedia.org/wiki/Reversi#Rules" target="_blank" referrer="noreferrer") How to play
         p.created Created by Jordan Luyke
-        a.btn.btn-primary.keybase(href="https://keybase.io/jordanluyke" target="_blank" referrer="noreferrer") Keybase
 
 ng-template(#profileModal, let-c="close")
     .modal-body.profile-modal
@@ -42,4 +41,7 @@ ng-template(#profileModal, let-c="close")
                 a(routerLink="/", (click)="c()") sign in
                 span .
         .profile(*ngIf="accountService.loaded")
-            p account id: {{accountService.account.id}}
+            p Matches: {{accountService.account.stats.matches}}
+            p Account ID: {{accountService.account.id}}
+            .center
+                a.btn.btn-danger(routerLink="/logout", (click)="c()") Logout
