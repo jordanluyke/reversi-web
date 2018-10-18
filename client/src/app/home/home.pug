@@ -5,23 +5,18 @@ header-component
         .col-4.offset-4
             .sign-in-ctnr
                 div(*ngIf="accountLoading")
-                    p loading...
+                    .center
+                        .fas.fa-circle-notch.fa-spin
                 div(*ngIf="!accountLoading")
                     .initial-ctnr(*ngIf="!accountService.loaded")
-                        form.guest-form((ngSubmit)="submitGuestSignIn()", ngNativeValidate)
+                        //- form.guest-form((ngSubmit)="submitGuestSignIn()", ngNativeValidate)
                             input([(ngModel)]="guestName", name="guestName", maxlength="40", placeholder="Guest", required)
                             button.btn.btn-success.btn-guest(type="submit", [disabled]="reqInProgress") Play as Guest
+                        button.btn.btn-success.btn-guest((click)="clickGuest()") Play as Guest
                         .divider: span.text or
-                        form.sign-in-form((ngSubmit)="submitAccountSignIn()", ngNativeValidate)
-                            input([(ngModel)]="email", maxlength="40", name="email", placeholder="Email", required)
-                            button.btn.btn-primary(type="submit", [disabled]="reqInProgress") Sign In
+                        a.btn.btn-primary.facebook((click)="clickFbLogin()") Sign in with Facebook
+                        a.btn.btn-primary.google((click)="clickGoogleLogin()") Sign in with Google
+                        //- .fb-login-button(data-width="300" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false")
                     .logged-in-ctnr(*ngIf="accountService.loaded")
-                        button.btn.btn-primary Find Game
+                        //- button.btn.btn-primary Find Game
                         button.btn.btn-success((click)="clickCreateGame()") Create Game
-            //- button.btn.btn-primary((click)="openModal()") Open Modal
-
-//- .primary-modal
-    ng-template(#testModal, let-c="close", let-d="dismiss")
-        .modal-body
-            p.hi hi
-            button(type="button", (click)="c()") wat

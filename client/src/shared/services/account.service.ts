@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core'
 import {CoreService} from './core.service'
 import {SessionService} from './session.service'
-import {ReplaySubject, Observable, throwError, of} from 'rxjs'
-import {tap, catchError, first, flatMap} from 'rxjs/operators'
-import {Resolve, Router} from '@angular/router'
+import {ReplaySubject, Observable, of} from 'rxjs'
+import {tap, flatMap} from 'rxjs/operators'
+import {Resolve} from '@angular/router'
 import {Account, SocketEvent} from './model/index'
 import {SocketService} from './socket.service'
 import {ErrorHandlingSubscriber} from '../util/index'
@@ -21,7 +21,6 @@ export class AccountService implements Resolve<Observable<Account>> {
         private coreService: CoreService,
         private sessionService: SessionService,
         private socketService: SocketService,
-        private router: Router,
     ) {}
 
     public clear(): void {

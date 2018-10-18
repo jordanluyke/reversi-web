@@ -20,7 +20,6 @@ export class SessionService {
     public setSession(session: Session): void {
         if(!session.validate())
             throw new Error("Assigned session not valid")
-
         this.session = session
         this.save()
         this.onSet.next(null)

@@ -29,6 +29,7 @@
     "less": "3.8.1",
     "less-plugin-autoprefix": "2.0.0",
     "minimist": "1.2.0",
+    "ngx-facebook": "2.4.0",
     "pug": "2.0.3",
     "reflect-metadata": "0.1.12",
     "roboto-fontface": "0.10.0",

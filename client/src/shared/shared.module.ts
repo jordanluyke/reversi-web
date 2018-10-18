@@ -17,7 +17,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
 import {
     HeaderDefaultComponent,
 } from './components/index'
-
+import {FacebookModule} from 'ngx-facebook'
 
 @NgModule({
     imports: [
@@ -27,6 +27,7 @@ import {
         HttpClientModule,
         RouterModule,
         NgbModule.forRoot(),
+        FacebookModule.forRoot(),
     ],
     declarations: [
         HeaderDefaultComponent
@@ -47,6 +48,7 @@ import {
         HttpClientModule,
         RouterModule,
         NgbModule,
+        FacebookModule,
         HeaderDefaultComponent,
     ]
 })

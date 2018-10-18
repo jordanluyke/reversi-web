@@ -4,6 +4,7 @@ let map = {
     "rxjs": "node_modules/rxjs",
     "bignumber.js": "node_modules/bignumber.js",
     "@ng-bootstrap": "node_modules/@ng-bootstrap",
+    "ngx-facebook": "node_modules/ngx-facebook",
 };
 
 let packages = {
@@ -34,6 +35,10 @@ let packages = {
     },
     "@ng-bootstrap/ng-bootstrap": {
         main: "bundles/ng-bootstrap.umd.min.js",
+        defaultExtension: "js"
+    },
+    "ngx-facebook": {
+        main: "dist/umd/index.js",
         defaultExtension: "js"
     },
 };

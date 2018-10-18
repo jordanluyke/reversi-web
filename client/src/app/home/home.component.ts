@@ -1,8 +1,9 @@
-import {Component, OnInit, ViewChild, TemplateRef} from '@angular/core'
-import {CoreService, Session, AccountService, SessionService, Instant, ErrorHandlingSubscriber, MatchService} from '../../shared/index'
-import {throwError} from 'rxjs'
-import {tap, flatMap, catchError} from 'rxjs/operators'
+import {Component, OnInit} from '@angular/core'
+import {CoreService, Session, AccountService, SessionService, Instant, ErrorHandlingSubscriber, MatchService, SignInType, Account} from '../../shared/index'
+import {Observable, from} from 'rxjs'
+import {tap, flatMap, filter, catchError} from 'rxjs/operators'
 import {Router} from '@angular/router'
+import {FacebookService} from 'ngx-facebook'
 
 @Component({
     selector: 'home-component',
@@ -23,56 +24,14 @@ export class HomeComponent implements OnInit {
         private sessionService: SessionService,
         private router: Router,
         private matchService: MatchService,
+        private facebookService: FacebookService,
     ) {}
 
     public ngOnInit(): void {
-        // console.log(this.router.)
-        if(this.sessionService.session.validate()) {
-            this.accountLoading = true
-            this.accountService.resolve()
-                .pipe(
-                    tap(Void => {
-                        this.accountLoading = false
-                    }),
-                    catchError(err => {
-                        this.accountLoading = false
-                        return throwError(err)
-                    })
-                )
-                .subscribe(new ErrorHandlingSubscriber())
-        }
     }
 
     public clickSignIn(): void {
         this.signInVisible = true
-    }
-
-    public submitAccountSignIn(): void {
-        if(this.reqInProgress) return
-        this.reqInProgress = true
-        this.core.post("/sessions", {
-            body: {
-                email: this.email
-            }
-        })
-            .pipe(
-                tap(body => {
-                    let session = new Session()
-                    session.accountId = body.accountId
-                    session.sessionId = body.sessionId
-                    session.expiresAt = Instant.fromMillis(body.expiresAt)
-                    this.sessionService.setSession(session)
-                }),
-                flatMap(body => this.accountService.resolve()),
-                tap(Void => {
-                    this.signInVisible = false
-                    this.reqInProgress = false
-                })
-            )
-            .subscribe(Void => {}, err => {
-                this.reqInProgress = false
-                console.error(err)
-            })
     }
 
     public clickCreateGame(): void {
@@ -86,31 +45,49 @@ export class HomeComponent implements OnInit {
             .subscribe(new ErrorHandlingSubscriber())
     }
 
-    public submitGuestSignIn(): void {
-        if(this.reqInProgress) return
-        this.reqInProgress = true
-        this.core.post("/sessions", {
-            body: {
-                name: this.guestName
-            }
+    public clickGuest(): void {
+        this.accountLoading = true
+        this.signIn(SignInType.GUEST)
+            .subscribe(new ErrorHandlingSubscriber())
+    }
+
+    public clickFbLogin(): void {
+        from(this.facebookService.login())
+            .pipe(
+                // tap(res => console.log(res)),
+                filter(res => res.authResponse != null),
+                tap(Void => this.accountLoading = true),
+                flatMap(res => this.signIn(SignInType.FACEBOOK, res.authResponse.userID)),
+            )
+            .subscribe(new ErrorHandlingSubscriber())
+    }
+
+    public clickGoogleLogin(): void {
+        console.log("google")
+    }
+
+    private signIn(type: SignInType, id?: string): Observable<Account> {
+        let reqBody = {}
+        if(type == SignInType.FACEBOOK)
+            reqBody['facebookUserId'] = id
+        return this.core.post("/sessions", {
+            body: reqBody
         })
             .pipe(
-                tap(body => {
+                flatMap(body => {
                     let session = new Session()
                     session.accountId = body.accountId
                     session.sessionId = body.sessionId
                     session.expiresAt = Instant.fromMillis(body.expiresAt)
                     this.sessionService.setSession(session)
+
+                    return this.accountService.resolve()
                 }),
-                flatMap(body => this.accountService.resolve()),
                 tap(Void => {
-                    this.signInVisible = false
-                    this.reqInProgress = false
+                    this.accountLoading = false
+                }, err => {
+                    this.accountLoading = false
                 })
             )
-            .subscribe(Void => {}, err => {
-                this.reqInProgress = false
-                console.error(err)
-            })
     }
 }
