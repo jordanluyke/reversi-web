@@ -82,6 +82,7 @@ export class SocketService implements Resolve<Observable<void>> {
                 next: (event: CloseEvent) => {
                     this.disconnected = true
                     console.log("closed")
+                    // use rx and remove on logout
                     setTimeout(() => this.createAndSubscribeSocket(), 5000)
                 }
             }

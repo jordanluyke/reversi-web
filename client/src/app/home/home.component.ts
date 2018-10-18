@@ -12,11 +12,9 @@ import {FacebookService} from 'ngx-facebook'
 })
 export class HomeComponent implements OnInit {
 
-    public signInVisible = false
-    public email?: string
     public reqInProgress = false
     public accountLoading = false
-    public guestName?: string
+    public name?: string
 
     constructor(
         private core: CoreService,
@@ -28,10 +26,8 @@ export class HomeComponent implements OnInit {
     ) {}
 
     public ngOnInit(): void {
-    }
-
-    public clickSignIn(): void {
-        this.signInVisible = true
+        if(this.accountService.loaded)
+            this.name = this.accountService.account.name
     }
 
     public clickCreateGame(): void {
@@ -66,6 +62,24 @@ export class HomeComponent implements OnInit {
         console.log("google")
     }
 
+    public submitName(): void {
+        if(this.reqInProgress) return
+        this.reqInProgress = true
+        this.core.put("/accounts/" + this.accountService.account.id, {
+            body: {
+                name: this.name
+            }
+        })
+            .pipe(
+                tap(body => {
+                    this.reqInProgress = false
+                }, err => {
+                    this.reqInProgress = false
+                })
+            )
+            .subscribe(new ErrorHandlingSubscriber())
+    }
+
     private signIn(type: SignInType, id?: string): Observable<Account> {
         let reqBody = {}
         if(type == SignInType.FACEBOOK)
@@ -83,8 +97,9 @@ export class HomeComponent implements OnInit {
 
                     return this.accountService.resolve()
                 }),
-                tap(Void => {
+                tap(account => {
                     this.accountLoading = false
+                    this.name = account.name
                 }, err => {
                     this.accountLoading = false
                 })
