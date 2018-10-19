@@ -2,7 +2,7 @@ header-component
 
 .container
     .row
-        .col-4.offset-4
+        .col-md-4.offset-md-4.col-sm-6.offset-sm-3
             .sign-in-ctnr
                 div(*ngIf="accountLoading")
                     .center
@@ -15,11 +15,13 @@ header-component
                         a.btn.btn-primary.google((click)="clickGoogleLogin()") Sign in with Google
                         //- .fb-login-button(data-width="300" data-max-rows="1" data-size="large" data-button-type="login_with" data-show-faces="false" data-auto-logout-link="false" data-use-continue-as="false")
                     .logged-in-ctnr(*ngIf="accountService.loaded")
+                        p.name-label Name
                         form.name-form((ngSubmit)="submitName()", ngNativeValidate)
                             .row
                                 .col-8
                                     input([(ngModel)]="name", name="name", maxlength="40", placeholder="Name", required)
                                 .col-4
-                                    button.btn.btn-success(type="submit", [disabled]="reqInProgress") Save
+                                    button.btn.btn-success(type="submit", [disabled]="reqInProgress || name == accountService.account.name") Save
+                        .divider
                         //- button.btn.btn-primary Find Game
-                        button.btn.btn-success((click)="clickCreateGame()") Create Game
+                        button.btn.btn-success.btn-create((click)="clickCreateGame()") Create Game

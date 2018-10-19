@@ -72,7 +72,6 @@ export class HomeComponent implements OnInit {
         })
             .pipe(
                 tap(body => {
-                    this.reqInProgress = false
                 }, err => {
                     this.reqInProgress = false
                 })
