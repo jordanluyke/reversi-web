@@ -14,7 +14,7 @@
                         p.title About
             .col-3
                 .center-right
-                    .nav-btn-ctnr
+                    .nav-btn-ctnr((click)="openSettingsModal()")
                         .nav-btn
                             .fas.fa-cog
                         p.title Settings
@@ -31,6 +31,14 @@ ng-template(#aboutModal, let-c="close")
         p.title About
         a.btn.btn-primary(href="https://en.wikipedia.org/wiki/Reversi#Rules" target="_blank" referrer="noreferrer") How to play
         p.created Created by Jordan Luyke
+
+ng-template(#settingsModal, let-c="close")
+    .modal-body.settings-modal
+        .fas.fa-times((click)="c()")
+        p.title Settings
+        .form-check.form-check-inline
+            input.form-check-input#delayCheckbox(type="checkbox", [(ngModel)]="settings.delayEnabled", (ngModelChange)="onDelayEnabledChange()")
+            label.form-check-label(for="delayCheckbox") Move delay
 
 ng-template(#profileModal, let-c="close")
     .modal-body.profile-modal

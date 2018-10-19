@@ -15,14 +15,13 @@ header-component
                 .top-ctnr
                     p.count {{darkCount}}
                     img.piece-icon(src="/img/piece-dark.svg")
-                //- .bottom-ctnr
-                    .avatar-ctnr
-                        img.avatar(src="http://gravatar.com/avatar/bb0762fb4bcc140466647642af7549a6")
-                        p.name Jordan
+                .bottom-ctnr(*ngIf="darkProfile != null")
+                    p.name {{darkProfile.name}}
         .col-sm-6
             .right
                 .player-ctnr-right([ngClass]="{active: match.playerDarkId != null && match.playerLightId != null && match.turn == Side.LIGHT}")
                     .top-ctnr
                         img.piece-icon(src="/img/piece-light.svg")
                         p.count {{lightCount}}
-    //- p {{match | json}}
+                    .bottom-ctnr(*ngIf="lightProfile != null")
+                        p.name {{lightProfile.name}}

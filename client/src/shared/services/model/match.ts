@@ -6,6 +6,7 @@ export interface Match {
     playerLightId: string
     board: Board
     turn: Side
+    completedAt?: number
 }
 
 interface Board {

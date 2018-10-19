@@ -1,6 +1,7 @@
 import {Component, OnInit, OnDestroy} from '@angular/core'
 import {tap} from 'rxjs/operators'
-import {ErrorHandlingSubscriber, CoreService, MatchService, Match, Side, AccountService} from '../../shared/index'
+import {ErrorHandlingSubscriber, CoreService, MatchService, Match, Side, AccountService, Profile} from '../../shared/index'
+import {Observable} from 'rxjs'
 
 @Component({
     selector: 'match-component',
@@ -12,6 +13,8 @@ export class MatchComponent implements OnInit, OnDestroy {
     public match: Match
     public darkCount: number
     public lightCount: number
+    public darkProfile?: Profile
+    public lightProfile?: Profile
     public Side = Side
     private joining = false
     private joinError?: string
@@ -27,9 +30,9 @@ export class MatchComponent implements OnInit, OnDestroy {
         this.matchService.onUpdate
             .pipe(tap(match => {
                 this.match = match
-                this.darkCount = this.count(match, Side.DARK)
-                this.lightCount = this.count(match, Side.LIGHT)
-                console.log(this.darkCount)
+                this.darkCount = this.count(Side.DARK)
+                this.lightCount = this.count(Side.LIGHT)
+                this.getProfiles()
             }))
             .subscribe(new ErrorHandlingSubscriber())
     }
@@ -84,16 +87,30 @@ export class MatchComponent implements OnInit, OnDestroy {
     public getStatus(): string {
         if(this.match.playerDarkId == null || this.match.playerLightId == null)
             return "Waiting on players to join..."
+        if(this.match.completedAt != null) {
+            if(this.darkCount > this.lightCount)
+                return "Dark wins!"
+            else if(this.lightCount > this.darkCount)
+                return "Light wins!"
+            return "Draw!"
+        }
         if(this.match.playerDarkId != null && this.match.playerLightId != null) {
             if(this.match.turn == Side.DARK) {
                 if(this.accountService.loaded && this.match.playerDarkId == this.accountService.account.id)
                     return "Your turn"
-                return "Dark's turn"
+                let name = "Dark"
+                console.log(this.darkProfile)
+                if(this.darkProfile != null)
+                    name = this.darkProfile.name
+                return name + "'s turn"
             }
             if(this.match.turn == Side.LIGHT) {
                 if(this.accountService.loaded && this.match.playerLightId == this.accountService.account.id)
                     return "Your turn"
-                return "Light's turn"
+                let name = "Light"
+                if(this.lightProfile != null)
+                    name = this.lightProfile.name
+                return name + "'s turn"
             }
         }
         throw "Invalid status"
@@ -118,10 +135,42 @@ export class MatchComponent implements OnInit, OnDestroy {
         return this.accountService.loaded &&
         this.match.playerDarkId != null &&
         this.match.playerLightId != null &&
-        (this.accountService.account.id == this.match.playerDarkId || this.accountService.account.id == this.match.playerLightId)
+        ((this.accountService.account.id == this.match.playerDarkId && this.match.turn == Side.DARK) ||
+        (this.accountService.account.id == this.match.playerLightId && this.match.turn == Side.LIGHT))
     }
 
-    private count(match: Match, side: Side): number {
-        return match.board.squares.filter(square => square == side).length
+    private count(side: Side): number {
+        return this.match.board.squares.filter(square => square == side).length
+    }
+
+    private getProfiles(): void {
+        if(this.darkProfile == null && this.match.playerDarkId != null) {
+            if(this.accountService.loaded && this.accountService.account.id == this.match.playerDarkId) {
+                this.darkProfile = {
+                    name: this.accountService.account.name,
+                    stats: this.accountService.account.stats
+                }
+            } else {
+                this.getProfile(this.match.playerDarkId)
+                    .pipe(tap(profile => this.darkProfile = profile))
+                    .subscribe(new ErrorHandlingSubscriber())
+            }
+        }
+        if(this.lightProfile == null && this.match.playerLightId != null) {
+            if(this.accountService.loaded && this.accountService.account.id == this.match.playerLightId) {
+                this.lightProfile = {
+                    name: this.accountService.account.name,
+                    stats: this.accountService.account.stats
+                }
+            } else {
+                this.getProfile(this.match.playerLightId)
+                    .pipe(tap(profile => this.lightProfile = profile))
+                    .subscribe(new ErrorHandlingSubscriber())
+            }
+        }
+    }
+
+    private getProfile(accountId: string): Observable<Profile> {
+        return this.core.get(`/accounts/${accountId}/profile`)
     }
 }

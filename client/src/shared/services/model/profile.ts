@@ -1,8 +1,6 @@
 import {PlayerStats} from './player-stats'
 
-export interface Account {
-    id: string
-    createdAt: number
+export interface Profile {
     name: string
     stats: PlayerStats
 }

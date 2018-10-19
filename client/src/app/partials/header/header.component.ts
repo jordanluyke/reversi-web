@@ -11,7 +11,11 @@ import {AccountService} from '../../../shared/index'
 export class HeaderComponent {
 
     @ViewChild('aboutModal') public aboutModal: TemplateRef<any>
+    @ViewChild('settingsModal') public settingsModal: TemplateRef<any>
     @ViewChild('profileModal') public profileModal: TemplateRef<any>
+    public settings = {
+        delayEnabled: false
+    }
 
     constructor(
         private activedRoute: ActivatedRoute,
@@ -27,7 +31,14 @@ export class HeaderComponent {
         this.modalService.open(this.aboutModal)
     }
 
+    public openSettingsModal(): void {
+        this.modalService.open(this.settingsModal)
+    }
+
     public openProfileModal(): void {
         this.modalService.open(this.profileModal)
+    }
+
+    public onDelayEnabledChange(): void {
     }
 }

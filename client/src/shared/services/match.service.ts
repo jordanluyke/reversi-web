@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core'
 import {CoreService} from './core.service'
 import {ReplaySubject, Observable, throwError, Subscription, of} from 'rxjs'
-import {tap, catchError, first, flatMap} from 'rxjs/operators'
+import {tap, catchError, flatMap} from 'rxjs/operators'
 import {Resolve, ActivatedRouteSnapshot, Router} from '@angular/router'
 import {Match, SocketEvent} from './model/index'
 import {SocketService} from './socket.service'
@@ -29,7 +29,10 @@ export class MatchService implements Resolve<Observable<Match>> {
         this.started = false
         this.loaded = false
         this.match = null
-        this.updateSubscription = null
+        if(this.updateSubscription != null) {
+            this.updateSubscription.unsubscribe()
+            this.updateSubscription = null
+        }
     }
 
     public createMatch(): Observable<Match> {
