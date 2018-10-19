@@ -328,9 +328,11 @@ let bundle = () => {
             }),
             commonjs({
                 include: [
-                    // 'rxjs/**',
-                    // '@ng-bootstrap/**',
-                    // 'bignumber.js/bignumber.js',
+                    'rxjs/**',
+                    '@ng-bootstrap/**',
+                    'bignumber.js/bignumber.js',
+                    '@ng-bootstrap/**',
+                    'ngx-facebook/**',
                 ]
                     .map(p => path.join(client, "node_modules", p)),
                 namedExports: Object.entries({
