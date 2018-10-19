@@ -62,20 +62,12 @@ export class HomeComponent implements OnInit {
         console.log("google")
     }
 
-    public submitName(): void {
-        if(this.reqInProgress) return
-        this.reqInProgress = true
+    public onNameChange(): void {
         this.core.put("/accounts/" + this.accountService.account.id, {
             body: {
                 name: this.name
             }
         })
-            .pipe(
-                tap(body => {
-                }, err => {
-                    this.reqInProgress = false
-                })
-            )
             .subscribe(new ErrorHandlingSubscriber())
     }
 
