@@ -66,6 +66,10 @@ export class MatchComponent implements OnInit, OnDestroy {
     }
 
     public placePiece(i: number): void {
+        if(!this.accountService.loaded || this.match.playerDarkId == null || this.match.playerLightId == null || this.match.completedAt != null ||
+            (this.match.playerDarkId != this.accountService.account.id && this.match.playerLightId != this.accountService.account.id) ||
+            ((this.match.playerDarkId == this.accountService.account.id && this.match.turn != Side.DARK) ||
+            (this.match.playerLightId == this.accountService.account.id && this.match.turn != Side.LIGHT))) return
         if(this.placeInProgress) return
         this.placeInProgress = true
         this.core.post("/matches/" + this.match.id + "/move", {
