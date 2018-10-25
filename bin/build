@@ -9,14 +9,6 @@ cd ..
 echo "Installing npm deps"
 npm i
 
-cd client
-
-npm i
-
-node bin/build
-
-cd ..
-
 ARCHIVE=target/reversi.tar.gz
 
 mkdir -p target
@@ -38,8 +30,10 @@ tar -cz \
     --exclude client/package-lock.json \
     --exclude client/systemjs.config.js \
     --exclude client/systemjs-angular-loader.js \
+    --exclude client/systemjs-packagemap.json \
     --exclude client/tsconfig.json \
     --exclude client/tsconfig-aot.json \
+    --exclude client/tslint.json \
     -f ${ARCHIVE} \
     ./*
 
