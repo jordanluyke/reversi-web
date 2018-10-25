@@ -21,10 +21,10 @@ tar -cz \
     --exclude doc \
     --exclude .git \
     --exclude client/node_modules \
-    --exclude client/app \
     --exclude client/bin \
     --exclude client/less \
     --exclude client/public \
+    --exclude client/src \
     --exclude client/views \
     --exclude client/package.json \
     --exclude client/package-lock.json \
