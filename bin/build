@@ -9,6 +9,8 @@ cd ..
 echo "Installing npm deps"
 npm i
 
+node client/bin/build
+
 ARCHIVE=target/reversi.tar.gz
 
 mkdir -p target

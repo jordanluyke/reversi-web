@@ -51,7 +51,7 @@ export class SocketService implements Resolve<Observable<void>> {
 
     private createAndSubscribeSocket(): void {
         this.ws = new WebSocketSubject({
-            url: "ws://10.0.1.3:8080",
+            url: `ws://${location.hostname}:8080`,
             binaryType: "arraybuffer",
             serializer: (body) => {
                 let str = JSON.stringify(body)

@@ -4,6 +4,8 @@ const cookieParser = require('cookie-parser')
 const compression = require('compression')
 const app = express()
 
+require('dotenv').config({ path: '/home/ubuntu/deployables/.env' })
+
 app.use((req, res, next) => {
     res.set('X-Frame-Options', 'SAMEORIGIN')
     next()

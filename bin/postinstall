@@ -1,5 +1,3 @@
 #!/bin/bash
 
-if [ -f ./client/package.json ]; then
-    npm install client
-fi
+npm install client
