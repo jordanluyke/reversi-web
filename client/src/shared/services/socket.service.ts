@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core'
 import {Subject, from, Observable, of, throwError} from 'rxjs'
 import {tap, filter, flatMap, take} from 'rxjs/operators'
 import {WebSocketSubject} from 'rxjs/webSocket'
-import {ErrorHandlingSubscriber} from '../util/index'
+import {ErrorHandlingSubscriber, WebUtil} from '../util/index'
 import {SocketEvent, SocketSubscription} from './model/index'
 import {Resolve, Router} from '@angular/router'
 
@@ -50,8 +50,9 @@ export class SocketService implements Resolve<Observable<void>> {
     }
 
     private createAndSubscribeSocket(): void {
+        let wsProtocol = WebUtil.isSecureConnection() ? "wss" : "ws"
         this.ws = new WebSocketSubject({
-            url: `ws://${location.hostname}:8080`,
+            url: `${wsProtocol}://${location.hostname}:8080`,
             binaryType: "arraybuffer",
             serializer: (body) => {
                 let str = JSON.stringify(body)
