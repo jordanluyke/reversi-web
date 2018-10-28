@@ -14,9 +14,13 @@ html
     body
         block content
 
+        script(type="text/javascript" src="https://connect.facebook.net/en_US/sdk.js" async defer)
+        script.
+            function onGoogleLoad() { gapi.load("auth2", null) }
+        script(type="text/javascript" src="https://apis.google.com/js/platform.js" onload="onGoogleLoad()" async defer)
+
         script(src=`/node_modules/@babel/polyfill/dist/polyfill.min.js?${timestamp}`)
         script(src=`/node_modules/zone.js/dist/zone.min.js?${timestamp}`)
-        script(type="text/javascript" src="https://connect.facebook.net/en_US/sdk.js")
 
         block scripts
 

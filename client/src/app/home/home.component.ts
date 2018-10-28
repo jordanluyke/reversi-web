@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core'
 import {CoreService, Session, AccountService, SessionService, Instant, ErrorHandlingSubscriber, MatchService, SignInType, Account} from '../../shared/index'
 import {Observable, from} from 'rxjs'
-import {tap, flatMap, filter, catchError} from 'rxjs/operators'
+import {tap, flatMap, filter} from 'rxjs/operators'
 import {Router} from '@angular/router'
 import {FacebookService} from 'ngx-facebook'
 
@@ -50,7 +50,6 @@ export class HomeComponent implements OnInit {
     public clickFbLogin(): void {
         from(this.facebookService.login())
             .pipe(
-                // tap(res => console.log(res)),
                 filter(res => res.authResponse != null),
                 tap(Void => this.accountLoading = true),
                 flatMap(res => this.signIn(SignInType.FACEBOOK, res.authResponse.userID)),
@@ -59,7 +58,15 @@ export class HomeComponent implements OnInit {
     }
 
     public clickGoogleLogin(): void {
-        console.log("google")
+        let auth2 = gapi.auth2.init({
+            client_id: "189745405951-mr203k8jk71l5vtsp94c84b6de2asft6.apps.googleusercontent.com",
+        })
+        from(auth2.signIn())
+            .pipe(
+                tap(Void => this.accountLoading = true),
+                flatMap((user: gapi.auth2.GoogleUser) => this.signIn(SignInType.GOOGLE, user.getId()))
+            )
+            .subscribe(new ErrorHandlingSubscriber())
     }
 
     public onNameChange(): void {
@@ -75,6 +82,8 @@ export class HomeComponent implements OnInit {
         let reqBody = {}
         if(type == SignInType.FACEBOOK)
             reqBody['facebookUserId'] = id
+        if(type == SignInType.GOOGLE)
+            reqBody['googleUserId'] = id
         return this.core.post("/sessions", {
             body: reqBody
         })

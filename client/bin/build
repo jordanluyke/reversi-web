@@ -315,7 +315,7 @@ let lint = (file) => {
 
 let bundle = () => {
     return rollup.rollup({
-        context: 'window',
+        context: "window",
         input: path.join(client, "target/src/main-aot.js"),
         onwarn: (warning) => {
             if(warning.code == "CIRCULAR_DEPENDENCY") return
@@ -328,15 +328,15 @@ let bundle = () => {
             }),
             commonjs({
                 include: [
-                    'rxjs/**',
-                    '@ng-bootstrap/**',
-                    'bignumber.js/bignumber.js',
-                    '@ng-bootstrap/**',
-                    'ngx-facebook/**',
+                    "rxjs/**",
+                    "@ng-bootstrap/**",
+                    "bignumber.js/bignumber.js",
+                    "@ng-bootstrap/**",
+                    "ngx-facebook/**",
                 ]
                     .map(p => path.join(client, "node_modules", p)),
                 namedExports: Object.entries({
-                    'bignumber.js/bignumber.js': ['BigNumber'],
+                    "bignumber.js/bignumber.js": ["BigNumber"],
                 })
                     .map(pair => {
                         pair[0] = path.join(client, "node_modules", pair[0])
