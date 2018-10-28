@@ -18,6 +18,7 @@ mkdir -p target
 echo "Building frontend tarball at ${ARCHIVE}..."
 tar -cz \
     --exclude .DS_Store \
+    --exclude target/reversi \
     --exclude target/reversi.tar.gz \
     --exclude tmp \
     --exclude doc \
