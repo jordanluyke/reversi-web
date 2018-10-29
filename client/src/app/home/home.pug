@@ -4,10 +4,10 @@ header-component
     .row
         .col-md-4.offset-md-4.col-sm-6.offset-sm-3
             .sign-in-ctnr
-                div(*ngIf="accountLoading")
+                div(*ngIf="reqInProgress")
                     .center
                         .fas.fa-circle-notch.fa-spin
-                div(*ngIf="!accountLoading")
+                div(*ngIf="!reqInProgress")
                     .initial-ctnr(*ngIf="!accountService.loaded")
                         button.btn.btn-success.btn-guest((click)="clickGuest()") Play as Guest
                         .divider: span.text or

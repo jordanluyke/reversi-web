@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core'
 import {CoreService, Session, AccountService, SessionService, Instant, ErrorHandlingSubscriber, MatchService, SignInType, Account} from '../../shared/index'
-import {Observable, from} from 'rxjs'
+import {Observable, from, empty} from 'rxjs'
 import {tap, flatMap, filter} from 'rxjs/operators'
 import {Router} from '@angular/router'
 import {FacebookService} from 'ngx-facebook'
@@ -13,7 +13,6 @@ import {FacebookService} from 'ngx-facebook'
 export class HomeComponent implements OnInit {
 
     public reqInProgress = false
-    public accountLoading = false
     public name?: string
 
     constructor(
@@ -36,13 +35,14 @@ export class HomeComponent implements OnInit {
             .pipe(
                 tap(match => {
                     this.router.navigate(["matches", match.id])
+                }, err => {
+                    this.reqInProgress = false
                 })
             )
             .subscribe(new ErrorHandlingSubscriber())
     }
 
     public clickGuest(): void {
-        this.accountLoading = true
         this.signIn(SignInType.GUEST)
             .subscribe(new ErrorHandlingSubscriber())
     }
@@ -51,7 +51,6 @@ export class HomeComponent implements OnInit {
         from(this.facebookService.login())
             .pipe(
                 filter(res => res.authResponse != null),
-                tap(Void => this.accountLoading = true),
                 flatMap(res => this.signIn(SignInType.FACEBOOK, res.authResponse.userID)),
             )
             .subscribe(new ErrorHandlingSubscriber())
@@ -62,10 +61,7 @@ export class HomeComponent implements OnInit {
             client_id: "189745405951-mr203k8jk71l5vtsp94c84b6de2asft6.apps.googleusercontent.com",
         })
         from(auth2.signIn())
-            .pipe(
-                tap(Void => this.accountLoading = true),
-                flatMap((user: gapi.auth2.GoogleUser) => this.signIn(SignInType.GOOGLE, user.getId()))
-            )
+            .pipe(flatMap((user: gapi.auth2.GoogleUser) => this.signIn(SignInType.GOOGLE, user.getId())))
             .subscribe(new ErrorHandlingSubscriber())
     }
 
@@ -79,6 +75,9 @@ export class HomeComponent implements OnInit {
     }
 
     private signIn(type: SignInType, id?: string): Observable<Account> {
+        if(this.reqInProgress)
+            return empty()
+        this.reqInProgress = true
         let reqBody = {}
         if(type == SignInType.FACEBOOK)
             reqBody['facebookUserId'] = id
@@ -98,10 +97,10 @@ export class HomeComponent implements OnInit {
                     return this.accountService.resolve()
                 }),
                 tap(account => {
-                    this.accountLoading = false
+                    this.reqInProgress = false
                     this.name = account.name
                 }, err => {
-                    this.accountLoading = false
+                    this.reqInProgress = false
                 })
             )
     }
