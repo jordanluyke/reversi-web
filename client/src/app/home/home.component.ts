@@ -56,6 +56,7 @@ export class HomeComponent implements OnInit {
     }
 
     public clickGuest(): void {
+        this.reqInProgress = true
         this.signIn(SignInType.GUEST)
             .subscribe(new ErrorHandlingSubscriber())
     }
@@ -64,6 +65,7 @@ export class HomeComponent implements OnInit {
         from(this.facebookService.login())
             .pipe(
                 filter(res => res.authResponse != null),
+                tap(Void => this.reqInProgress = true),
                 flatMap(res => this.signIn(SignInType.FACEBOOK, res.authResponse.userID)),
             )
             .subscribe(new ErrorHandlingSubscriber())
@@ -74,7 +76,10 @@ export class HomeComponent implements OnInit {
             client_id: "189745405951-mr203k8jk71l5vtsp94c84b6de2asft6.apps.googleusercontent.com",
         })
         from(auth2.signIn())
-            .pipe(flatMap((user: gapi.auth2.GoogleUser) => this.signIn(SignInType.GOOGLE, user.getId())))
+            .pipe(
+                tap(Void => this.reqInProgress = true),
+                flatMap((user: gapi.auth2.GoogleUser) => this.signIn(SignInType.GOOGLE, user.getId()))
+            )
             .subscribe(new ErrorHandlingSubscriber())
     }
 
@@ -83,9 +88,6 @@ export class HomeComponent implements OnInit {
     }
 
     private signIn(type: SignInType, id?: string): Observable<Account> {
-        if(this.reqInProgress)
-            return empty()
-        this.reqInProgress = true
         let reqBody = {}
         if(type == SignInType.FACEBOOK)
             reqBody['facebookUserId'] = id
