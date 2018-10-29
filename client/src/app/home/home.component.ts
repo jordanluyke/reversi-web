@@ -1,7 +1,7 @@
-import {Component, OnInit} from '@angular/core'
+import {Component, OnInit, OnDestroy} from '@angular/core'
 import {CoreService, Session, AccountService, SessionService, Instant, ErrorHandlingSubscriber, MatchService, SignInType, Account} from '../../shared/index'
-import {Observable, from, empty} from 'rxjs'
-import {tap, flatMap, filter} from 'rxjs/operators'
+import {Observable, from, empty, of, Subject} from 'rxjs'
+import {tap, flatMap, filter, debounceTime, distinctUntilChanged} from 'rxjs/operators'
 import {Router} from '@angular/router'
 import {FacebookService} from 'ngx-facebook'
 
@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
 
     public reqInProgress = false
     public name?: string
+    private nameChanged: Subject<string> = new Subject()
 
     constructor(
         private core: CoreService,
@@ -27,6 +28,18 @@ export class HomeComponent implements OnInit {
     public ngOnInit(): void {
         if(this.accountService.loaded)
             this.name = this.accountService.account.name
+
+        this.nameChanged
+            .pipe(
+                debounceTime(500),
+                distinctUntilChanged(),
+                flatMap(Void => this.core.put("/accounts/" + this.accountService.account.id, {
+                    body: {
+                        name: this.name
+                    }
+                }))
+            )
+            .subscribe(new ErrorHandlingSubscriber())
     }
 
     public clickCreateGame(): void {
@@ -65,13 +78,8 @@ export class HomeComponent implements OnInit {
             .subscribe(new ErrorHandlingSubscriber())
     }
 
-    public onNameChange(): void {
-        this.core.put("/accounts/" + this.accountService.account.id, {
-            body: {
-                name: this.name
-            }
-        })
-            .subscribe(new ErrorHandlingSubscriber())
+    public onNameChange(name: string): void {
+        this.nameChanged.next(name)
     }
 
     private signIn(type: SignInType, id?: string): Observable<Account> {
