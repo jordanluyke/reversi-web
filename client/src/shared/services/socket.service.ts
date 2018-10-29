@@ -50,9 +50,8 @@ export class SocketService implements Resolve<Observable<void>> {
     }
 
     private createAndSubscribeSocket(): void {
-        let wsProtocol = WebUtil.isSecureConnection() ? "wss" : "ws"
         this.ws = new WebSocketSubject({
-            url: `${wsProtocol}://${location.hostname}:8080`,
+            url: WebUtil.isSecureConnection() ? "wss://api.reversi.io" : "ws://localhost:8080",
             binaryType: "arraybuffer",
             serializer: (body) => {
                 let str = JSON.stringify(body)

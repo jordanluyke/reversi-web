@@ -26,6 +26,7 @@ export class NavigatorComponent implements OnInit {
 
     public ngOnInit(): void {
         this.initFacebook()
+        gapi.load("auth2", null)
 
         from([
             this.accountService,
