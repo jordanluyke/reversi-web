@@ -1,7 +1,7 @@
-import {Component, OnInit, OnDestroy} from '@angular/core'
+import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core'
 import {CoreService, Session, AccountService, SessionService, Instant, ErrorHandlingSubscriber, MatchService, SignInType, Account} from '../../shared/index'
-import {Observable, from, empty, of, Subject} from 'rxjs'
-import {tap, flatMap, filter, debounceTime, distinctUntilChanged} from 'rxjs/operators'
+import {Observable, from, empty, of, Subject, throwError} from 'rxjs'
+import {tap, flatMap, filter, debounceTime, distinctUntilChanged, catchError} from 'rxjs/operators'
 import {Router} from '@angular/router'
 import {FacebookService} from 'ngx-facebook'
 
@@ -23,6 +23,7 @@ export class HomeComponent implements OnInit {
         private router: Router,
         private matchService: MatchService,
         private facebookService: FacebookService,
+        private changeDetectorRef: ChangeDetectorRef,
     ) {}
 
     public ngOnInit(): void {
@@ -78,7 +79,8 @@ export class HomeComponent implements OnInit {
         from(auth2.signIn())
             .pipe(
                 tap(Void => this.reqInProgress = true),
-                flatMap((user: gapi.auth2.GoogleUser) => this.signIn(SignInType.GOOGLE, user.getId()))
+                flatMap((user: gapi.auth2.GoogleUser) => this.signIn(SignInType.GOOGLE, user.getId())),
+                tap(Void => this.changeDetectorRef.detectChanges(), err => this.changeDetectorRef.detectChanges())
             )
             .subscribe(new ErrorHandlingSubscriber())
     }
@@ -103,7 +105,6 @@ export class HomeComponent implements OnInit {
                     session.sessionId = body.sessionId
                     session.expiresAt = Instant.fromMillis(body.expiresAt)
                     this.sessionService.setSession(session)
-
                     return this.accountService.resolve()
                 }),
                 tap(account => {
