@@ -37,7 +37,7 @@ ng-template(#settingsModal, let-c="close")
         .fas.fa-times((click)="c()")
         p.title Settings
         .form-check.form-check-inline
-            input.form-check-input#delayCheckbox(type="checkbox", [(ngModel)]="settings.delayEnabled", (ngModelChange)="onDelayEnabledChange()")
+            input.form-check-input#delayCheckbox(type="checkbox", [(ngModel)]="settings.delayEnabled", (ngModelChange)="onDelayEnabledChange()", disabled)
             label.form-check-label(for="delayCheckbox") Move delay
 
 ng-template(#profileModal, let-c="close")
