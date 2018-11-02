@@ -49,6 +49,17 @@ export class SocketService implements Resolve<Observable<void>> {
         return subject
     }
 
+    public unsubscribe(event: SocketEvent): void {
+        let sub = this.subscriptions.find(s => s.event == event)
+        if(sub != null) {
+            this.ws.next({
+                event: sub.event,
+                unsubscribe: true
+            })
+            this.subscriptions = this.subscriptions.filter(s => s.event == sub.event)
+        }
+    }
+
     private createAndSubscribeSocket(): void {
         this.ws = new WebSocketSubject({
             url: WebUtil.isSecureConnection() ? "wss://api.reversi.io" : "ws://localhost:8080",

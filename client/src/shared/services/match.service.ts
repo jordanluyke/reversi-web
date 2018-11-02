@@ -16,7 +16,7 @@ export class MatchService implements Resolve<Observable<Match>> {
     public matchIdRedirect?: string
     private started: boolean = false
     private loaded: boolean = false
-    private updateSubscription?: Subscription
+    private matchSubscription?: Subscription
 
     constructor(
         private core: CoreService,
@@ -30,10 +30,7 @@ export class MatchService implements Resolve<Observable<Match>> {
         this.started = false
         this.loaded = false
         this.match = null
-        if(this.updateSubscription != null) {
-            this.updateSubscription.unsubscribe()
-            this.updateSubscription = null
-        }
+        this.unsubscribeMatch()
     }
 
     public createMatch(): Observable<Match> {
@@ -45,7 +42,7 @@ export class MatchService implements Resolve<Observable<Match>> {
                     this.loaded = true
                     this.onLoad.next(match)
                     this.onUpdate.next(match)
-                    this.updateSubscribe()
+                    this.subscribeMatch()
                 })
             )
     }
@@ -63,10 +60,18 @@ export class MatchService implements Resolve<Observable<Match>> {
             )
     }
 
-    private updateSubscribe(): void {
-        this.updateSubscription = this.socketService.subscribe(SocketEvent.Match, this.match.id)
+    private subscribeMatch(): void {
+        this.matchSubscription = this.socketService.subscribe(SocketEvent.Match, this.match.id)
             .pipe(flatMap(Void => this.getMatch(this.match.id)))
             .subscribe(new ErrorHandlingSubscriber())
+    }
+
+    private unsubscribeMatch(): void {
+        if(this.matchSubscription != null) {
+            this.matchSubscription.unsubscribe()
+            this.matchSubscription = null
+            this.socketService.unsubscribe(SocketEvent.Match)
+        }
     }
 
     public resolve(route: ActivatedRouteSnapshot): Observable<Match> {
@@ -79,7 +84,7 @@ export class MatchService implements Resolve<Observable<Match>> {
         }
         return this.getMatch(id)
             .pipe(
-                tap(Void => this.updateSubscribe()),
+                tap(Void => this.subscribeMatch()),
                 catchError(err => {
                     console.error(err)
                     // go to internal server error page
