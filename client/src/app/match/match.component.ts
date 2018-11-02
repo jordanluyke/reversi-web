@@ -63,6 +63,7 @@ export class MatchComponent implements OnInit, OnDestroy {
                 tap(match => {
                     this.joining = false
                     this.match = match
+                    this.getProfiles()
                 }, err => {
                     this.joinError = err.message
                     this.joining = false
@@ -109,7 +110,6 @@ export class MatchComponent implements OnInit, OnDestroy {
                 if(this.accountService.loaded && this.match.playerDarkId == this.accountService.account.id)
                     return "Your turn"
                 let name = "Dark"
-                console.log(this.darkProfile)
                 if(this.darkProfile != null)
                     name = this.darkProfile.name
                 return name + "'s turn"
