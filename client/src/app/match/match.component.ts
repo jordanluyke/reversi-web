@@ -1,7 +1,8 @@
 import {Component, OnInit, OnDestroy} from '@angular/core'
 import {tap} from 'rxjs/operators'
-import {ErrorHandlingSubscriber, CoreService, MatchService, Match, Side, AccountService, Profile} from '../../shared/index'
+import {ErrorHandlingSubscriber, CoreService, MatchService, Match, Side, AccountService, Profile, SessionService} from '../../shared/index'
 import {Observable} from 'rxjs'
+import {Router} from '@angular/router'
 
 @Component({
     selector: 'match-component',
@@ -24,6 +25,8 @@ export class MatchComponent implements OnInit, OnDestroy {
         private core: CoreService,
         private matchService: MatchService,
         private accountService: AccountService,
+        private sessionService: SessionService,
+        private router: Router,
     ) {}
 
     public ngOnInit(): void {
@@ -41,7 +44,18 @@ export class MatchComponent implements OnInit, OnDestroy {
         this.matchService.clear()
     }
 
+    public isJoinable(): boolean {
+        if(this.accountService.loaded && (this.accountService.account.id == this.match.playerDarkId || this.accountService.account.id == this.match.playerLightId))
+            return false
+        return this.match.playerDarkId == null || this.match.playerLightId == null
+    }
+
     public clickJoin(): void {
+        if(!this.sessionService.session.validate()) {
+            this.matchService.matchIdRedirect = this.match.id
+            this.router.navigate(["/"])
+            return
+        }
         if(this.joining) return
         this.joining = true
         this.core.post("/matches/" + this.match.id + "/join")
@@ -55,14 +69,6 @@ export class MatchComponent implements OnInit, OnDestroy {
                 })
             )
             .subscribe(new ErrorHandlingSubscriber())
-    }
-
-    public isJoinable(): boolean {
-        if(!this.accountService.loaded)
-            return false
-        return (this.match.playerDarkId == null || this.match.playerLightId == null) &&
-            this.accountService.account.id != this.match.playerDarkId &&
-            this.accountService.account.id != this.match.playerLightId
     }
 
     public placePiece(i: number): void {

@@ -1,7 +1,7 @@
-import {Component, OnInit, OnDestroy, ChangeDetectorRef} from '@angular/core'
+import {Component, OnInit} from '@angular/core'
 import {CoreService, Session, AccountService, SessionService, Instant, ErrorHandlingSubscriber, MatchService, SignInType, Account} from '../../shared/index'
-import {Observable, from, empty, of, Subject, throwError} from 'rxjs'
-import {tap, flatMap, filter, debounceTime, distinctUntilChanged, catchError} from 'rxjs/operators'
+import {Observable, from, Subject} from 'rxjs'
+import {tap, flatMap, filter, debounceTime, distinctUntilChanged} from 'rxjs/operators'
 import {Router} from '@angular/router'
 import {FacebookService} from 'ngx-facebook'
 
@@ -23,7 +23,6 @@ export class HomeComponent implements OnInit {
         private router: Router,
         private matchService: MatchService,
         private facebookService: FacebookService,
-        private changeDetectorRef: ChangeDetectorRef,
     ) {}
 
     public ngOnInit(): void {
@@ -73,14 +72,15 @@ export class HomeComponent implements OnInit {
     }
 
     public clickGoogleLogin(): void {
-        let auth2 = gapi.auth2.init({
-            client_id: "189745405951-mr203k8jk71l5vtsp94c84b6de2asft6.apps.googleusercontent.com",
-        })
-        from(auth2.signIn())
+        from(new Promise((resolve, reject) => {
+            let auth2 = gapi.auth2.init({
+                client_id: "189745405951-mr203k8jk71l5vtsp94c84b6de2asft6.apps.googleusercontent.com",
+            })
+            auth2.signIn().then(user => resolve(user), err => reject(err))
+        }))
             .pipe(
                 tap(Void => this.reqInProgress = true),
                 flatMap((user: gapi.auth2.GoogleUser) => this.signIn(SignInType.GOOGLE, user.getId())),
-                tap(Void => this.changeDetectorRef.detectChanges(), err => this.changeDetectorRef.detectChanges())
             )
             .subscribe(new ErrorHandlingSubscriber())
     }
@@ -108,8 +108,13 @@ export class HomeComponent implements OnInit {
                     return this.accountService.resolve()
                 }),
                 tap(account => {
-                    this.reqInProgress = false
                     this.name = account.name
+                    if(this.matchService.matchIdRedirect != null) {
+                        this.router.navigate(["/matches", this.matchService.matchIdRedirect])
+                        this.matchService.matchIdRedirect = null
+                    } else {
+                        this.reqInProgress = false
+                    }
                 }, err => {
                     this.reqInProgress = false
                 })

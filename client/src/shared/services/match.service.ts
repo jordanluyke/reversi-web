@@ -13,6 +13,7 @@ export class MatchService implements Resolve<Observable<Match>> {
     public match?: Match
     public onLoad: ReplaySubject<Match> = new ReplaySubject(1)
     public onUpdate: ReplaySubject<Match> = new ReplaySubject(1)
+    public matchIdRedirect?: string
     private started: boolean = false
     private loaded: boolean = false
     private updateSubscription?: Subscription
