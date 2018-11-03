@@ -56,7 +56,7 @@ export class SocketService implements Resolve<Observable<void>> {
                 event: sub.event,
                 unsubscribe: true
             })
-            this.subscriptions = this.subscriptions.filter(s => s.event == sub.event)
+            this.subscriptions = this.subscriptions.filter(s => s.event != sub.event)
         }
     }
 
