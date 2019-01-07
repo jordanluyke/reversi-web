@@ -75,7 +75,7 @@ export class SocketService implements Resolve<Observable<void>> {
             deserializer: (event) => JSON.parse(String.fromCharCode.apply(null, new Uint8Array(event.data))),
             openObserver: {
                 next: (event: Event) => {
-                    console.log("opened")
+                    console.log("Socket opened")
                     if(this.disconnected) {
                         this.disconnected = false
                         this.subscriptions
@@ -92,7 +92,7 @@ export class SocketService implements Resolve<Observable<void>> {
             closeObserver: {
                 next: (event: CloseEvent) => {
                     this.disconnected = true
-                    console.log("closed")
+                    console.log("Socket closed")
                     // use rx and remove on logout
                     setTimeout(() => this.createAndSubscribeSocket(), 5000)
                 }

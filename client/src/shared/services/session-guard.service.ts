@@ -3,9 +3,7 @@ import {CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot} from '
 import {Observable} from 'rxjs'
 import {SessionService} from './session.service'
 
-@Injectable({
-    providedIn: "root"
-})
+@Injectable()
 export class SessionGuard implements CanActivate {
 
     constructor(private sessionService: SessionService, private router: Router) {
@@ -15,7 +13,7 @@ export class SessionGuard implements CanActivate {
         if(this.sessionService.session.validate())
             return true
         this.sessionService.redirectUrl = state.url
-        this.router.navigate([''])
+        this.router.navigate(["/"])
         return false
     }
 }
