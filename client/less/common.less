@@ -2,7 +2,7 @@ html, body {
     font-family: 'Roboto', sans-serif;
     font-weight: @font-weight-regular;
     font-size: 12px;
-    color: @font-color-light;
+    color: @font-color;
     height: 100%;
     width: 100%;
     background-color: @background-color;
@@ -51,16 +51,9 @@ hr {
 }
 
 input {
-    width: 100%;
-    outline: 0;
-    border: 1px solid;
-    border-color: #B6B4B6;
-    border-radius: 3px;
-    padding: 6px 9px;
-    font-size: 14px;
-    height: 40px;
-    &:focus {
-        border-color: @primary-color;
+    &.form-control {
+        height: 40px;
+        font-size: 14px;
     }
 }
 
@@ -83,6 +76,18 @@ input {
     }
 }
 
+.btn-success {
+    background-color: @success-color;
+    transition: background-color 100ms;
+    &:hover {
+        background-color: darken(@success-color, 5%);
+    }
+}
+
+.fa-circle-notch {
+    color: @primary-color;
+}
+
 .loading-spinner {
     position: absolute;
     top: 30%;
@@ -101,7 +106,7 @@ input {
 }
 
 .modal-body {
-    color: @font-color-dark;
+    color: @font-color;
     .fa-times {
         font-size: 18px;
         position: absolute;

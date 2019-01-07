@@ -3,14 +3,12 @@
 features:
 - websocket reconnection
 - stat tracking
+- social media login
 
 todo:
-- match end handling
 - matchmaking
 - move timeout
 - match leave timeout
 - message receipts
 - settings
     - move confirmation
-- profile
-    - oauth

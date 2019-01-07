@@ -14,9 +14,6 @@ import {
     SocketService,
 } from './services/index'
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
-import {
-    HeaderDefaultComponent,
-} from './components/index'
 import {FacebookModule} from 'ngx-facebook'
 
 @NgModule({
@@ -30,7 +27,6 @@ import {FacebookModule} from 'ngx-facebook'
         FacebookModule.forRoot(),
     ],
     declarations: [
-        HeaderDefaultComponent
     ],
     providers: [
         CoreService,
@@ -49,7 +45,6 @@ import {FacebookModule} from 'ngx-facebook'
         RouterModule,
         NgbModule,
         FacebookModule,
-        HeaderDefaultComponent,
     ]
 })
 export class SharedModule {}

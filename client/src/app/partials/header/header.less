@@ -2,7 +2,7 @@
 
 .header {
     padding: 15px 0;
-    background-color: lighten(#333333, 5%);
+    box-shadow: 0 1px 1px lighten(@font-color, 40%);
     .center-left {
         margin-right: 20%;
         text-align: center;
@@ -26,24 +26,29 @@
         .nav-btn {
             width: 55px;
             height: 55px;
-            background-color: @background-color;
+            background-color: @primary-color;
+            border: 2px solid #fff;
             border-radius: 50%;
             padding: 15px;
             .fas {
-                color: white;
                 font-size: 25px;
+                color: #fff;
             }
             .fa-home {
-                margin-left: -0.5px;
+                margin-top: -2px;
+                margin-left: -3px;
             }
             .fa-question {
-                padding-left: 2px;
+                margin-top: -1px;
+                margin-left: 2px;
             }
             .fa-cog {
-                padding-left: 0.5px;
+                margin-top: -2px;
+                margin-left: -1px;
             }
             .fa-user {
-                padding-right: 1.12px;
+                margin-top: -2px;
+                margin-left: 0.5px;
             }
         }
         .title {
@@ -70,6 +75,11 @@
 
 .about-modal {
     .created {
+        font-size: 14px;
+        margin-bottom: 10px;
+        margin-top: 30px;
+    }
+    .feedback {
         font-size: 14px;
         margin-bottom: 10px;
         margin-top: 30px;

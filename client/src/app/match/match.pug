@@ -3,32 +3,33 @@ header-component
 .container
     .center
         button.btn.btn-primary.join-btn((click)="clickJoin()", *ngIf="isJoinable()", [disabled]="joining") Join game
+    .score-ctnr
+        .row
+            .col-sm-6
+                .player-ctnr-left([ngClass]="{active: match.playerDarkId != null && match.playerLightId != null && match.turn == Side.DARK}")
+                    .top-ctnr
+                        p.count {{darkCount}}
+                        img.piece-icon(src="/img/piece-dark.svg")
+                    .bottom-ctnr(*ngIf="darkProfile != null")
+                        p.name {{darkProfile.name}}
+            .col-sm-6
+                .right.d-none.d-sm-block
+                    .player-ctnr-right([ngClass]="{active: match.playerDarkId != null && match.playerLightId != null && match.turn == Side.LIGHT}")
+                        .top-ctnr
+                            img.piece-icon(src="/img/piece-light.svg")
+                            p.count {{lightCount}}
+                        .bottom-ctnr(*ngIf="lightProfile != null")
+                            p.name {{lightProfile.name}}
+                .d-block.d-sm-none
+                    .player-ctnr-left([ngClass]="{active: match.playerDarkId != null && match.playerLightId != null && match.turn == Side.LIGHT}")
+                        .top-ctnr
+                            p.count {{lightCount}}
+                            img.piece-icon(src="/img/piece-light.svg")
+                        .bottom-ctnr(*ngIf="lightProfile != null")
+                            p.name {{lightProfile.name}}
     .board([class.activeplayer]="isActivePlayer()")
         .square-ctnr(*ngFor="let square of match.board.squares; let i = index", (click)="placePiece(i)", [ngClass]="getSquareClasses(square)")
             img.square(src="/img/board-square.svg")
             .piece
     .status-ctnr
         p.status {{getStatus()}}
-    .row
-        .col-sm-6
-            .player-ctnr-left([ngClass]="{active: match.playerDarkId != null && match.playerLightId != null && match.turn == Side.DARK}")
-                .top-ctnr
-                    p.count {{darkCount}}
-                    img.piece-icon(src="/img/piece-dark.svg")
-                .bottom-ctnr(*ngIf="darkProfile != null")
-                    p.name {{darkProfile.name}}
-        .col-sm-6
-            .right.d-none.d-sm-block
-                .player-ctnr-right([ngClass]="{active: match.playerDarkId != null && match.playerLightId != null && match.turn == Side.LIGHT}")
-                    .top-ctnr
-                        img.piece-icon(src="/img/piece-light.svg")
-                        p.count {{lightCount}}
-                    .bottom-ctnr(*ngIf="lightProfile != null")
-                        p.name {{lightProfile.name}}
-            .d-block.d-sm-none
-                .player-ctnr-left([ngClass]="{active: match.playerDarkId != null && match.playerLightId != null && match.turn == Side.LIGHT}")
-                    .top-ctnr
-                        p.count {{lightCount}}
-                        img.piece-icon(src="/img/piece-light.svg")
-                    .bottom-ctnr(*ngIf="lightProfile != null")
-                        p.name {{lightProfile.name}}

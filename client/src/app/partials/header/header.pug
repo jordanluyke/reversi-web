@@ -30,7 +30,8 @@ ng-template(#aboutModal, let-c="close")
         .fas.fa-times((click)="c()")
         p.title About
         a.btn.btn-primary(href="https://en.wikipedia.org/wiki/Reversi#Rules" target="_blank" referrer="noreferrer") How to play
-        p.created Created by Jordan Luyke
+        //- p.created Created by Jordan Luyke
+        p.feedback: a(href="mailto:jordanluyke@gmail.com") Feedback?
 
 ng-template(#settingsModal, let-c="close")
     .modal-body.settings-modal

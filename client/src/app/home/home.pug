@@ -11,10 +11,10 @@ header-component
                     .initial-ctnr(*ngIf="!accountService.loaded")
                         button.btn.btn-success.btn-guest((click)="clickGuest()") Play as Guest
                         .divider: span.text or
-                        a.btn.btn-primary.facebook((click)="clickFbLogin()") Sign in with Facebook
-                        a.btn.btn-primary.google((click)="clickGoogleLogin()") Sign in with Google
+                        .btn.btn-primary.facebook((click)="clickFbLogin()") Sign in with Facebook
+                        .btn.btn-primary.google((click)="clickGoogleLogin()") Sign in with Google
                     .logged-in-ctnr(*ngIf="accountService.loaded")
-                        input.name-input([(ngModel)]="name", (ngModelChange)="onNameChange($event)", name="name", maxlength="40", placeholder="Name", required, autofocus)
+                        input.form-control.name-input([(ngModel)]="name", (ngModelChange)="onNameChange($event)", name="name", maxlength="40", placeholder="Name", required, autofocus)
                         .divider
                         //- button.btn.btn-primary Find Game
                         button.btn.btn-success.btn-create((click)="clickCreateGame()") Create Game
