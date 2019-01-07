@@ -336,7 +336,6 @@ let bundle = () => {
                 ]
                     .map(p => path.join(client, "node_modules", p)),
                 namedExports: Object.entries({
-                    "bignumber.js/bignumber.js": ["BigNumber"],
                 })
                     .map(pair => {
                         pair[0] = path.join(client, "node_modules", pair[0])
@@ -351,10 +350,10 @@ let bundle = () => {
                 presets: ["@babel/preset-env"],
                 plugins: ["@babel/plugin-external-helpers"],
                 include: path.join(client, "node_modules"),
-                babelrc: false,
+                comments: false,
                 compact: true,
                 minified: true,
-                comments: false
+                babelrc: false,
             })
         ],
         treeshake: true

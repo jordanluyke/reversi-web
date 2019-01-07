@@ -4,6 +4,7 @@ import {Observable, from, Subject} from 'rxjs'
 import {tap, flatMap, filter, debounceTime, distinctUntilChanged} from 'rxjs/operators'
 import {Router} from '@angular/router'
 import {FacebookService} from 'ngx-facebook'
+import {BigNumber} from 'bignumber.js'
 
 @Component({
     selector: 'home-component',
