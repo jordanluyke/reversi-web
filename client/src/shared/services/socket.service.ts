@@ -55,13 +55,15 @@ export class SocketService implements Resolve<Observable<void>> {
         return subject
     }
 
-    public unsubscribe(event: SocketEvent): void {
+    public unsubscribe(event: SocketEvent, send = true): void {
         let sub = this.subscriptions.find(s => s.event == event)
         if(sub != null) {
-            this.next({
-                event: sub.event,
-                unsubscribe: true
-            })
+            if(send) {
+                this.next({
+                    event: sub.event,
+                    unsubscribe: true
+                })
+            }
             this.subscriptions = this.subscriptions.filter(s => s.event != sub.event)
         }
     }

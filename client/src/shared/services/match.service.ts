@@ -51,7 +51,7 @@ export class MatchService implements Resolve<Observable<Match>> {
         return this.socketService.subscribe(SocketEvent.FindMatch)
             .pipe(
                 flatMap(body => this.getMatch(body.matchId)),
-                tap(match => this.socketService.unsubscribe(SocketEvent.FindMatch))
+                tap(match => this.socketService.unsubscribe(SocketEvent.FindMatch, false))
             )
     }
 
