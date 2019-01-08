@@ -14,6 +14,7 @@ import {BigNumber} from 'bignumber.js'
 export class HomeComponent implements OnInit {
 
     public reqInProgress = false
+    public findGameInProgress = false
     public name?: string
     private nameChanged: Subject<string> = new Subject()
 
@@ -39,6 +40,21 @@ export class HomeComponent implements OnInit {
                         name: this.name
                     }
                 }))
+            )
+            .subscribe(new ErrorHandlingSubscriber())
+    }
+
+    public clickFindGame(): void {
+        this.reqInProgress = true
+        this.findGameInProgress = true
+        this.matchService.findMatch()
+            .pipe(
+                tap(match => {
+                    this.router.navigate(["matches", match.id])
+                }, err => {
+                    this.reqInProgress = false
+                    this.findGameInProgress = false
+                })
             )
             .subscribe(new ErrorHandlingSubscriber())
     }

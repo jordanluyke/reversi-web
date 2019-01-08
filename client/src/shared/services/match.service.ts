@@ -47,6 +47,14 @@ export class MatchService implements Resolve<Observable<Match>> {
             )
     }
 
+    public findMatch(): Observable<Match> {
+        return this.socketService.subscribe(SocketEvent.FindMatch)
+            .pipe(
+                flatMap(body => this.getMatch(body.matchId)),
+                tap(match => this.socketService.unsubscribe(SocketEvent.FindMatch))
+            )
+    }
+
     private getMatch(id: string): Observable<Match> {
         return this.core.get("/matches/" + id)
             .pipe(

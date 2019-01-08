@@ -3,4 +3,5 @@ export enum SocketEvent {
     Receipt = "Receipt",
     Account = "Account",
     Match = "Match",
+    FindMatch = "FindMatch",
 }
