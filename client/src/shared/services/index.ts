@@ -1,6 +1,6 @@
 export * from './model/index'
 export {CookieService} from './cookie.service'
-export {CoreService} from './core.service'
+export {CoreApiService} from './core-api.service'
 export {SessionGuard} from './session-guard.service'
 export {SessionService} from './session.service'
 export {AccountService} from './account.service'

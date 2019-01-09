@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core'
 import {
     AccountService,
     SessionService,
-    CoreService,
+    CoreApiService,
     ErrorHandlingSubscriber
 } from '../../shared/index'
 import {Router} from '@angular/router'
@@ -18,7 +18,7 @@ export class LogoutComponent implements OnInit {
 
     constructor(
         private router: Router,
-        private core: CoreService,
+        private core: CoreApiService,
         private accountService: AccountService,
         private sessionService: SessionService,
     ) {}

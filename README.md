@@ -1,14 +1,14 @@
 # Reversi
 
 features:
-- websocket reconnection
+- websocket updates + autoreconnect
 - stat tracking
 - social media login
+- matchmaking
 
 todo:
-- matchmaking
 - move timeout
 - match leave timeout
-- message receipts
+- ws message receipts
 - settings
     - move confirmation

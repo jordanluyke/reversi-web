@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core'
-import {CoreService} from './core.service'
+import {CoreApiService} from './core-api.service'
 import {ReplaySubject, Observable, throwError, Subscription, of} from 'rxjs'
 import {tap, catchError, flatMap} from 'rxjs/operators'
 import {Resolve, ActivatedRouteSnapshot, Router} from '@angular/router'
@@ -19,7 +19,7 @@ export class MatchService implements Resolve<Observable<Match>> {
     private matchSubscription?: Subscription
 
     constructor(
-        private core: CoreService,
+        private core: CoreApiService,
         private router: Router,
         private socketService: SocketService,
     ) {}

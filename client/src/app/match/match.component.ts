@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy} from '@angular/core'
 import {tap} from 'rxjs/operators'
-import {ErrorHandlingSubscriber, CoreService, MatchService, Match, Side, AccountService, Profile, SessionService} from '../../shared/index'
+import {ErrorHandlingSubscriber, CoreApiService, MatchService, Match, Side, AccountService, Profile, SessionService} from '../../shared/index'
 import {Observable} from 'rxjs'
 import {Router} from '@angular/router'
 
@@ -22,7 +22,7 @@ export class MatchComponent implements OnInit, OnDestroy {
     private placeInProgress = false
 
     constructor(
-        private core: CoreService,
+        private core: CoreApiService,
         private matchService: MatchService,
         private accountService: AccountService,
         private sessionService: SessionService,

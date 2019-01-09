@@ -40,7 +40,7 @@ tar -cz \
     -f ${ARCHIVE} \
     ./*
 
-echo "Dashboard build completed."
+echo "Build completed."
 
 if [ "$1" == "-s" ] || [ "$1" == "--sync" ]; then
     cp ${ARCHIVE} /Users/jordanluyke/Documents/sync/reversi

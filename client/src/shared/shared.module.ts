@@ -5,7 +5,7 @@ import {CommonModule} from '@angular/common'
 import {FormsModule} from '@angular/forms'
 import {RouterModule} from '@angular/router'
 import {
-    CoreService,
+    CoreApiService,
     CookieService,
     SessionService,
     SessionGuard,
@@ -29,7 +29,7 @@ import {FacebookModule} from 'ngx-facebook'
     declarations: [
     ],
     providers: [
-        CoreService,
+        CoreApiService,
         CookieService,
         SessionService,
         SessionGuard,

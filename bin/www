@@ -15,16 +15,16 @@ app.set('port', port)
 
 let server = null
 
-try {
-    let options = {
-        key: fs.readFileSync("/home/ubuntu/sync/reversi/key.pem"),
-        cert: fs.readFileSync("/home/ubuntu/sync/reversi/cert.pem")
-    }
-    server = https.createServer(options, app)
-    console.log("Starting HTTPS")
-} catch(err) {
+// try {
+//     let options = {
+//         key: fs.readFileSync("/home/ubuntu/sync/reversi/key.pem"),
+//         cert: fs.readFileSync("/home/ubuntu/sync/reversi/cert.pem")
+//     }
+//     server = https.createServer(options, app)
+//     console.log("Starting HTTPS")
+// } catch(err) {
     server = http.createServer(app)
-}
+// }
 
 /**
  * Listen on provided port, on all network interfaces.

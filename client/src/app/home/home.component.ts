@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core'
-import {CoreService, Session, AccountService, SessionService, Instant, ErrorHandlingSubscriber, MatchService, SignInType, Account} from '../../shared/index'
+import {CoreApiService, Session, AccountService, SessionService, Instant, ErrorHandlingSubscriber, MatchService, SignInType, Account} from '../../shared/index'
 import {Observable, from, Subject} from 'rxjs'
 import {tap, flatMap, filter, debounceTime, distinctUntilChanged} from 'rxjs/operators'
 import {Router} from '@angular/router'
 import {FacebookService} from 'ngx-facebook'
-import {BigNumber} from 'bignumber.js'
 
 @Component({
     selector: 'home-component',
@@ -19,7 +18,7 @@ export class HomeComponent implements OnInit {
     private nameChanged: Subject<string> = new Subject()
 
     constructor(
-        private core: CoreService,
+        private core: CoreApiService,
         public accountService: AccountService,
         private sessionService: SessionService,
         private router: Router,

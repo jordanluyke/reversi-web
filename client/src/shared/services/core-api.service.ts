@@ -10,7 +10,7 @@ import {Router} from '@angular/router'
  */
 
 @Injectable()
-export class CoreService {
+export class CoreApiService {
 
     constructor(
         private httpClient: HttpClient,
@@ -61,7 +61,7 @@ export class CoreService {
                     if(response instanceof HttpErrorResponse) {
                         try {
                             let body = response.error
-                            if(body.exceptionType == "UnauthorizedException")
+                            if(body.type == "UnauthorizedException" || body.type == "AccessDeniedException")
                                 this.router.navigate(["/logout"])
                             return throwError(body)
                         } catch(err) {

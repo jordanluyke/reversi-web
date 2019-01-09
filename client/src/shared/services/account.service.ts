@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core'
-import {CoreService} from './core.service'
+import {CoreApiService} from './core-api.service'
 import {SessionService} from './session.service'
 import {ReplaySubject, Observable, of} from 'rxjs'
 import {tap, flatMap} from 'rxjs/operators'
@@ -18,7 +18,7 @@ export class AccountService implements Resolve<Observable<Account>> {
     public loaded: boolean = false
 
     constructor(
-        private coreService: CoreService,
+        private CoreApiService: CoreApiService,
         private sessionService: SessionService,
         private socketService: SocketService,
     ) {}
@@ -32,7 +32,7 @@ export class AccountService implements Resolve<Observable<Account>> {
     }
 
     private getAccount(): Observable<Account> {
-        return this.coreService.get("/accounts/" + this.sessionService.session.accountId)
+        return this.CoreApiService.get("/accounts/" + this.sessionService.session.accountId)
             .pipe(
                 tap(account => {
                     this.account = account
