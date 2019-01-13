@@ -41,10 +41,12 @@ module.exports = (app) => {
                 'Content-Type': req.headers['Content-Type']
             },
             qs: req.query,
-            useQuerystring: true
+            useQuerystring: true,
+            strictSSL: false,
         }))
             .on("error", err => {
                 console.log("Failed to connect to core for proxied API call", req.method + " " + corePath)
+                console.log(err)
                 res.status(500).json({
                     type: "ConnectionException",
                     transient: true,
