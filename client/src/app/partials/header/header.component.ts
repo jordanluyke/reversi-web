@@ -10,9 +10,9 @@ import {AccountService} from '../../../shared/index'
 })
 export class HeaderComponent {
 
-    @ViewChild('aboutModal') public aboutModal: TemplateRef<any>
-    @ViewChild('settingsModal') public settingsModal: TemplateRef<any>
-    @ViewChild('profileModal') public profileModal: TemplateRef<any>
+    @ViewChild('aboutModal', {static: false}) public aboutModal: TemplateRef<any>
+    @ViewChild('settingsModal', {static: false}) public settingsModal: TemplateRef<any>
+    @ViewChild('profileModal', {static: false}) public profileModal: TemplateRef<any>
     public settings = {
         delayEnabled: false
     }

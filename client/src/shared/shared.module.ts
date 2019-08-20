@@ -23,7 +23,7 @@ import {FacebookModule} from 'ngx-facebook'
         FormsModule,
         HttpClientModule,
         RouterModule,
-        NgbModule.forRoot(),
+        NgbModule,
         FacebookModule.forRoot(),
     ],
     declarations: [

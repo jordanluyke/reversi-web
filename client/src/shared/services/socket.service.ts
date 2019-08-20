@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core'
-import {Subject, from, Observable, of, throwError} from 'rxjs'
+import {Subject, from, Observable, of, throwError, Subscription, timer} from 'rxjs'
 import {tap, filter, flatMap, take} from 'rxjs/operators'
 import {WebSocketSubject} from 'rxjs/webSocket'
-import {ErrorHandlingSubscriber, WebUtil} from '../util/index'
+import {ErrorHandlingSubscriber, WebUtil, TimeUnit} from '../util/index'
 import {SocketEvent, SocketSubscription} from './model/index'
 import {Resolve, Router} from '@angular/router'
 import {SessionService} from './session.service'
@@ -14,6 +14,7 @@ export class SocketService implements Resolve<Observable<void>> {
     private ws?: WebSocketSubject<any>
     private subscriptions: SocketSubscription[] = []
     private disconnected = false
+    private keepAliveSubscription?: Subscription
 
     constructor(
         private router: Router,
@@ -28,14 +29,6 @@ export class SocketService implements Resolve<Observable<void>> {
         }
 
         this.createAndSubscribeSocket()
-
-        this.subscribe(SocketEvent.KeepAlive)
-            .pipe(tap(Void => {
-                this.next({
-                    event: SocketEvent.KeepAlive
-                })
-            }))
-            .subscribe(new ErrorHandlingSubscriber())
 
         return of(null)
     }
@@ -90,6 +83,7 @@ export class SocketService implements Resolve<Observable<void>> {
             openObserver: {
                 next: (event: Event) => {
                     console.log("Socket opened")
+                    this.startKeepAlive()
                     if(this.disconnected) {
                         this.disconnected = false
                         this.subscriptions
@@ -105,8 +99,9 @@ export class SocketService implements Resolve<Observable<void>> {
             },
             closeObserver: {
                 next: (event: CloseEvent) => {
-                    this.disconnected = true
                     console.log("Socket closed")
+                    this.stopKeepAlive()
+                    this.disconnected = true
                     // use rx and remove on logout
                     setTimeout(() => this.createAndSubscribeSocket(), 5000)
                 }
@@ -140,5 +135,21 @@ export class SocketService implements Resolve<Observable<void>> {
             return of(null)
         this.started = true
         return this.init()
+    }
+
+    private startKeepAlive(): void {
+        let time = TimeUnit.SECONDS.toMillis(10)
+        this.keepAliveSubscription = timer(time, time)
+            .pipe(tap(Void => {
+                this.ws.next({
+                    event: SocketEvent.KeepAlive
+                })
+            }))
+            .subscribe(new ErrorHandlingSubscriber())
+    }
+
+    private stopKeepAlive(): void {
+        if(this.keepAliveSubscription != null)
+            this.keepAliveSubscription.unsubscribe()
     }
 }

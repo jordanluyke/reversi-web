@@ -7,12 +7,12 @@
     "start": "bin/devbuildrun"
   },
   "dependencies": {
-    "compression": "1.7.3",
-    "concurrently": "4.1.0",
-    "cookie-parser": "1.4.3",
+    "compression": "1.7.4",
+    "concurrently": "4.1.2",
+    "cookie-parser": "1.4.4",
     "debug": "4.1.1",
-    "dotenv": "6.2.0",
-    "express": "4.16.4",
+    "dotenv": "8.1.0",
+    "express": "4.17.1",
     "request": "2.88.0"
   }
 }
