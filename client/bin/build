@@ -322,10 +322,7 @@ let bundle = () => {
             console.log(warning.message)
         },
         plugins: [
-            nodeResolve({
-                jsnext: true,
-                module: true
-            }),
+            nodeResolve(),
             commonjs({
                 include: [
                     "rxjs/**",
