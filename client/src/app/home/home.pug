@@ -7,6 +7,7 @@ header-component
                 div(*ngIf="reqInProgress")
                     .center
                         .fas.fa-circle-notch.fa-spin
+                        p.center.find-text(*ngIf="findGameInProgress") Finding game...
                         .create-ctnr(*ngIf="showCreateBtnDuringFind")
                             button.btn.btn-success((click)="clickCreateGame()") Create Game
                 div(*ngIf="!reqInProgress")

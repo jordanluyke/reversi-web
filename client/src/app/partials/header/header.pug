@@ -29,11 +29,12 @@ ng-template(#aboutModal, let-c="close")
     .modal-body.about-modal
         .fas.fa-times((click)="c()")
         p.title About
+        p Multiplayer reversi. Made with Java, Angular, and TypeScript.
         .row(style="margin-top: 50px")
             .col-6
                 a.btn.btn-success(href="https://en.wikipedia.org/wiki/Reversi#Rules" target="_blank" referrer="noreferrer") How to play
             .col-6
-                p.feedback.right: a(href="mailto:jordanluyke@gmail.com") Feedback?
+                p.feedback.right: a(href="mailto:jordanluyke@gmail.com") Feedback
         //- p.created Created by Jordan Luyke
 
 ng-template(#settingsModal, let-c="close")
