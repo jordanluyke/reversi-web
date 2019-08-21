@@ -2,7 +2,7 @@
 
 .header {
     padding: 15px 0;
-    box-shadow: 0 1px 1px lighten(@font-color, 40%);
+    box-shadow: 0 1px 6px rgba(74, 78, 86, 0.5);
     .center-left {
         margin-right: 20%;
         text-align: center;
@@ -15,19 +15,26 @@
         display: inline-block;
         cursor: pointer;
         outline: 0;
+        padding: 7px;
+        box-shadow: 0 0;
+        border-bottom: 2px solid;
+        border-radius: 2px;
+        border-color: rgba(0, 0, 0, 0);
+        transition: border-color 100ms;
+        .active-border {
+            border-color: @primary-color;
+        }
         &:hover:not(.active) {
-            .title {
-                text-decoration: underline;
-            }
+            .active-border;
         }
         &.active {
             cursor: default;
+            .active-border;
         }
         .nav-btn {
             width: 55px;
             height: 55px;
             background-color: @primary-color;
-            border: 2px solid #fff;
             border-radius: 50%;
             padding: 15px;
             .fas {
@@ -35,26 +42,27 @@
                 color: #fff;
             }
             .fa-home {
-                margin-top: -2px;
-                margin-left: -3px;
+                margin-top: 0;
+                margin-left: -1px;
             }
             .fa-question {
-                margin-top: -1px;
+                margin-top: 0;
                 margin-left: 2px;
             }
             .fa-cog {
-                margin-top: -2px;
-                margin-left: -1px;
+                margin-top: 0;
+                margin-left: 0.5px;
             }
             .fa-user {
-                margin-top: -2px;
-                margin-left: 0.5px;
+                margin-top: 0;
+                margin-left: 0px;
             }
         }
         .title {
             font-size: 14px;
             text-align: center;
             margin-top: 8px;
+            letter-spacing: 0.1px;
         }
     }
     .logo-ctnr {
@@ -81,8 +89,7 @@
     }
     .feedback {
         font-size: 14px;
-        margin-bottom: 10px;
-        margin-top: 30px;
+        margin-top: 20px;
     }
     .keybase {
         background-color: #4c8eff;

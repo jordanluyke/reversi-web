@@ -17,4 +17,4 @@ header-component
                         input.form-control.name-input([(ngModel)]="name", (ngModelChange)="onNameChange($event)", name="name", maxlength="40", placeholder="Name", required, autofocus)
                         .divider
                         button.btn.btn-primary((click)="clickFindGame()") Find Game
-                        button.btn.btn-success.btn-create((click)="clickCreateGame()") Create Game
+                        button.btn.btn-success((click)="clickCreateGame()") Create Game

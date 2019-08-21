@@ -252,10 +252,10 @@ let copyFiles = () => {
         .then(() => {
             let packages = [
                 "bootstrap",
-                "roboto-fontface",
                 "@fortawesome",
                 "zone.js",
                 "@babel/polyfill",
+                "lato-font",
             ]
 
             if(argv.dev)
