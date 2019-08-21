@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
     public reqInProgress = false
     public findGameInProgress = false
     public name?: string
+    public showCreateBtnDuringFind = false
     private nameChanged: Subject<string> = new Subject()
 
     constructor(
@@ -46,11 +47,16 @@ export class HomeComponent implements OnInit {
     public clickFindGame(): void {
         this.reqInProgress = true
         this.findGameInProgress = true
+        setTimeout(() => {
+            this.showCreateBtnDuringFind = true
+        }, 5000)
         this.matchService.findMatch()
             .pipe(
                 tap(match => {
+                    this.showCreateBtnDuringFind = false
                     this.router.navigate(["matches", match.id])
                 }, err => {
+                    this.showCreateBtnDuringFind = false
                     this.reqInProgress = false
                     this.findGameInProgress = false
                 })

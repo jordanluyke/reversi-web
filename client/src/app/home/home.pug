@@ -7,6 +7,8 @@ header-component
                 div(*ngIf="reqInProgress")
                     .center
                         .fas.fa-circle-notch.fa-spin
+                        .create-ctnr(*ngIf="showCreateBtnDuringFind")
+                            button.btn.btn-success((click)="clickCreateGame()") Create Game
                 div(*ngIf="!reqInProgress")
                     .initial-ctnr(*ngIf="!accountService.loaded")
                         button.btn.btn-success.btn-guest((click)="clickGuest()") Play as Guest
