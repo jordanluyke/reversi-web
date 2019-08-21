@@ -1,11 +1,12 @@
 import {Injectable} from '@angular/core'
 import {CoreApiService} from './core-api.service'
 import {ReplaySubject, Observable, throwError, Subscription, of} from 'rxjs'
-import {tap, catchError, flatMap} from 'rxjs/operators'
+import {tap, catchError, flatMap, filter} from 'rxjs/operators'
 import {Resolve, ActivatedRouteSnapshot, Router} from '@angular/router'
 import {Match, SocketEvent} from './model/index'
 import {SocketService} from './socket.service'
 import {ErrorHandlingSubscriber} from '../util/index'
+import {AccountService} from './account.service'
 
 @Injectable()
 export class MatchService implements Resolve<Observable<Match>> {
@@ -22,6 +23,7 @@ export class MatchService implements Resolve<Observable<Match>> {
         private core: CoreApiService,
         private router: Router,
         private socketService: SocketService,
+        private accountService: AccountService,
     ) {}
 
     public clear(): void {
@@ -48,8 +50,9 @@ export class MatchService implements Resolve<Observable<Match>> {
     }
 
     public findMatch(): Observable<Match> {
-        return this.socketService.subscribe(SocketEvent.FindMatch)
+        return this.socketService.subscribe(SocketEvent.FindMatch, this.accountService.account.id)
             .pipe(
+                filter(body => body.matchId != null),
                 flatMap(body => this.getMatch(body.matchId)),
                 tap(match => this.socketService.unsubscribe(SocketEvent.FindMatch, false))
             )

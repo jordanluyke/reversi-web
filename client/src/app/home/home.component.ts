@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core'
-import {CoreApiService, Session, AccountService, SessionService, Instant, ErrorHandlingSubscriber, MatchService, SignInType, Account} from '../../shared/index'
+import {Component, OnInit, OnDestroy} from '@angular/core'
+import {CoreApiService, Session, AccountService, SessionService, Instant, ErrorHandlingSubscriber, MatchService, SignInType, Account, SocketService, SocketEvent} from '../../shared/index'
 import {Observable, from, Subject} from 'rxjs'
 import {tap, flatMap, filter, debounceTime, distinctUntilChanged} from 'rxjs/operators'
 import {Router} from '@angular/router'
@@ -10,7 +10,7 @@ import {FacebookService} from 'ngx-facebook'
     styleUrls: ['home.css'],
     templateUrl: 'home.html'
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
     public reqInProgress = false
     public findGameInProgress = false
@@ -25,6 +25,7 @@ export class HomeComponent implements OnInit {
         private router: Router,
         private matchService: MatchService,
         private facebookService: FacebookService,
+        private socketService: SocketService,
     ) {}
 
     public ngOnInit(): void {
@@ -42,6 +43,10 @@ export class HomeComponent implements OnInit {
                 }))
             )
             .subscribe(new ErrorHandlingSubscriber())
+    }
+
+    public ngOnDestroy(): void {
+        this.socketService.unsubscribe(SocketEvent.FindMatch)
     }
 
     public clickFindGame(): void {
