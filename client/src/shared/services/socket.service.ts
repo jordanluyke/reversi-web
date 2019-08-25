@@ -41,7 +41,7 @@ export class SocketService implements Resolve<Observable<void>> {
         if(channel != null && this.subscriptions.find(s => s.event == event) == null)
             data.channel = channel
 
-        this.next(data)
+        this.ws.next(data)
 
         let subject = new Subject()
         this.subscriptions.push(new SocketSubscription(event, channel, subject))
@@ -52,19 +52,13 @@ export class SocketService implements Resolve<Observable<void>> {
         let sub = this.subscriptions.find(s => s.event == event)
         if(sub != null) {
             if(send) {
-                this.next({
+                this.ws.next({
                     event: sub.event,
                     unsubscribe: true
                 })
             }
             this.subscriptions = this.subscriptions.filter(s => s.event != sub.event)
         }
-    }
-
-    private next(o: any): void {
-        if(this.sessionService.session.validate())
-            o["sessionId"] = this.sessionService.session.sessionId
-        this.ws.next(o)
     }
 
     private createAndSubscribeSocket(): void {
@@ -89,7 +83,7 @@ export class SocketService implements Resolve<Observable<void>> {
                         this.subscriptions
                             .filter(sub => sub.channel != null)
                             .forEach(sub => {
-                                this.next({
+                                this.ws.next({
                                     event: sub.event,
                                     channel: sub.channel
                                 })
