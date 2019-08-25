@@ -239,7 +239,7 @@ let copyFiles = () => {
     return fs.copy(path.join(client, "public"), path.join(client, "target"))
         .then(() => {
             if(argv.dev)
-                return Promise.all(["systemjs.config.js", "systemjs-angular-loader.js"]
+                return Promise.all(["systemjs.config.js", "systemjs-angular-loader.js", "systemjs-packagemap.json"]
                     .map(file => fs.copy(path.join(client, file), path.join(client, "target", file))))
             else
                 return fs.copy(path.join(client, "src"), path.join(client, "target/src"))

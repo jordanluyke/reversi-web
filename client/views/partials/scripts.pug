@@ -1,6 +1,8 @@
 script(src="/node_modules/reflect-metadata/Reflect.js")
 script(src="/node_modules/systemjs/dist/system.js")
 script(src="/systemjs.config.js")
+//- script(type="systemjs-importmap" src="/systemjs-packagemap.json")
 script.
+    //- System.import('/src/main.js')
     System.import('app')
         .catch(function(err){ console.error(err); });
