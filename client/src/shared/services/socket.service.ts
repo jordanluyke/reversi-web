@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core'
 import {Subject, from, Observable, of, throwError, Subscription, timer} from 'rxjs'
 import {tap, filter, flatMap, take} from 'rxjs/operators'
 import {WebSocketSubject} from 'rxjs/webSocket'
-import {ErrorHandlingSubscriber, WebUtil, TimeUnit} from '../util/index'
+import {ErrorHandlingSubscriber, WebUtil, TimeUnit, RandomUtil} from '../util/index'
 import {SocketEvent, SocketSubscription} from './model/index'
 import {Resolve, Router} from '@angular/router'
 import {SessionService} from './session.service'
@@ -41,7 +41,7 @@ export class SocketService implements Resolve<Observable<void>> {
         if(channel != null && this.subscriptions.find(s => s.event == event) == null)
             data.channel = channel
 
-        this.ws.next(data)
+        this.next(data)
 
         let subject = new Subject()
         this.subscriptions.push(new SocketSubscription(event, channel, subject))
@@ -52,13 +52,18 @@ export class SocketService implements Resolve<Observable<void>> {
         let sub = this.subscriptions.find(s => s.event == event)
         if(sub != null) {
             if(send) {
-                this.ws.next({
+                this.next({
                     event: sub.event,
                     unsubscribe: true
                 })
             }
             this.subscriptions = this.subscriptions.filter(s => s.event != sub.event)
         }
+    }
+
+    public next(o: any): void {
+        // o.receiptId = RandomUtil.generate(6)
+        this.ws.next(o)
     }
 
     private createAndSubscribeSocket(): void {
@@ -83,7 +88,7 @@ export class SocketService implements Resolve<Observable<void>> {
                         this.subscriptions
                             .filter(sub => sub.channel != null)
                             .forEach(sub => {
-                                this.ws.next({
+                                this.next({
                                     event: sub.event,
                                     channel: sub.channel
                                 })
@@ -107,20 +112,24 @@ export class SocketService implements Resolve<Observable<void>> {
                 tap(data => console.log(data)),
                 flatMap(data => from(this.subscriptions)
                     .pipe(
-                        filter(sub => sub.event == data.event),
+                        filter(subscription => subscription.event == data.event),
                         take(1),
-                        tap(sub => sub.subject.next(data)),
+                        tap(subscription => {
+                            subscription.subject.next(data)
+                            // if(data.receiptId == null)
+                            //     throw new Error("receiptId null")
+                            // this.ws.next({
+                            //     event: SocketEvent.Receipt,
+                            //     id: data.receiptId
+                            // })
+                        }),
                     )
                 ),
             )
             .subscribe(
                 Void => {},
-                err => {
-                    console.error(err)
-                },
-                () => {
-                    console.log("WebSocket completed")
-                }
+                err => console.error(err),
+                () => console.log("WebSocket completed")
             )
     }
 
@@ -135,7 +144,7 @@ export class SocketService implements Resolve<Observable<void>> {
         let time = TimeUnit.SECONDS.toMillis(10)
         this.keepAliveSubscription = timer(time, time)
             .pipe(tap(Void => {
-                this.ws.next({
+                this.next({
                     event: SocketEvent.KeepAlive
                 })
             }))

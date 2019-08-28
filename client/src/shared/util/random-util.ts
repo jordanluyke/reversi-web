@@ -6,4 +6,8 @@ export class RandomUtil {
             .substr(0, 16)
             .toUpperCase()
     }
+
+    public static generate(characters: number): string {
+        return this.generateId().substr(characters)
+    }
 }
