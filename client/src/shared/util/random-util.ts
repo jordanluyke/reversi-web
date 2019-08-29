@@ -8,6 +8,6 @@ export class RandomUtil {
     }
 
     public static generate(characters: number): string {
-        return this.generateId().substr(characters)
+        return this.generateId().substr(0, characters)
     }
 }
