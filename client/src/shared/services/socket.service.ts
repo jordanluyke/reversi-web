@@ -111,9 +111,7 @@ export class SocketService implements Resolve<Observable<void>> {
             .pipe(
                 tap(data => {
                     console.log(data)
-                    if(data.event != SocketEvent.Receipt) {
-                        if(data.receiptId == null)
-                            throw new Error("receiptId null")
+                    if(data.receiptId != null) {
                         this.ws.next({
                             event: SocketEvent.Receipt,
                             id: data.receiptId
@@ -146,7 +144,7 @@ export class SocketService implements Resolve<Observable<void>> {
         let time = TimeUnit.SECONDS.toMillis(10)
         this.keepAliveSubscription = timer(time, time)
             .pipe(tap(Void => {
-                this.next({
+                this.ws.next({
                     event: SocketEvent.KeepAlive
                 })
             }))
