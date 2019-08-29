@@ -62,7 +62,7 @@ export class SocketService implements Resolve<Observable<void>> {
     }
 
     public next(o: any): void {
-        // o.receiptId = RandomUtil.generate(6)
+        o.receiptId = RandomUtil.generate(6)
         this.ws.next(o)
     }
 
@@ -109,20 +109,22 @@ export class SocketService implements Resolve<Observable<void>> {
 
         this.ws
             .pipe(
-                tap(data => console.log(data)),
+                tap(data => {
+                    console.log(data)
+                    if(data.event != SocketEvent.Receipt) {
+                        if(data.receiptId == null)
+                            throw new Error("receiptId null")
+                        this.ws.next({
+                            event: SocketEvent.Receipt,
+                            id: data.receiptId
+                        })
+                    }
+                }),
                 flatMap(data => from(this.subscriptions)
                     .pipe(
                         filter(subscription => subscription.event == data.event),
                         take(1),
-                        tap(subscription => {
-                            subscription.subject.next(data)
-                            // if(data.receiptId == null)
-                            //     throw new Error("receiptId null")
-                            // this.ws.next({
-                            //     event: SocketEvent.Receipt,
-                            //     id: data.receiptId
-                            // })
-                        }),
+                        tap(subscription => subscription.subject.next(data)),
                     )
                 ),
             )
