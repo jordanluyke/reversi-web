@@ -30,6 +30,7 @@ export class SocketService implements Resolve<Observable<void>> {
         }
 
         this.createAndSubscribeSocket()
+        this.removeSubsOnLogout()
 
         return of(null)
     }
@@ -107,7 +108,6 @@ export class SocketService implements Resolve<Observable<void>> {
                     console.log("Socket closed")
                     this.stopKeepAlive()
                     this.disconnected = true
-                    // remove subs on logout
                     // refresh data from subs on reconnect
                     setTimeout(() => this.createAndSubscribeSocket(), 5000)
                 }
@@ -171,5 +171,20 @@ export class SocketService implements Resolve<Observable<void>> {
     private stopKeepAlive(): void {
         if(this.keepAliveSubscription != null)
             this.keepAliveSubscription.unsubscribe()
+    }
+
+    private removeSubsOnLogout(): void {
+        this.sessionService.onClear
+            .pipe(
+                tap(sub => {
+                    this.subscriptions.forEach(sub => {
+                        this.next({
+                            event: sub.event,
+                            unsubscribe: true
+                        })
+                    })
+                })
+            )
+            .subscribe(new ErrorHandlingSubscriber())
     }
 }
