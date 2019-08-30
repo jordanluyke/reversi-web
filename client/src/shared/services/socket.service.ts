@@ -99,6 +99,7 @@ export class SocketService implements Resolve<Observable<void>> {
                                     event: sub.event,
                                     channel: sub.channel
                                 })
+                                sub.subject.next(null)
                         })
                     }
                 }
@@ -108,7 +109,6 @@ export class SocketService implements Resolve<Observable<void>> {
                     console.log("Socket closed")
                     this.stopKeepAlive()
                     this.disconnected = true
-                    // refresh data from subs on reconnect
                     setTimeout(() => this.createAndSubscribeSocket(), 5000)
                 }
             }
@@ -138,9 +138,9 @@ export class SocketService implements Resolve<Observable<void>> {
                 }),
                 flatMap(data => from(this.subscriptions)
                     .pipe(
-                        filter(subscription => subscription.event == data.event),
+                        filter(sub => sub.event == data.event),
                         take(1),
-                        tap(subscription => subscription.subject.next(data)),
+                        tap(sub => sub.subject.next(null)),
                     )
                 ),
             )
