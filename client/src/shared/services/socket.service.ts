@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core'
-import {Subject, from, Observable, of, throwError, Subscription, timer} from 'rxjs'
+import {Subject, from, Observable, of, throwError, Subscription, interval} from 'rxjs'
 import {tap, filter, flatMap, take} from 'rxjs/operators'
 import {WebSocketSubject} from 'rxjs/webSocket'
 import {ErrorHandlingSubscriber, WebUtil, TimeUnit, RandomUtil} from '../util/index'
@@ -15,6 +15,7 @@ export class SocketService implements Resolve<Observable<void>> {
     private subscriptions: SocketSubscription[] = []
     private disconnected = false
     private keepAliveSubscription?: Subscription
+    private receiptSubscriptions: Map<string, Subscription> = new Map()
 
     constructor(
         private router: Router,
@@ -62,8 +63,14 @@ export class SocketService implements Resolve<Observable<void>> {
     }
 
     public next(o: any): void {
-        o.receiptId = RandomUtil.generate(6)
+        let receiptId = RandomUtil.generate(6)
+        o.receiptId = receiptId
         this.ws.next(o)
+
+        let subscription = interval(TimeUnit.SECONDS.toMillis(3))
+            .pipe(tap(Void => this.ws.next(o)))
+            .subscribe(new ErrorHandlingSubscriber())
+        this.receiptSubscriptions.set(receiptId, subscription)
     }
 
     private createAndSubscribeSocket(): void {
@@ -86,7 +93,6 @@ export class SocketService implements Resolve<Observable<void>> {
                     if(this.disconnected) {
                         this.disconnected = false
                         this.subscriptions
-                            .filter(sub => sub.channel != null)
                             .forEach(sub => {
                                 this.next({
                                     event: sub.event,
@@ -101,7 +107,8 @@ export class SocketService implements Resolve<Observable<void>> {
                     console.log("Socket closed")
                     this.stopKeepAlive()
                     this.disconnected = true
-                    // use rx and remove on logout
+                    // remove subs on logout
+                    // refresh data from subs on reconnect
                     setTimeout(() => this.createAndSubscribeSocket(), 5000)
                 }
             }
@@ -111,11 +118,22 @@ export class SocketService implements Resolve<Observable<void>> {
             .pipe(
                 tap(data => {
                     console.log(data)
+
                     if(data.receiptId != null) {
                         this.ws.next({
                             event: SocketEvent.Receipt,
                             id: data.receiptId
                         })
+                    }
+
+                    if(data.event == SocketEvent.Receipt) {
+                        let sub = this.receiptSubscriptions.get(data.id)
+                        if(sub != null) {
+                            sub.unsubscribe()
+                            this.receiptSubscriptions.delete(data.id)
+                        } else {
+                            console.error("Receipt subscription does not exist")
+                        }
                     }
                 }),
                 flatMap(data => from(this.subscriptions)
@@ -141,8 +159,7 @@ export class SocketService implements Resolve<Observable<void>> {
     }
 
     private startKeepAlive(): void {
-        let time = TimeUnit.SECONDS.toMillis(10)
-        this.keepAliveSubscription = timer(time, time)
+        this.keepAliveSubscription = interval(TimeUnit.SECONDS.toMillis(10))
             .pipe(tap(Void => {
                 this.ws.next({
                     event: SocketEvent.KeepAlive
