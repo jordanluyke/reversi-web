@@ -1,6 +1,6 @@
 import {ModuleWithProviders} from '@angular/core'
 import {Routes, RouterModule} from '@angular/router'
-import {AccountService, SessionGuard, MatchService} from '../shared/index'
+import {AccountService, SessionGuard, MatchService, CoreConfigService, PusherService} from '../shared/index'
 import {HomeComponent} from './home/home.component'
 import {NavigatorComponent} from './navigator/navigator.component'
 import {NotFoundComponent} from './not-found/not-found.component'
@@ -11,7 +11,10 @@ import {NotSupportedComponent} from './not-supported/not-supported.component'
 const routes: Routes = [
     {
         path: '',
-        component: NavigatorComponent
+        component: NavigatorComponent,
+        resolve: [
+            CoreConfigService,
+        ]
     }, {
         path: 'home',
         component: HomeComponent

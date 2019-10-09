@@ -1,6 +1,4 @@
-export enum SocketEvent {
-    KeepAlive = "KeepAlive",
-    Receipt = "Receipt",
+export enum PusherChannel {
     Account = "Account",
     Match = "Match",
     FindMatch = "FindMatch",

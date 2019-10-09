@@ -1,7 +1,7 @@
 # Reversi
 
 features:
-- websocket updates + autoreconnect
+- pusher updates
 - stat tracking
 - social media login
 - matchmaking

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core'
 import {Router, ActivatedRoute} from '@angular/router'
 import {Observable, from} from 'rxjs'
 import {flatMap, toArray} from 'rxjs/operators'
-import {SocketService, ErrorHandlingSubscriber, AccountService} from '../../shared/index'
+import {ErrorHandlingSubscriber, AccountService, CoreConfigService} from '../../shared/index'
 import {FacebookService} from 'ngx-facebook'
 
 /**
@@ -20,8 +20,8 @@ export class NavigatorComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private accountService: AccountService,
-        private socketService: SocketService,
         private facebookService: FacebookService,
+        private coreConfigService: CoreConfigService,
     ) {}
 
     public ngOnInit(): void {
@@ -30,7 +30,7 @@ export class NavigatorComponent implements OnInit {
 
         from([
             this.accountService,
-            this.socketService,
+            this.coreConfigService,
         ])
             .pipe(
                 flatMap((service: any) => service.resolve()),

@@ -17,6 +17,5 @@
         "ngx-facebook": "node_modules/ngx-facebook/dist/umd/index.js",
         "rxjs": "/node_modules/rxjs/index.js",
         "rxjs/operators": "/node_modules/rxjs/operators/index.js",
-        "rxjs/webSocket": "/node_modules/rxjs/webSockets/index.js"
     }
 }

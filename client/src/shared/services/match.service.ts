@@ -3,8 +3,8 @@ import {CoreApiService} from './core-api.service'
 import {ReplaySubject, Observable, throwError, Subscription, of} from 'rxjs'
 import {tap, catchError, flatMap, filter} from 'rxjs/operators'
 import {Resolve, ActivatedRouteSnapshot, Router} from '@angular/router'
-import {Match, SocketEvent} from './model/index'
-import {SocketService} from './socket.service'
+import {Match, PusherChannel} from './model/index'
+import {PusherService} from './pusher.service'
 import {ErrorHandlingSubscriber} from '../util/index'
 import {AccountService} from './account.service'
 
@@ -22,7 +22,7 @@ export class MatchService implements Resolve<Observable<Match>> {
     constructor(
         private core: CoreApiService,
         private router: Router,
-        private socketService: SocketService,
+        private pusherService: PusherService,
         private accountService: AccountService,
     ) {}
 
@@ -50,10 +50,10 @@ export class MatchService implements Resolve<Observable<Match>> {
     }
 
     public findMatch(): Observable<Match> {
-        return this.socketService.subscribe(SocketEvent.FindMatch, this.accountService.account.id)
+        return this.pusherService.subscribe(PusherChannel.FindMatch, this.accountService.account.id)
             .pipe(
                 flatMap(body => this.getMatch(body.matchId)),
-                tap(match => this.socketService.unsubscribe(SocketEvent.FindMatch, false))
+                tap(match => this.pusherService.unsubscribe(PusherChannel.FindMatch))
             )
     }
 
@@ -71,7 +71,7 @@ export class MatchService implements Resolve<Observable<Match>> {
     }
 
     private subscribeMatch(): void {
-        this.matchSubscription = this.socketService.subscribe(SocketEvent.Match, this.match.id)
+        this.matchSubscription = this.pusherService.subscribe(PusherChannel.Match, this.match.id)
             .pipe(flatMap(Void => this.getMatch(this.match.id)))
             .subscribe(new ErrorHandlingSubscriber())
     }
@@ -80,7 +80,7 @@ export class MatchService implements Resolve<Observable<Match>> {
         if(this.matchSubscription != null) {
             this.matchSubscription.unsubscribe()
             this.matchSubscription = null
-            this.socketService.unsubscribe(SocketEvent.Match)
+            this.pusherService.unsubscribe(PusherChannel.Match)
         }
     }
 

@@ -5,6 +5,7 @@ let map = {
     "bignumber.js": "node_modules/bignumber.js",
     "@ng-bootstrap": "node_modules/@ng-bootstrap",
     "ngx-facebook": "node_modules/ngx-facebook",
+    "pusher-js": "node_modules/pusher-js",
 };
 
 let packages = {
@@ -25,10 +26,6 @@ let packages = {
         main: "index.js",
         defaultExtension: "js"
     },
-    "rxjs/webSocket": {
-        main: "index.js",
-        defaultExtension: "js"
-    },
     "bignumber.js": {
         main: "bignumber.min.js",
         defaultExtension: "js"
@@ -41,6 +38,10 @@ let packages = {
         main: "dist/umd/index.js",
         defaultExtension: "js"
     },
+    "pusher-js": {
+        main: "dist/web/pusher.min.js",
+        defaultExtension: "js"
+    }
 };
 
 [

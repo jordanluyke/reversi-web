@@ -11,7 +11,8 @@ import {
     SessionGuard,
     AccountService,
     MatchService,
-    SocketService,
+    CoreConfigService,
+    PusherService,
 } from './services/index'
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
 import {FacebookModule} from 'ngx-facebook'
@@ -35,7 +36,8 @@ import {FacebookModule} from 'ngx-facebook'
         SessionGuard,
         AccountService,
         MatchService,
-        SocketService,
+        CoreConfigService,
+        PusherService,
     ],
     exports: [
         BrowserModule,

@@ -3,7 +3,8 @@ import {
     AccountService,
     SessionService,
     CoreApiService,
-    ErrorHandlingSubscriber
+    ErrorHandlingSubscriber,
+    PusherService
 } from '../../shared/index'
 import {Router} from '@angular/router'
 import {empty} from 'rxjs'
@@ -21,6 +22,7 @@ export class LogoutComponent implements OnInit {
         private core: CoreApiService,
         private accountService: AccountService,
         private sessionService: SessionService,
+        private pusherService: PusherService,
     ) {}
 
     public ngOnInit(): void {
@@ -48,5 +50,6 @@ export class LogoutComponent implements OnInit {
     private clear(): void {
         this.accountService.clear()
         this.sessionService.clear()
+        this.pusherService.clear()
     }
 }

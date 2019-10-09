@@ -256,6 +256,7 @@ let copyFiles = () => {
                 "zone.js",
                 "@babel/polyfill",
                 "lato-font",
+                "pusher-js",
             ]
 
             if(argv.dev)
@@ -330,6 +331,7 @@ let bundle = () => {
                     "bignumber.js/bignumber.js",
                     "@ng-bootstrap/**",
                     "ngx-facebook/**",
+                    "pusher-js/dist/web/pusher.min.js",
                 ]
                     .map(p => path.join(client, "node_modules", p)),
                 namedExports: Object.entries({

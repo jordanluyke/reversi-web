@@ -4,9 +4,9 @@ import {SessionService} from './session.service'
 import {ReplaySubject, Observable, of} from 'rxjs'
 import {tap, flatMap} from 'rxjs/operators'
 import {Resolve} from '@angular/router'
-import {Account, SocketEvent} from './model/index'
-import {SocketService} from './socket.service'
+import {Account, PusherChannel} from './model/index'
 import {ErrorHandlingSubscriber} from '../util/index'
+import {PusherService} from './pusher.service'
 
 @Injectable()
 export class AccountService implements Resolve<Observable<Account>> {
@@ -18,9 +18,9 @@ export class AccountService implements Resolve<Observable<Account>> {
     public loaded: boolean = false
 
     constructor(
-        private CoreApiService: CoreApiService,
+        private coreApiService: CoreApiService,
         private sessionService: SessionService,
-        private socketService: SocketService,
+        private pusherService: PusherService,
     ) {}
 
     public clear(): void {
@@ -32,7 +32,7 @@ export class AccountService implements Resolve<Observable<Account>> {
     }
 
     private getAccount(): Observable<Account> {
-        return this.CoreApiService.get("/accounts/" + this.sessionService.session.accountId)
+        return this.coreApiService.get("/accounts/" + this.sessionService.session.accountId)
             .pipe(
                 tap(account => {
                     this.account = account
@@ -45,7 +45,7 @@ export class AccountService implements Resolve<Observable<Account>> {
     }
 
     private subscribeUpdates(): void {
-        this.socketService.subscribe(SocketEvent.Account, this.account.id)
+        this.pusherService.subscribe(PusherChannel.Account, this.account.id)
             .pipe(flatMap(Void => this.getAccount()))
             .subscribe(new ErrorHandlingSubscriber())
     }
