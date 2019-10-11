@@ -14,7 +14,6 @@ export class AccountService implements Resolve<Observable<Account>> {
     public account?: Account
     public onLoad: ReplaySubject<Account> = new ReplaySubject(1)
     public onUpdate: ReplaySubject<Account> = new ReplaySubject(1)
-    private started: boolean = false
     public loaded: boolean = false
 
     constructor(
@@ -26,7 +25,6 @@ export class AccountService implements Resolve<Observable<Account>> {
     public clear(): void {
         this.onLoad = new ReplaySubject(1)
         this.onUpdate = new ReplaySubject(1)
-        this.started = false
         this.loaded = false
         this.account = null
     }
@@ -51,9 +49,6 @@ export class AccountService implements Resolve<Observable<Account>> {
     }
 
     public resolve(): Observable<Account> {
-        if(!this.sessionService.session.validate() || this.started)
-            return of(null)
-        this.started = true
         return this.getAccount()
             .pipe(tap(Void => this.subscribeUpdates()))
     }

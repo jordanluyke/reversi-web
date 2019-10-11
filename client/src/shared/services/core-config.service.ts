@@ -4,7 +4,6 @@ import {ReplaySubject, Observable, of} from 'rxjs'
 import {tap, flatMap} from 'rxjs/operators'
 import {Resolve} from '@angular/router'
 import {Account, CoreConfig} from './model/index'
-import {ErrorHandlingSubscriber} from '../util/index'
 
 @Injectable()
 export class CoreConfigService implements Resolve<Observable<Account>> {

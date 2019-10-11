@@ -11,10 +11,7 @@ import {NotSupportedComponent} from './not-supported/not-supported.component'
 const routes: Routes = [
     {
         path: '',
-        component: NavigatorComponent,
-        resolve: [
-            CoreConfigService,
-        ]
+        component: NavigatorComponent
     }, {
         path: 'home',
         component: HomeComponent

@@ -33,11 +33,7 @@ export class PusherService {
                 if(pusherChannel == null)
                     pusherChannel = this.pusher.subscribe(channel)
                 console.log("1")
-                // pusherChannel.bind(event, (data: any) => subject.next(data))
-                pusherChannel.bind(event, (data: any) => {
-                    console.log("pusher ", event, data)
-                    subject.next(data)
-                })
+                pusherChannel.bind(event, (data: any) => subject.next(data))
             }
         )
         return subject
@@ -58,8 +54,8 @@ export class PusherService {
             .subscribe(Void => {
                 try {
                     this.pusher = new _Pusher(this.coreConfigService.config.pusherKey, {
-                        encrypted: true,
-                        cluster: this.coreConfigService.config.pusherCluster
+                        cluster: this.coreConfigService.config.pusherCluster,
+                        encrypted: true
                     })
                     this.onLoad.next(null)
                 } catch(e) {
