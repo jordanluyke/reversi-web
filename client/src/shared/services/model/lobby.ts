@@ -2,7 +2,8 @@ export interface Lobby {
     id: string
     createdAt: number
     updatedAt: number
-    startingAt: number
+    startingAt?: number
+    closedAt?: number
     name?: string
     playerIdDark: string
     playerIdLight?: string

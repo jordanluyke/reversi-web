@@ -31,7 +31,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        if(this.isDark() || this.isLight())
+        if((this.isDark() || this.isLight()) && this.lobby.startingAt == null)
             this.lobbyService.leave(this.lobby.id)
     }
 
@@ -49,33 +49,35 @@ export class LobbyComponent implements OnInit, OnDestroy {
     }
 
     private onLobbyUpdate(lobby: Lobby): void {
-        if(this.lobby == null || lobby.playerIdDark != this.lobby.playerIdDark) {
-            if(this.accountService.account.id == lobby.playerIdDark) {
-                this.darkName = this.accountService.account.name
-            } else {
-                this.getProfile(lobby.playerIdDark)
-                    .pipe(tap(profile => this.darkName = profile.name))
-                    .subscribe(new ErrorHandlingSubscriber())
-            }
-        }
-        if(this.lobby == null || lobby.playerIdLight != this.lobby.playerIdLight) {
-            if(lobby.playerIdLight == null) {
-                this.lightName = null
-            } else if(this.accountService.account.id == lobby.playerIdLight) {
-                this.lightName = this.accountService.account.name
-            } else {
-                this.getProfile(lobby.playerIdLight)
-                    .pipe(tap(profile => this.lightName = profile.name))
-                    .subscribe(new ErrorHandlingSubscriber())
-            }
-        }
-
         if(lobby.matchId != null) {
             this.matchService.getMatch(lobby.matchId)
                 .pipe(tap(match => {
                     this.router.navigate(["matches", match.id])
                 }))
                 .subscribe(new ErrorHandlingSubscriber())
+        } else if(lobby.closedAt != null) {
+            this.router.navigate(["lobbies"])
+        } else {
+            if(this.lobby == null || lobby.playerIdDark != this.lobby.playerIdDark) {
+                if(this.accountService.account.id == lobby.playerIdDark) {
+                    this.darkName = this.accountService.account.name
+                } else {
+                    this.getProfile(lobby.playerIdDark)
+                        .pipe(tap(profile => this.darkName = profile.name))
+                        .subscribe(new ErrorHandlingSubscriber())
+                }
+            }
+            if(this.lobby == null || lobby.playerIdLight != this.lobby.playerIdLight) {
+                if(lobby.playerIdLight == null) {
+                    this.lightName = null
+                } else if(this.accountService.account.id == lobby.playerIdLight) {
+                    this.lightName = this.accountService.account.name
+                } else {
+                    this.getProfile(lobby.playerIdLight)
+                        .pipe(tap(profile => this.lightName = profile.name))
+                        .subscribe(new ErrorHandlingSubscriber())
+                }
+            }
         }
 
         this.lobby = lobby
