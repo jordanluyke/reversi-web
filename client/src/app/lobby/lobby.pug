@@ -8,7 +8,7 @@ header-component
                     p.desc NAME
                     p.value {{lobby.name}}
                     p.desc PLAYER 1
-                    p.value {{darkName}}
+                    p.value {{darkName || "-"}}
                     p.value(*ngIf="!lobby.playerReadyDark")
                         span.fas.fa-times
                         span Not Ready
@@ -16,7 +16,7 @@ header-component
                         span.fas.fa-check
                         span Ready
                     p.desc PLAYER 2
-                    p.value {{lightName}}
+                    p.value {{lightName || "-"}}
                     div(*ngIf="!!lobby.playerIdLight")
                         p.value(*ngIf="!lobby.playerReadyLight")
                             span.fas.fa-times

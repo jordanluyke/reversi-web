@@ -12,8 +12,8 @@ import {Router} from '@angular/router'
 export class LobbyComponent implements OnInit, OnDestroy {
 
     public lobby: Lobby
-    public darkName = "-"
-    public lightName = "-"
+    public darkName?: string
+    public lightName?: string
     public readyInProgress = false
 
     constructor(
@@ -26,9 +26,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
 
     public ngOnInit(): void {
         this.lobbyService.onUpdate
-            .pipe(tap(lobby => {
-                this.onLobbyUpdate(lobby)
-            }))
+            .pipe(tap(lobby => this.onLobbyUpdate(lobby)))
             .subscribe(new ErrorHandlingSubscriber())
     }
 
@@ -51,26 +49,27 @@ export class LobbyComponent implements OnInit, OnDestroy {
     }
 
     private onLobbyUpdate(lobby: Lobby): void {
-        this.lobby = lobby
-        if(this.accountService.account.id == lobby.playerIdDark) {
-            this.darkName = this.accountService.account.name
-            if(lobby.playerIdLight != null) {
-                this.getProfile(lobby.playerIdLight)
-                    .pipe(tap(profile => this.lightName = profile.name))
-                    .subscribe(new ErrorHandlingSubscriber())
+        if(this.lobby == null || lobby.playerIdDark != this.lobby.playerIdDark) {
+            if(this.accountService.account.id == lobby.playerIdDark) {
+                this.darkName = this.accountService.account.name
             } else {
-                this.lightName = "-"
-            }
-        } else if(this.accountService.account.id == lobby.playerIdLight) {
-            this.lightName = this.accountService.account.name
-            if(lobby.playerIdDark != null) {
                 this.getProfile(lobby.playerIdDark)
                     .pipe(tap(profile => this.darkName = profile.name))
                     .subscribe(new ErrorHandlingSubscriber())
-            } else {
-                this.darkName = "-"
             }
         }
+        if(this.lobby == null || lobby.playerIdLight != this.lobby.playerIdLight) {
+            if(lobby.playerIdLight == null) {
+                this.lightName = null
+            } else if(this.accountService.account.id == lobby.playerIdLight) {
+                this.lightName = this.accountService.account.name
+            } else {
+                this.getProfile(lobby.playerIdLight)
+                    .pipe(tap(profile => this.lightName = profile.name))
+                    .subscribe(new ErrorHandlingSubscriber())
+            }
+        }
+
         if(lobby.matchId != null) {
             this.matchService.getMatch(lobby.matchId)
                 .pipe(tap(match => {
@@ -78,6 +77,8 @@ export class LobbyComponent implements OnInit, OnDestroy {
                 }))
                 .subscribe(new ErrorHandlingSubscriber())
         }
+
+        this.lobby = lobby
     }
 
     private getProfile(accountId: string): Observable<Profile> {
