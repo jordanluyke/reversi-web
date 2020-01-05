@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core'
 import {tap} from 'rxjs/operators'
-import {ErrorHandlingSubscriber, CoreApiService, Lobby, LobbyService} from '../../shared/index'
+import {ErrorHandlingSubscriber, CoreApiService, Lobby, LobbyService, AccountService} from '../../shared/index'
 
 @Component({
     selector: 'lobbies-component',
@@ -16,6 +16,7 @@ export class LobbiesComponent implements OnInit {
     constructor(
         private core: CoreApiService,
         private lobbyService: LobbyService,
+        private accountService: AccountService,
     ) {}
 
     public ngOnInit(): void {
@@ -27,9 +28,14 @@ export class LobbiesComponent implements OnInit {
             .subscribe(new ErrorHandlingSubscriber())
     }
 
-    public clickJoin(i: number): void {
-        this.joiningIndex = i
-        let id = this.lobbies[i].id
+    public clickJoin(index: number): void {
+        this.joiningIndex = index
+        let id = this.lobbies[index].id
         this.lobbyService.join(id)
+    }
+
+    public inGame(index: number): boolean {
+        let lobby = this.lobbies[index]
+        return lobby.playerIdDark == this.accountService.account.id || lobby.playerIdLight == this.accountService.account.id
     }
 }
