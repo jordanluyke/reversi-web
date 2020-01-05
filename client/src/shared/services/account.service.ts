@@ -54,9 +54,11 @@ export class AccountService implements Resolve<Observable<Account>> {
                 .pipe(
                     tap(Void => this.subscribeUpdates()),
                     catchError(err => {
-                        this.sessionService.clear()
-                        this.pusherService.clear()
-                        this.clear()
+                        if(["NotFoundException", "ForbiddenException"].includes(err.exceptionType)) {
+                            this.sessionService.clear()
+                            this.pusherService.clear()
+                            this.clear()
+                        }
                         return of(null)
                     })
                 )
