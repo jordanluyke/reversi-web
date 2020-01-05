@@ -57,7 +57,7 @@ export class MatchService implements Resolve<Observable<Match>> {
             )
     }
 
-    private getMatch(id: string): Observable<Match> {
+    public getMatch(id: string): Observable<Match> {
         return this.core.get("/matches/" + id)
             .pipe(
                 tap(match => {
@@ -93,14 +93,6 @@ export class MatchService implements Resolve<Observable<Match>> {
             return throwError("Match ID not present")
         }
         return this.getMatch(id)
-            .pipe(
-                tap(Void => this.subscribeMatch()),
-                catchError(err => {
-                    console.error(err)
-                    // go to internal server error page
-                    this.router.navigate(["404"])
-                    return throwError(err)
-                })
-            )
+            .pipe(tap(Void => this.subscribeMatch()))
     }
 }

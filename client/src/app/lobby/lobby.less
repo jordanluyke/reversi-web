@@ -1,0 +1,37 @@
+@import "less/variables.less";
+@import "less/mixins.less";
+
+.lobby-ctnr {
+    margin-top: 60px;
+    .lobby-info {
+        .desc {
+            color: @secondary-color;
+            margin-bottom: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            &:not(:first-child) {
+                margin-top: 30px;
+            }
+        }
+        .value {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+        .fas {
+            margin-right: 10px;
+            font-size: 24px;
+            float: left;
+            margin-top: 1px;
+        }
+        .fa-times {
+            color: @error-color;
+        }
+        .fa-check {
+            color: @success-color;
+        }
+        .ready-btn {
+            width: 50%;
+            font-size: 24px;
+        }
+    }
+}

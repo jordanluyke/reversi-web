@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy} from '@angular/core'
-import {CoreApiService, Session, AccountService, SessionService, Instant, ErrorHandlingSubscriber, MatchService, SignInType, Account, PusherService, PusherChannel} from '../../shared/index'
+import {CoreApiService, Session, AccountService, SessionService, Instant, ErrorHandlingSubscriber, MatchService, SignInType, Account, PusherService, PusherChannel, LobbyService} from '../../shared/index'
 import {Observable, from, Subject} from 'rxjs'
 import {tap, flatMap, filter, debounceTime, distinctUntilChanged} from 'rxjs/operators'
 import {Router} from '@angular/router'
@@ -13,10 +13,12 @@ import {FacebookService} from 'ngx-facebook'
 export class HomeComponent implements OnInit, OnDestroy {
 
     public reqInProgress = false
+    public submitNameInProgress = false
     public findGameInProgress = false
     public name?: string
+    public nameInput?: string
+    public isEditingName = false
     public showCreateBtnDuringFind = false
-    private nameChanged: Subject<string> = new Subject()
 
     constructor(
         private core: CoreApiService,
@@ -26,30 +28,21 @@ export class HomeComponent implements OnInit, OnDestroy {
         private matchService: MatchService,
         private facebookService: FacebookService,
         private pusherService: PusherService,
+        private lobbyService: LobbyService,
     ) {}
 
     public ngOnInit(): void {
-        if(this.accountService.loaded)
+        if(this.accountService.loaded) {
             this.name = this.accountService.account.name
-
-        this.nameChanged
-            .pipe(
-                debounceTime(500),
-                distinctUntilChanged(),
-                flatMap(Void => this.core.put("/accounts/" + this.accountService.account.id, {
-                    body: {
-                        name: this.name
-                    }
-                }))
-            )
-            .subscribe(new ErrorHandlingSubscriber())
+            this.nameInput = this.name
+        }
     }
 
     public ngOnDestroy(): void {
-        this.pusherService.unsubscribe(PusherChannel.FindMatch)
+        // this.pusherService.unsubscribe(PusherChannel.FindMatch)
     }
 
-    public clickFindGame(): void {
+    public clickMatchmaking(): void {
         this.reqInProgress = true
         this.findGameInProgress = true
         setTimeout(() => {
@@ -69,12 +62,16 @@ export class HomeComponent implements OnInit, OnDestroy {
             .subscribe(new ErrorHandlingSubscriber())
     }
 
+    public clickBrowseGames(): void {
+        this.router.navigate(["lobbies"])
+    }
+
     public clickCreateGame(): void {
         this.reqInProgress = true
-        this.matchService.createMatch()
+        this.lobbyService.createLobby()
             .pipe(
-                tap(match => {
-                    this.router.navigate(["matches", match.id])
+                tap(lobby => {
+                    this.router.navigate(["lobbies", lobby.id])
                 }, err => {
                     this.reqInProgress = false
                 })
@@ -112,8 +109,28 @@ export class HomeComponent implements OnInit, OnDestroy {
             .subscribe(new ErrorHandlingSubscriber())
     }
 
-    public onNameChange(name: string): void {
-        this.nameChanged.next(name)
+    public submitName(): void {
+        this.submitNameInProgress = true
+        this.core.put("/accounts/" + this.accountService.account.id, {
+            body: {
+                name: this.nameInput
+            }
+        })
+            .pipe(
+                tap(account => {
+                    this.name = account.name
+                    this.isEditingName = false
+                    this.submitNameInProgress = false
+                }, err => {
+                    this.submitNameInProgress = false
+                })
+            )
+            .subscribe(new ErrorHandlingSubscriber())
+    }
+
+    public clickEditName(): void {
+        this.isEditingName = true
+        this.nameInput = this.name
     }
 
     private signIn(type: SignInType, id?: string): Observable<Account> {
@@ -137,7 +154,7 @@ export class HomeComponent implements OnInit, OnDestroy {
                 tap(account => {
                     this.name = account.name
                     if(this.matchService.matchIdRedirect != null) {
-                        this.router.navigate(["/matches", this.matchService.matchIdRedirect])
+                        this.router.navigate(["matches", this.matchService.matchIdRedirect])
                         this.matchService.matchIdRedirect = null
                     } else {
                         this.reqInProgress = false

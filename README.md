@@ -4,11 +4,10 @@ features:
 - pusher updates
 - stat tracking
 - social media login
-- matchmaking
+- move timeout
+- lobbies
 
 todo:
-- move timeout
-- match leave timeout
-- ws message receipts
 - settings
     - move confirmation
+- animations

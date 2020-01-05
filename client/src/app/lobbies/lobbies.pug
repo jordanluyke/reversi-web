@@ -1,0 +1,15 @@
+header-component
+
+.loading-ctnr(*ngIf="!loaded")
+    .center
+        .fas.fa-circle-notch.fa-spin
+.lobbies-ctnr(*ngIf="loaded")
+    .container
+        .empty-ctnr(*ngIf="lobbies.length == 0")
+            p.empty-text No games found.
+        .lobby(*ngFor="let lobby of lobbies; index as i")
+            .row
+                .col-sm-6
+                    button.btn.btn-success.join-btn([class.loading]="joiningIndex == i", [disabled]="joiningIndex != null", (click)="clickJoin(i)")
+                        i.fas.fa-plus
+                    p.name {{lobby.name}}

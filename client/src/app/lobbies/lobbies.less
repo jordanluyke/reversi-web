@@ -1,0 +1,58 @@
+@import "less/variables.less";
+@import "less/mixins.less";
+
+.loading-ctnr {
+    margin-top: 60px;
+    font-size: 50px;
+}
+.lobbies-ctnr {
+    margin: 60px 0;
+    .empty-ctnr {
+        .empty-text {
+            text-align: center;
+            font-size: 22px;
+            padding-top: 15px;
+        }
+    }
+    .lobby {
+        height: 92px;
+        background-color: darken(#fff, 3%);
+        padding: 15px;
+        border-bottom: 2px solid darken(#fff, 25%);
+        &:first-child {
+            border-top: 2px solid darken(#fff, 25%);
+            border-top-left-radius: 3px;
+            border-top-right-radius: 3px;
+        }
+        &:last-child {
+            border-bottom-left-radius: 3px;
+            border-bottom-right-radius: 3px;
+        }
+        .name {
+            font-size: 24px;
+            margin-top: 15px;
+            display: inline-block;
+        }
+        .join-btn {
+            height: 60px;
+            width: 75px;
+            margin-left: 15px;
+            margin-right: 28px;
+            display: inline-block;
+            vertical-align: top;
+            .fa-plus {
+                font-size: 28px;
+                margin-left: 2px;
+            }
+            &.loading {
+                &:before {
+                    top: 13%;
+                    left: 31%;
+                }
+            }
+        }
+        &:hover {
+            background-color: darken(#fff, 6%);
+        }
+    }
+}

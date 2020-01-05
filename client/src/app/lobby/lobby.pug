@@ -1,0 +1,31 @@
+header-component
+
+.lobby-ctnr
+    .container
+        .lobby-info
+            .row
+                .offset-sm-2.col-sm-4
+                    p.desc NAME
+                    p.value {{lobby.name}}
+                    p.desc PLAYER 1
+                    p.value {{darkName}}
+                    p.value(*ngIf="!lobby.playerReadyDark")
+                        span.fas.fa-times
+                        span Not Ready
+                    p.value(*ngIf="lobby.playerReadyDark")
+                        span.fas.fa-check
+                        span Ready
+                    p.desc PLAYER 2
+                    p.value {{lightName}}
+                    div(*ngIf="!!lobby.playerIdLight")
+                        p.value(*ngIf="!lobby.playerReadyLight")
+                            span.fas.fa-times
+                            span Not Ready
+                        p.value(*ngIf="lobby.playerReadyLight")
+                            span.fas.fa-check
+                            span Ready
+                    p.desc PRIVATE
+                    p.value {{lobby.private}}
+                .col-sm-4
+                    .center
+                        button.btn.ready-btn((click)="clickReady()", [ngClass]="{loading: readyInProgress, 'btn-success': !isReady(), 'btn-secondary': isReady()}") {{isReady() ? "Cancel" : "Ready"}}

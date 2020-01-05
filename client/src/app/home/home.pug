@@ -17,7 +17,23 @@ header-component
                         .btn.btn-primary.facebook((click)="clickFbLogin()") Sign in with Facebook
                         .btn.btn-primary.google((click)="clickGoogleLogin()") Sign in with Google
                     .logged-in-ctnr(*ngIf="accountService.loaded")
-                        input.form-control.name-input([(ngModel)]="name", (ngModelChange)="onNameChange($event)", name="name", maxlength="40", placeholder="Name", required, autofocus)
+                        .name-ctnr
+                            form.name-form((ngSubmit)="submitName()", *ngIf="isEditingName")
+                                input.form-control.name-input([(ngModel)]="nameInput", name="name", maxlength="40", placeholder="Name", required, autofocus)
+                                .row
+                                    .col-6.col-save
+                                        button.btn.btn-primary(type="submit", [disabled]="submitNameInProgress") Save
+                                    .col-6.col-cancel
+                                        button.btn.btn-secondary((click)="isEditingName = false", [disabled]="submitNameInProgress") Cancel
+                            .row(*ngIf="!isEditingName")
+                                .col-3
+                                .col-6.center
+                                    p.name {{name}}
+                                .col-3.right
+                                    button.btn.btn-success.btn-edit-name((click)="clickEditName()")
+                                        i.far.fa-edit
                         .divider
-                        button.btn.btn-primary((click)="clickFindGame()") Find Game
-                        button.btn.btn-success((click)="clickCreateGame()") Create Game
+                        .game-btn-ctnr
+                            //- button.btn.btn-primary((click)="clickMatchmaking()") Matchmaking
+                            button.btn.btn-primary((click)="clickBrowseGames()") Browse Games
+                            button.btn.btn-success((click)="clickCreateGame()") Create Game

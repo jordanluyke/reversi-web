@@ -13,6 +13,7 @@ import {
     MatchService,
     CoreConfigService,
     PusherService,
+    LobbyService,
 } from './services/index'
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
 import {FacebookModule} from 'ngx-facebook'
@@ -38,6 +39,7 @@ import {FacebookModule} from 'ngx-facebook'
         MatchService,
         CoreConfigService,
         PusherService,
+        LobbyService,
     ],
     exports: [
         BrowserModule,

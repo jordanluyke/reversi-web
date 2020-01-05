@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core'
 import {CoreApiService} from './core-api.service'
 import {SessionService} from './session.service'
 import {ReplaySubject, Observable, of} from 'rxjs'
-import {tap, flatMap} from 'rxjs/operators'
+import {tap, flatMap, catchError} from 'rxjs/operators'
 import {Resolve} from '@angular/router'
 import {Account, PusherChannel} from './model/index'
 import {ErrorHandlingSubscriber} from '../util/index'
@@ -49,7 +49,17 @@ export class AccountService implements Resolve<Observable<Account>> {
     }
 
     public resolve(): Observable<Account> {
-        return this.getAccount()
-            .pipe(tap(Void => this.subscribeUpdates()))
+        if(this.sessionService.session.validate())
+            return this.getAccount()
+                .pipe(
+                    tap(Void => this.subscribeUpdates()),
+                    catchError(err => {
+                        this.sessionService.clear()
+                        this.pusherService.clear()
+                        this.clear()
+                        return of(null)
+                    })
+                )
+        return of(null)
     }
 }

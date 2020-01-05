@@ -96,31 +96,23 @@ export class MatchComponent implements OnInit, OnDestroy {
     }
 
     public getStatus(): string {
-        if(this.match.playerDarkId == null || this.match.playerLightId == null)
-            return "Waiting on players to join..."
         if(this.match.completedAt != null) {
             if(this.darkCount > this.lightCount)
-                return "Dark wins!"
+                return (this.darkProfile ? this.darkProfile.name : "Dark") + " wins!"
             else if(this.lightCount > this.darkCount)
-                return "Light wins!"
+                return (this.lightProfile ? this.lightProfile.name : "Light") + " wins!"
             return "Draw!"
         }
         if(this.match.playerDarkId != null && this.match.playerLightId != null) {
             if(this.match.turn == Side.DARK) {
                 if(this.accountService.loaded && this.match.playerDarkId == this.accountService.account.id)
                     return "Your turn"
-                let name = "Dark"
-                if(this.darkProfile != null)
-                    name = this.darkProfile.name
-                return name + "'s turn"
+                return (this.darkProfile ? this.darkProfile.name : "Dark") + "'s turn"
             }
             if(this.match.turn == Side.LIGHT) {
                 if(this.accountService.loaded && this.match.playerLightId == this.accountService.account.id)
                     return "Your turn"
-                let name = "Light"
-                if(this.lightProfile != null)
-                    name = this.lightProfile.name
-                return name + "'s turn"
+                return (this.lightProfile ? this.lightProfile.name : "Light") + "'s turn"
             }
         }
         throw "Invalid status"

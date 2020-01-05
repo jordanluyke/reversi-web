@@ -1,11 +1,8 @@
 import {Injectable} from '@angular/core'
 import {Subject, ReplaySubject} from 'rxjs'
-import * as Pusher from 'pusher-js'
 import {CoreConfigService} from './core-config.service'
 import {PusherChannel} from './model/index'
-
-// hack due to jit/aot differences
-const _Pusher = (Pusher as any).default ? (Pusher as any).default : Pusher
+declare var Pusher: any
 
 /**
  * @author Jordan Luyke
@@ -14,7 +11,7 @@ const _Pusher = (Pusher as any).default ? (Pusher as any).default : Pusher
 @Injectable()
 export class PusherService {
 
-    private pusher: Pusher.Pusher
+    private pusher: any
     private onLoad: ReplaySubject<void> = new ReplaySubject(1)
     private started = false
 
@@ -26,13 +23,11 @@ export class PusherService {
             this.started = true
         }
         let subject = new Subject()
-        console.log("subscribing channel", channel)
         this.onLoad.subscribe(
             Void => {
                 let pusherChannel = this.pusher.channel(channel)
                 if(pusherChannel == null)
                     pusherChannel = this.pusher.subscribe(channel)
-                console.log("1")
                 pusherChannel.bind(event, (data: any) => subject.next(data))
             }
         )
@@ -40,7 +35,8 @@ export class PusherService {
     }
 
     public unsubscribe(channelName: string): void {
-        this.pusher.unsubscribe(channelName)
+        if(this.pusher != null)
+            this.pusher.unsubscribe(channelName)
     }
 
     public clear(): void {
@@ -53,13 +49,13 @@ export class PusherService {
         this.coreConfigService.onLoad
             .subscribe(Void => {
                 try {
-                    this.pusher = new _Pusher(this.coreConfigService.config.pusherKey, {
+                    this.pusher = new Pusher(this.coreConfigService.config.pusherKey, {
                         cluster: this.coreConfigService.config.pusherCluster,
                         encrypted: true
                     })
                     this.onLoad.next(null)
                 } catch(e) {
-                    console.error("Pusher fail")
+                    console.error("Pusher fail: ", e)
                 }
             })
     }

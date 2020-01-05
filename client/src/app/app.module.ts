@@ -9,6 +9,8 @@ import {LogoutComponent} from './logout/logout.component'
 import {MatchComponent} from './match/match.component'
 import {NotSupportedComponent} from './not-supported/not-supported.component'
 import {HeaderComponent} from './partials/index'
+import {LobbyComponent} from './lobby/lobby.component'
+import {LobbiesComponent} from './lobbies/lobbies.component'
 
 @NgModule({
     imports: [
@@ -24,6 +26,8 @@ import {HeaderComponent} from './partials/index'
         MatchComponent,
         NotSupportedComponent,
         HeaderComponent,
+        LobbyComponent,
+        LobbiesComponent,
     ],
     bootstrap: [AppComponent]
 })

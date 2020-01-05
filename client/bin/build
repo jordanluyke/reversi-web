@@ -323,7 +323,9 @@ let bundle = () => {
             console.log(warning.message)
         },
         plugins: [
-            nodeResolve(),
+            nodeResolve({
+                browser: true,
+            }),
             commonjs({
                 include: [
                     "rxjs/**",
@@ -331,10 +333,11 @@ let bundle = () => {
                     "bignumber.js/bignumber.js",
                     "@ng-bootstrap/**",
                     "ngx-facebook/**",
-                    "pusher-js/dist/web/pusher.min.js",
+                    'pusher-js/dist/web/pusher.js',
                 ]
                     .map(p => path.join(client, "node_modules", p)),
                 namedExports: Object.entries({
+                    'pusher-js/dist/web/pusher.js': ['Pusher'],
                 })
                     .map(pair => {
                         pair[0] = path.join(client, "node_modules", pair[0])

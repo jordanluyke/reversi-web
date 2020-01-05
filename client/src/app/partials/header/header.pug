@@ -29,7 +29,7 @@ ng-template(#aboutModal, let-c="close")
     .modal-body.about-modal
         .fas.fa-times((click)="c()")
         p.title About
-        p Multiplayer reversi. Made with Java, Angular, and TypeScript.
+        p.center Multiplayer Reversi - Made in USA
         .row(style="margin-top: 50px")
             .col-6
                 a.btn.btn-success(href="https://en.wikipedia.org/wiki/Reversi#Rules" target="_blank" referrer="noreferrer") How to play
@@ -41,7 +41,7 @@ ng-template(#settingsModal, let-c="close")
     .modal-body.settings-modal
         .fas.fa-times((click)="c()")
         p.title Settings
-        p.center(style="margin-bottom: 25px") Not yet available
+        p.center(style="margin-bottom: 25px") Not available.
         //- .form-check.form-check-inline
             input.form-check-input#delayCheckbox(type="checkbox", [(ngModel)]="settings.delayEnabled", (ngModelChange)="onDelayEnabledChange()", disabled)
             label.form-check-label(for="delayCheckbox") Move delay
@@ -55,7 +55,11 @@ ng-template(#profileModal, let-c="close")
                 a(routerLink="/", (click)="c()") sign in
                 span .
         .profile(*ngIf="accountService.loaded")
-            p Matches: {{accountService.account.stats.matches}}
-            p Account ID: {{accountService.account.id}}
+            p.desc Joined
+            p.value {{accountService.account.createdAt | date}}
+            p.desc Matches
+            p.value {{accountService.account.stats.matches}}
+            p.desc Account ID
+            p.value {{accountService.account.id}}
             .center
                 a.btn.btn-danger(routerLink="/logout", (click)="c()") Logout

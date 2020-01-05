@@ -34,7 +34,7 @@
     "minimist": "1.2.0",
     "ngx-facebook": "2.4.0",
     "pug": "2.0.4",
-    "pusher-js": "4.0.0",
+    "pusher-js": "5.0.3",
     "reflect-metadata": "0.1.13",
     "rollup": "1.19.4",
     "rollup-plugin-babel": "4.3.3",

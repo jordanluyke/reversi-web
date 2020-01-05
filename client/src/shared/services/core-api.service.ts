@@ -60,10 +60,11 @@ export class CoreApiService {
                 catchError(response => {
                     if(response instanceof HttpErrorResponse) {
                         try {
-                            let body = response.error
-                            if(body.type == "UnauthorizedException" || body.type == "AccessDeniedException")
-                                this.router.navigate(["/logout"])
-                            return throwError(body)
+                            if(response.status == 401)
+                                this.router.navigate(["logout"])
+                            else if(response.status == 404)
+                                this.router.navigate(["404"])
+                            return throwError(response.error)
                         } catch(err) {
                             throw new Error("Unable to parse server response")
                         }
