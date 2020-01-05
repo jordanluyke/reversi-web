@@ -62,10 +62,8 @@ export class LobbyService implements Resolve<Observable<Lobby>> {
     }
 
     public leave(id: string): void {
+        this.clear()
         this.core.post("/lobbies/" + id + "/leave")
-            .pipe(
-                tap(lobby => this.clear())
-            )
             .subscribe(new ErrorHandlingSubscriber())
     }
 

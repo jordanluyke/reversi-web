@@ -17,7 +17,7 @@ export class PusherService {
 
     constructor(private coreConfigService: CoreConfigService) {}
 
-    public subscribe(channel: PusherChannel, event: string): Subject<any> {
+    public subscribe(channel: PusherChannel, event: string = "update"): Subject<any> {
         if(!this.started) {
             this.load()
             this.started = true
