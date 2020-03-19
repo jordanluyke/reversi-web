@@ -46,6 +46,10 @@ export class AccountService implements Resolve<Observable<Account>> {
         this.pusherService.subscribe(PusherChannel.Account, this.account.id)
             .pipe(flatMap(Void => this.getAccount()))
             .subscribe(new ErrorHandlingSubscriber())
+
+        this.pusherService.subscribe(PusherChannel.Users)
+            .pipe(tap(update => console.log(update)))
+            .subscribe(new ErrorHandlingSubscriber())
     }
 
     public resolve(): Observable<Account> {

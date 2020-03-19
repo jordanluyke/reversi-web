@@ -1,4 +1,4 @@
-import {PusherChannel} from './socket-event'
+import {PusherChannel} from './pusher-channel'
 import {Subject} from 'rxjs'
 
 export class SocketSubscription {

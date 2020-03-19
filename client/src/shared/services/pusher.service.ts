@@ -2,12 +2,12 @@ import {Injectable} from '@angular/core'
 import {Subject, ReplaySubject} from 'rxjs'
 import {CoreConfigService} from './core-config.service'
 import {PusherChannel} from './model/index'
+import {CookieService} from './cookie.service'
 declare var Pusher: any
 
 /**
  * @author Jordan Luyke
  */
-
 @Injectable()
 export class PusherService {
 
@@ -15,7 +15,10 @@ export class PusherService {
     private onLoad: ReplaySubject<void> = new ReplaySubject(1)
     private started = false
 
-    constructor(private coreConfigService: CoreConfigService) {}
+    constructor(
+        private coreConfigService: CoreConfigService,
+        private cookieService: CookieService,
+    ) {}
 
     public subscribe(channel: PusherChannel, event: string = "update"): Subject<any> {
         if(!this.started) {
@@ -50,6 +53,12 @@ export class PusherService {
             .subscribe(Void => {
                 try {
                     this.pusher = new Pusher(this.coreConfigService.config.pusherKey, {
+                        auth: {
+                            headers: {
+                                "x-xsrf-token": this.cookieService.get("XSRF-TOKEN")
+                            }
+                        },
+                        authEndpoint: "/core/pusher/auth",
                         cluster: this.coreConfigService.config.pusherCluster,
                         encrypted: true
                     })
