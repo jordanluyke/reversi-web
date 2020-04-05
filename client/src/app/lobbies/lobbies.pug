@@ -10,6 +10,6 @@ header-component
         .lobby(*ngFor="let lobby of lobbies; index as i")
             .row
                 .col-sm-6
-                    button.btn.btn-success.join-btn([class.loading]="joiningIndex == i", [disabled]="joiningIndex != null || inGame(i)", (click)="clickJoin(i)")
+                    button.btn.btn-success.join-btn([class.loading]="joiningIndex == i", [disabled]="joiningIndex != null || !inGame(i)", (click)="clickJoin(i)")
                         i.fas.fa-plus
                     p.name {{lobby.name}}

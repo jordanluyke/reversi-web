@@ -2,6 +2,7 @@ import {Component, OnInit, OnDestroy} from '@angular/core'
 import {tap} from 'rxjs/operators'
 import {ErrorHandlingSubscriber, CoreApiService, Lobby, LobbyService, AccountService, PusherService, PusherChannel} from '../../shared/index'
 import {Subscription} from 'rxjs'
+import {Router} from '@angular/router'
 
 @Component({
     selector: 'lobbies-component',
@@ -20,6 +21,7 @@ export class LobbiesComponent implements OnInit, OnDestroy {
         private lobbyService: LobbyService,
         private accountService: AccountService,
         private pusherService: PusherService,
+        private router: Router,
     ) {}
 
     public ngOnInit(): void {
@@ -34,7 +36,10 @@ export class LobbiesComponent implements OnInit, OnDestroy {
     public clickJoin(index: number): void {
         this.joiningIndex = index
         let id = this.lobbies[index].id
-        this.lobbyService.join(id)
+        if(this.inGame(index))
+            this.router.navigate(["lobbies", id])
+        else
+            this.lobbyService.join(id)
     }
 
     public inGame(index: number): boolean {
