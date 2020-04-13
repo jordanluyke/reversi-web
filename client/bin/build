@@ -245,8 +245,8 @@ let copyFiles = () => {
                 return fs.copy(path.join(client, "src"), path.join(client, "target/src"))
         })
         .then(() => fs.writeJson(path.join(client, "target/status.json"), {
-            status: "OK",
             branch: childProcess.execSync("git rev-parse --abbrev-ref HEAD").toString().trim(),
+            builtAt: new Date().getTime(),
             commit: childProcess.execSync("git rev-parse HEAD").toString().trim(),
         }, { spaces: 4 }))
         .then(() => {
