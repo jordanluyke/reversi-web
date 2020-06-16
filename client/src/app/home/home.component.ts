@@ -1,9 +1,9 @@
 import {Component, OnInit, OnDestroy} from '@angular/core'
 import {CoreApiService, Session, AccountService, SessionService, Instant, ErrorHandlingSubscriber, MatchService, SignInType, Account, PusherService, PusherChannel, LobbyService} from '../../shared/index'
-import {Observable, from, Subject} from 'rxjs'
-import {tap, flatMap, filter, debounceTime, distinctUntilChanged} from 'rxjs/operators'
+import {Observable, from} from 'rxjs'
+import {tap, flatMap, filter} from 'rxjs/operators'
 import {Router} from '@angular/router'
-import {FacebookService} from 'ngx-facebook'
+import {SocialAuthService, FacebookLoginProvider, GoogleLoginProvider} from 'angularx-social-login'
 
 @Component({
     selector: 'home-component',
@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         private sessionService: SessionService,
         private router: Router,
         private matchService: MatchService,
-        private facebookService: FacebookService,
+        private socialAuthService: SocialAuthService,
         private pusherService: PusherService,
         private lobbyService: LobbyService,
     ) {}
@@ -86,25 +86,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     }
 
     public clickFbLogin(): void {
-        from(this.facebookService.login())
+        from(this.socialAuthService.signIn(FacebookLoginProvider.PROVIDER_ID))
             .pipe(
-                filter(res => res.authResponse != null),
+                filter(user => user != null),
                 tap(Void => this.reqInProgress = true),
-                flatMap(res => this.signIn(SignInType.FACEBOOK, res.authResponse.userID)),
+                flatMap(user => this.signIn(SignInType.FACEBOOK, user.id)),
             )
             .subscribe(new ErrorHandlingSubscriber())
     }
 
     public clickGoogleLogin(): void {
-        from(new Promise((resolve, reject) => {
-            let auth2 = gapi.auth2.init({
-                client_id: "189745405951-mr203k8jk71l5vtsp94c84b6de2asft6.apps.googleusercontent.com",
-            })
-            auth2.signIn().then(user => resolve(user), err => reject(err))
-        }))
+        from(this.socialAuthService.signIn(GoogleLoginProvider.PROVIDER_ID))
             .pipe(
                 tap(Void => this.reqInProgress = true),
-                flatMap((user: gapi.auth2.GoogleUser) => this.signIn(SignInType.GOOGLE, user.getId())),
+                flatMap(user => this.signIn(SignInType.GOOGLE, user.id)),
             )
             .subscribe(new ErrorHandlingSubscriber())
     }

@@ -14,7 +14,7 @@
         "@angular/router": "/node_modules/@angular/router/bundles/router.umd.min.js",
         "@ng-bootstrap/ng-bootstrap": "/node_modules/@ng-bootstrap/ng-bootstrap/bundles/ng-bootstrap.umd.min.js",
         "bignumber.js": "/node_modules/bignumber.js/bignumber.min.js",
-        "ngx-facebook": "node_modules/ngx-facebook/dist/umd/index.js",
+        "angularx-social-login": "bundles/angularx-social-login.umd.min.js",
         "rxjs": "/node_modules/rxjs/index.js",
         "rxjs/operators": "/node_modules/rxjs/operators/index.js",
     }

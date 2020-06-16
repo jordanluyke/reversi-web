@@ -16,7 +16,7 @@ import {
     LobbyService,
 } from './services/index'
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap'
-import {FacebookModule} from 'ngx-facebook'
+import {SocialAuthService, GoogleLoginProvider, FacebookLoginProvider, SocialAuthServiceConfig} from 'angularx-social-login'
 
 @NgModule({
     imports: [
@@ -26,7 +26,6 @@ import {FacebookModule} from 'ngx-facebook'
         HttpClientModule,
         RouterModule,
         NgbModule,
-        FacebookModule.forRoot(),
     ],
     declarations: [
     ],
@@ -40,6 +39,23 @@ import {FacebookModule} from 'ngx-facebook'
         CoreConfigService,
         PusherService,
         LobbyService,
+        SocialAuthService,
+        {
+            provide: "SocialAuthServiceConfig",
+            useValue: {
+                autoLogin: false,
+                providers: [
+                    {
+                        id: GoogleLoginProvider.PROVIDER_ID,
+                        provider: new GoogleLoginProvider("189745405951-mr203k8jk71l5vtsp94c84b6de2asft6.apps.googleusercontent.com")
+                    },
+                    {
+                        id: FacebookLoginProvider.PROVIDER_ID,
+                        provider: new FacebookLoginProvider("1838714972907653"),
+                    },
+                ]
+            } as SocialAuthServiceConfig,
+        }
     ],
     exports: [
         BrowserModule,
@@ -48,7 +64,6 @@ import {FacebookModule} from 'ngx-facebook'
         HttpClientModule,
         RouterModule,
         NgbModule,
-        FacebookModule,
     ]
 })
 export class SharedModule {}

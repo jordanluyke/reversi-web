@@ -3,7 +3,6 @@ import {Router, ActivatedRoute} from '@angular/router'
 import {Observable, from} from 'rxjs'
 import {flatMap, toArray} from 'rxjs/operators'
 import {ErrorHandlingSubscriber, AccountService, CoreConfigService} from '../../shared/index'
-import {FacebookService} from 'ngx-facebook'
 
 /**
  * Used for redirect handling & prevent HomeComponent loading
@@ -20,14 +19,10 @@ export class NavigatorComponent implements OnInit {
         private router: Router,
         private route: ActivatedRoute,
         private accountService: AccountService,
-        private facebookService: FacebookService,
         private coreConfigService: CoreConfigService,
     ) {}
 
     public ngOnInit(): void {
-        this.initFacebook()
-        gapi.load("auth2", null)
-
         from([
             this.accountService,
             this.coreConfigService,
@@ -52,15 +47,5 @@ export class NavigatorComponent implements OnInit {
                     replaceUrl: true
                 }))))
         }
-    }
-
-    private initFacebook(): void {
-        from(this.facebookService.init({
-            appId: '1838714972907653',
-            cookie: true,
-            xfbml: true,
-            version: 'v3.1'
-        }))
-            .subscribe(new ErrorHandlingSubscriber())
     }
 }

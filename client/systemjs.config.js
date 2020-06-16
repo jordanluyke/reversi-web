@@ -4,7 +4,7 @@ let map = {
     "rxjs": "node_modules/rxjs",
     "bignumber.js": "node_modules/bignumber.js",
     "@ng-bootstrap": "node_modules/@ng-bootstrap",
-    "ngx-facebook": "node_modules/ngx-facebook",
+    "angularx-social-login": "node_modules/angularx-social-login",
     "pusher-js": "node_modules/pusher-js",
 };
 
@@ -34,8 +34,8 @@ let packages = {
         main: "bundles/ng-bootstrap.umd.min.js",
         defaultExtension: "js"
     },
-    "ngx-facebook": {
-        main: "dist/umd/index.js",
+    "angularx-social-login": {
+        main: "bundles/angularx-social-login.umd.min.js",
         defaultExtension: "js"
     },
     "pusher-js": {
@@ -48,6 +48,7 @@ let packages = {
     "compiler",
     "core",
     "forms",
+    "localize",
     "platform-browser",
     "platform-browser-dynamic",
     "router"
