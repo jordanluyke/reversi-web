@@ -4,11 +4,11 @@
 
 export interface Multimap<K, V> {
     clear(): void
+    containsEntry(key: K, value: V): boolean
     containsKey(key: K): boolean
     containsValue(value: V): boolean
-    containsEntry(key: K, value: V): boolean
     delete(key: K, value?: V): boolean
-    entries: MultimapEntry<K, V>[]
+    entries(): MultimapEntry<K, V>[]
     get(key: K): V[]
     keys(): K[]
     put(key: K, value: V): MultimapEntry<K, V>[]
@@ -22,36 +22,25 @@ export class ArrayListMultimap<K, V> implements Multimap<K, V> {
         this._entries = []
     }
 
+    public containsEntry(key: K, value: V): boolean {
+        return this._entries.find(entry => entry.key == key && entry.value == value) != null
+    }
+
     public containsKey(key: K): boolean {
-        return this._entries
-            .filter(entry => entry.key == key)
-            .length > 0
+        return this._entries.find(entry => entry.key == key) != null
     }
 
     public containsValue(value: V): boolean {
-        return this._entries
-            .filter(entry => entry.value == value)
-            .length > 0
-    }
-
-    public containsEntry(key: K, value: V): boolean {
-        return this._entries
-            .filter(entry => entry.key == key && entry.value == value)
-            .length > 0
+        return this._entries.find(entry => entry.value == value) != null
     }
 
     public delete(key: K, value?: V): boolean {
-        let temp = this._entries
-        this._entries = this._entries
-            .filter(entry => {
-                if(value)
-                    return entry.key != key || entry.value != value
-                return entry.key != key
-            })
-        return temp.length != this._entries.length
+        let oldLength = this.entries.length
+        this._entries = this._entries.filter(entry => entry.key != key || (value != null && entry.value != value))
+        return oldLength != this._entries.length
     }
 
-    public get entries(): MultimapEntry<K, V>[] {
+    public entries(): MultimapEntry<K, V>[] {
         return this._entries
     }
 
