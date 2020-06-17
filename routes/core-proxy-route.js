@@ -25,8 +25,7 @@ module.exports = (app) => {
             if(token != req.headers["x-xsrf-token"]) {
                 console.log(`Failed XSRF check. accountId: ${req.cookies.accountId}, ${req.method} ${corePath}`)
                 return res.status(401).json({
-                    type: "AccessDeniedException",
-                    transient: false,
+                    type: "XSRFException",
                     message: "Access denied"
                 })
             }
@@ -69,7 +68,7 @@ module.exports = (app) => {
                                     .digest('base64')
 
                                 res.cookie("XSRF-TOKEN", token, {
-                                    expires: new Date(new Date().getTime() + 24*60*60*1000),
+                                    expires: new Date(new Date().getTime() + 1000*60*60*24*21),
                                     path: "/",
                                     // secure: config.prod || config.staging
                                 })
