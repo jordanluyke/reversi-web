@@ -3,6 +3,7 @@ import {Subject, ReplaySubject} from 'rxjs'
 import {CoreConfigService} from './core-config.service'
 import {PusherChannel} from './model/index'
 import {CookieService} from './cookie.service'
+import {Router} from '@angular/router'
 declare var Pusher: any
 
 /**
@@ -18,6 +19,7 @@ export class PusherService {
     constructor(
         private coreConfigService: CoreConfigService,
         private cookieService: CookieService,
+        private router: Router,
     ) {}
 
     public subscribe(channel: PusherChannel, event: string = "update"): Subject<any> {
@@ -25,6 +27,7 @@ export class PusherService {
             this.load()
             this.started = true
         }
+
         let subject = new Subject()
         this.onLoad.subscribe(
             Void => {
@@ -32,8 +35,17 @@ export class PusherService {
                 if(pusherChannel == null)
                     pusherChannel = this.pusher.subscribe(channel)
                 pusherChannel.bind(event, (data: any) => subject.next(data))
+
+                pusherChannel.bind("pusher:subscription_error", (status: any, data: any) => {
+                    console.log("status", status, data)
+                    if(channel != PusherChannel.Users)
+                        this.router.navigate(["not-supported"])
+                    else
+                        this.router.navigate(["logout"])
+                })
             }
         )
+
         return subject
     }
 
