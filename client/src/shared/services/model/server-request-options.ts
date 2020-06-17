@@ -4,4 +4,5 @@ export interface ServerRequestOptions {
     headers?: HttpHeaders
     params?: HttpParams
     body?: any
+    observe?: string
 }

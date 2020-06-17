@@ -33,18 +33,16 @@ export class CoreApiService {
         return this.request("DELETE", corePath, options)
     }
 
-    private request(method: string, corePath: string, options?: ServerRequestOptions): Observable<any> {
+    private request(method: string, corePath: string, options: ServerRequestOptions = {}): Observable<any> {
         let proxyPath = "/core" + corePath
 
-        options = options || {}
-        options.headers = options.headers || new HttpHeaders()
-        options.body = options.body || {}
-        options.params = options.params || new HttpParams()
-
         let retryAttempt = 0
-        return this.httpClient.request(method, proxyPath, Object.assign(options, {
+        return this.httpClient.request(method, proxyPath, {
+            headers: options.headers || new HttpHeaders(),
+            body: options.body || {},
+            params: options.params || new HttpParams(),
             observe: "response"
-        }))
+        })
             .pipe(
                 flatMap((response: any) => {
                     if(response.type == HttpEventType.UploadProgress) {
