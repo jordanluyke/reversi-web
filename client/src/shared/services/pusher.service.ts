@@ -58,6 +58,8 @@ export class PusherService {
         if(this.pusher && this.pusher.channels)
             for(let channel in this.pusher.channels.channels)
                 this.unsubscribe(channel)
+        this.onLoad = new ReplaySubject(1)
+        this.started = false
     }
 
     private load(): void {
