@@ -1,19 +1,19 @@
 header-component
 
 .container
-    .center
+    //- .center
         button.btn.btn-primary.join-btn((click)="clickJoin()", *ngIf="isJoinable()", [disabled]="joining") Join game
     .score-ctnr
         .row
-            .col-sm-6
+            .col-6
                 .player-ctnr-left([ngClass]="{active: match.playerDarkId != null && match.playerLightId != null && match.turn == Side.DARK}")
                     .top-ctnr
                         p.count {{darkCount}}
                         img.piece-icon(src="/img/piece-dark.svg")
                     .bottom-ctnr(*ngIf="darkProfile != null")
                         p.name {{darkProfile.name}}
-            .col-sm-6
-                .right.d-none.d-sm-block
+            .col-6
+                .right.d-none.d-block
                     .player-ctnr-right([ngClass]="{active: match.playerDarkId != null && match.playerLightId != null && match.turn == Side.LIGHT}")
                         .top-ctnr
                             img.piece-icon(src="/img/piece-light.svg")
