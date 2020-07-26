@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "postinstall": "bin/postinstall",
-    "start": "bin/devbuildrun"
+    "postinstall": "sh bin/postinstall",
+    "start": "sh bin/devbuildrun"
   },
   "dependencies": {
     "compression": "1.7.4",
