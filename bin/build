@@ -41,6 +41,6 @@ tar -cz \
 echo "Build completed."
 
 if [ "$1" == "-s" ] || [ "$1" == "--sync" ]; then
-    cp ${ARCHIVE} /Users/jordanluyke/Documents/sync/reversi
+    cp ${ARCHIVE} ~/Documents/sync/reversi
     echo "Copied to sync/reversi"
 fi
