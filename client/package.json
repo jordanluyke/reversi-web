@@ -33,7 +33,7 @@
     "lato-font": "3.0.0",
     "less": "4.1.1",
     "less-plugin-autoprefix": "2.0.0",
-    "minimist": "1.2.5",
+    "minimist": "1.2.6",
     "pug": "3.0.2",
     "pusher-js": "7.0.3",
     "reflect-metadata": "0.1.13",
